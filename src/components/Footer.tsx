@@ -1,22 +1,14 @@
-
 import { Link } from 'react-router-dom';
 import { Mail, Clock, MapPin, Twitter, Linkedin, Github } from 'lucide-react';
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-
-  return (
-    <footer className="bg-gray-900 text-white">
+  return <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <img 
-                src="/lovable-uploads/f634805c-58b8-4a71-b801-507dfd69aa6d.png" 
-                alt="Aidea Digital" 
-                className="h-8 w-auto brightness-0 invert"
-              />
+              <img alt="Aidea Digital" className="h-8 w-auto brightness-0 invert" src="/lovable-uploads/ef6db4c7-6dce-4192-8441-83891edcaaae.png" />
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
               Making AI practical and business-focused for founders and business leaders worldwide.
@@ -73,8 +65,6 @@ const Footer = () => {
           <p>&copy; {currentYear} Aidea Digital. All rights reserved.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
