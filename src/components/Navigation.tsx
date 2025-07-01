@@ -19,6 +19,8 @@ const Navigation = () => {
 
   useEffect(() => {
     setIsOpen(false);
+    // Scroll to top when route changes
+    window.scrollTo(0, 0);
   }, [location]);
 
   const navItems = [

@@ -109,8 +109,9 @@ const Services = () => {
       {/* Services Grid */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {services.map((service, index) => (
+          {/* First Row - 2 Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            {services.slice(0, 2).map((service, index) => (
               <div
                 key={index}
                 className="fade-in-on-scroll bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-gray-100"
@@ -130,6 +131,51 @@ const Services = () => {
                 </ul>
               </div>
             ))}
+          </div>
+
+          {/* Second Row - 2 Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            {services.slice(2, 4).map((service, index) => (
+              <div
+                key={index + 2}
+                className="fade-in-on-scroll bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-gray-100"
+              >
+                <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${service.color} rounded-full mb-6`}>
+                  <service.icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                <p className="text-gray-600 mb-6">{service.description}</p>
+                <ul className="space-y-3">
+                  {service.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* Third Row - 1 Card Centered */}
+          <div className="flex justify-center">
+            <div className="max-w-lg w-full">
+              <div className="fade-in-on-scroll bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-gray-100">
+                <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${services[4].color} rounded-full mb-6`}>
+                  <services[4].icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">{services[4].title}</h3>
+                <p className="text-gray-600 mb-6">{services[4].description}</p>
+                <ul className="space-y-3">
+                  {services[4].features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </section>
