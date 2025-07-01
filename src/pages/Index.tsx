@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Brain, Target, Zap, TrendingUp, CheckCircle, Star } from 'lucide-react';
@@ -112,8 +111,8 @@ const Index = () => {
             <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600">
               <div className="relative group">
                 <img 
-                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" 
-                  alt="AI Technology - Circuit Board" 
+                  src="/lovable-uploads/6215d555-1c3a-4039-a393-6ba8f9928b90.png" 
+                  alt="AI Technology Interface" 
                   className="w-full h-auto rounded-2xl shadow-2xl hover:scale-105 transition-all duration-700 hover:rotate-1"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
