@@ -73,23 +73,32 @@ const Index = () => {
       <section ref={heroRef} className="relative pt-20 pb-20 lg:pt-32 lg:pb-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 animate-fade-in">
-              Make AI Work for{' '}
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Your Business
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto animate-fade-in">
-              Strategy-first AI consulting for founders who want results, not just technology
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-full hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-fade-in"
-            >
-              Start Your Free AI Strategy Call
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 animate-fade-in">
+                Make AI Work for{' '}
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  Your Business
+                </span>
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto lg:mx-0 animate-fade-in">
+                Strategy-first AI consulting for founders who want results, not just technology
+              </p>
+              <Link
+                to="/contact"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-full hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-fade-in"
+              >
+                Start Your Free AI Strategy Call
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </div>
+            <div className="animate-fade-in">
+              <img 
+                src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" 
+                alt="AI Technology - Circuit Board" 
+                className="w-full h-auto rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-300"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -123,8 +132,45 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Mini Case Studies */}
+      {/* AI Innovation Section */}
       <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="fade-in-on-scroll">
+              <img 
+                src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80" 
+                alt="Programming and Development" 
+                className="w-full h-auto rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            <div className="fade-in-on-scroll">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                Strategic AI Implementation
+              </h2>
+              <p className="text-xl text-gray-600 mb-6">
+                We help you identify the right AI opportunities and implement them with precision. No wasted resources, no trial and error.
+              </p>
+              <ul className="space-y-4">
+                <li className="flex items-center">
+                  <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
+                  <span className="text-gray-700">Business-first approach to AI strategy</span>
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
+                  <span className="text-gray-700">Proven frameworks for AI implementation</span>
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
+                  <span className="text-gray-700">Measurable ROI from day one</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mini Case Studies */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in-on-scroll">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -159,6 +205,36 @@ const Index = () => {
               View All Case Studies
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Technology Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="fade-in-on-scroll">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                Innovation That Works
+              </h2>
+              <p className="text-xl text-gray-600 mb-6">
+                We leverage cutting-edge AI technologies to solve real business problems. From ideation to implementation, we ensure your AI initiatives deliver tangible results.
+              </p>
+              <Link
+                to="/solutions"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105"
+              >
+                Explore AI Solutions
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </div>
+            <div className="fade-in-on-scroll">
+              <img 
+                src="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&w=800&q=80" 
+                alt="Innovation - Light Bulb" 
+                className="w-full h-auto rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300"
+              />
+            </div>
           </div>
         </div>
       </section>
