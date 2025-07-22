@@ -1,17 +1,13 @@
-
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Brain, Target, Zap, TrendingUp, CheckCircle, Star, Search, ClipboardList, Wrench } from 'lucide-react';
-
 const Index = () => {
   const heroRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
     };
-
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -19,7 +15,6 @@ const Index = () => {
         }
       });
     }, observerOptions);
-
     const elements = document.querySelectorAll('.fade-in-on-scroll');
     elements.forEach(el => observer.observe(el));
 
@@ -30,10 +25,8 @@ const Index = () => {
         el.classList.add('opacity-100', 'translate-y-0');
       }, index * 150);
     });
-
     return () => observer.disconnect();
   }, []);
-
   const valueProps = [{
     icon: Brain,
     title: "AI MVP Validation",
@@ -55,36 +48,19 @@ const Index = () => {
     description: "Track ROI and business impact from day one",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80"
   }];
-
   const services = [{
     title: "AI Strategy & MVP Consulting",
     description: "Validate your AI ideas and create actionable roadmaps",
-    features: [
-      "AI opportunity mapping",
-      "MVP validation and scoping",
-      "Technology stack recommendations",
-      "ROI projections and business case development"
-    ]
+    features: ["AI opportunity mapping", "MVP validation and scoping", "Technology stack recommendations", "ROI projections and business case development"]
   }, {
     title: "Generative AI & Automation",
     description: "Custom GPT solutions and intelligent automation",
-    features: [
-      "Custom prompt engineering",
-      "Workflow automation design",
-      "AI-powered content generation",
-      "Chatbot and assistant development"
-    ]
+    features: ["Custom prompt engineering", "Workflow automation design", "AI-powered content generation", "Chatbot and assistant development"]
   }, {
     title: "Training & Support",
     description: "Empower your team with AI knowledge and ongoing guidance",
-    features: [
-      "Executive AI workshops",
-      "Team training programs",
-      "Best practices documentation",
-      "Ongoing support and mentoring"
-    ]
+    features: ["Executive AI workshops", "Team training programs", "Best practices documentation", "Ongoing support and mentoring"]
   }];
-
   const strategicSteps = [{
     number: "01",
     title: "Discover & Assess",
@@ -101,9 +77,7 @@ const Index = () => {
     description: "We guide you through implementation, providing ongoing support and optimization recommendations.",
     icon: Wrench
   }];
-
-  return (
-    <div className="min-h-screen bg-white overflow-hidden">
+  return <div className="min-h-screen bg-white overflow-hidden">
       {/* Hero Section */}
       <section ref={heroRef} className="relative pt-20 pb-20 lg:pt-32 lg:pb-32">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"></div>
@@ -128,11 +102,7 @@ const Index = () => {
             </div>
             <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600">
               <div className="relative group">
-                <img 
-                  src="/lovable-uploads/f125d18d-2d29-4803-ac30-85d405119421.png" 
-                  alt="AI Human Partnership" 
-                  className="w-full h-auto rounded-2xl shadow-2xl hover:scale-105 transition-all duration-700 hover:rotate-1" 
-                />
+                <img src="/lovable-uploads/f125d18d-2d29-4803-ac30-85d405119421.png" alt="AI Human Partnership" className="w-full h-auto rounded-2xl shadow-2xl hover:scale-105 transition-all duration-700 hover:rotate-1" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
             </div>
@@ -153,20 +123,16 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <div key={index} className="fade-in-on-scroll bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition-all duration-500 hover:scale-105">
+            {services.map((service, index) => <div key={index} className="fade-in-on-scroll bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition-all duration-500 hover:scale-105">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">{service.title}</h3>
                 <p className="text-gray-600 mb-6">{service.description}</p>
                 <ul className="space-y-3">
-                  {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start">
+                  {service.features.map((feature, featureIndex) => <li key={featureIndex} className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                       <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -184,8 +150,7 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {strategicSteps.map((step, index) => (
-              <div key={index} className="fade-in-on-scroll text-center group">
+            {strategicSteps.map((step, index) => <div key={index} className="fade-in-on-scroll text-center group">
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-6 group-hover:scale-110 transition-transform duration-300">
                   <step.icon className="h-10 w-10 text-white" />
                 </div>
@@ -194,8 +159,7 @@ const Index = () => {
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">{step.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{step.description}</p>
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -204,19 +168,16 @@ const Index = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in-on-scroll">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose Aidea Digital?
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose AIdea Digital?</h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto">
               We don't just implement AI—we help you think strategically about where and how AI can transform your business
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {valueProps.map((prop, index) => (
-              <div key={index} className="fade-in-on-scroll text-center p-6 rounded-2xl hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 bg-gradient-to-br from-white to-gray-50 border border-gray-100 group" style={{
-                animationDelay: `${index * 150}ms`
-              }}>
+            {valueProps.map((prop, index) => <div key={index} className="fade-in-on-scroll text-center p-6 rounded-2xl hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 bg-gradient-to-br from-white to-gray-50 border border-gray-100 group" style={{
+            animationDelay: `${index * 150}ms`
+          }}>
                 <div className="mb-4 overflow-hidden rounded-lg">
                   <img src={prop.image} alt={prop.title} className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-700" />
                 </div>
@@ -225,8 +186,7 @@ const Index = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">{prop.title}</h3>
                 <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">{prop.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -253,14 +213,12 @@ const Index = () => {
                 We help you identify the right AI opportunities and implement them with precision. No wasted resources, no trial and error.
               </p>
               <ul className="space-y-4">
-                {["Business-first approach to AI strategy", "Proven frameworks for AI implementation", "Measurable ROI from day one"].map((item, index) => (
-                  <li key={index} className="flex items-center animate-text opacity-0 translate-x-8 transition-all duration-1000 ease-out" style={{
-                    transitionDelay: `${300 + index * 150}ms`
-                  }}>
+                {["Business-first approach to AI strategy", "Proven frameworks for AI implementation", "Measurable ROI from day one"].map((item, index) => <li key={index} className="flex items-center animate-text opacity-0 translate-x-8 transition-all duration-1000 ease-out" style={{
+                transitionDelay: `${300 + index * 150}ms`
+              }}>
                     <CheckCircle className="h-6 w-6 text-green-500 mr-3 hover:scale-110 transition-transform duration-300" />
                     <span className="text-gray-700">{item}</span>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
             </div>
           </div>
@@ -299,8 +257,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
