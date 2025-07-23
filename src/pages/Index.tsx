@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Brain, Target, Zap, TrendingUp, CheckCircle, Star, Search, ClipboardList, Wrench } from 'lucide-react';
@@ -43,7 +42,7 @@ const Index = () => {
     },
     {
       icon: Target,
-      title: "Generative AI Strategy",
+      title: "Generative AI Strategy", 
       description: "Custom GPT solutions that actually work",
       image: "/lovable-uploads/e6b63f3a-cd03-4dbd-aad1-c822afc4c206.png"
     },
@@ -67,7 +66,7 @@ const Index = () => {
       description: "Validate your AI ideas and create actionable roadmaps",
       features: [
         "AI opportunity mapping",
-        "MVP validation and scoping", 
+        "MVP validation and scoping",
         "Technology stack recommendations",
         "ROI projections and business case development"
       ]
@@ -102,14 +101,14 @@ const Index = () => {
       icon: Search
     },
     {
-      number: "02", 
+      number: "02",
       title: "Strategy & Planning",
       description: "We create a detailed AI roadmap with clear priorities, timelines, and success metrics.",
       icon: ClipboardList
     },
     {
       number: "03",
-      title: "Implementation Support", 
+      title: "Implementation Support",
       description: "We guide you through implementation, providing ongoing support and optimization recommendations.",
       icon: Wrench
     }
@@ -185,7 +184,7 @@ const Index = () => {
       </section>
 
       {/* Strategic Approach Section */}
-      <section className="py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section className="py-16 lg:py-20 mb-16 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 lg:mb-16 fade-in-on-scroll">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
