@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Mail, Clock, MapPin, Phone, Send, CheckCircle, Linkedin } from 'lucide-react';
+import { Mail, Clock, MapPin, Phone, Send, CheckCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
@@ -85,21 +85,8 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      detail: "nayan@9004121212.com",
+      detail: "hello@aideadigital.in",
       description: "Send us an email anytime"
-    },
-    {
-      icon: Phone,
-      title: "Phone",
-      detail: "+91 9004121212",
-      description: "800+ engagements worldwide"
-    },
-    {
-      icon: Linkedin,
-      title: "LinkedIn Profile",
-      detail: "Connect on LinkedIn",
-      description: "https://www.linkedin.com/in/nayanbheda/?original_referer=https%3A%2F%2Fwww%2Egoogle%2Ecom%2F&originalSubdomain=in",
-      link: "https://www.linkedin.com/in/nayanbheda/?original_referer=https%3A%2F%2Fwww%2Egoogle%2Ecom%2F&originalSubdomain=in"
     },
     {
       icon: Clock,
@@ -262,13 +249,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">{info.title}</h3>
-                      {info.link ? (
-                        <a href={info.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-medium hover:underline">
-                          {info.detail}
-                        </a>
-                      ) : (
-                        <p className="text-blue-600 font-medium">{info.detail}</p>
-                      )}
+                      <p className="text-blue-600 font-medium">{info.detail}</p>
                       <p className="text-gray-600 text-sm">{info.description}</p>
                     </div>
                   </div>
