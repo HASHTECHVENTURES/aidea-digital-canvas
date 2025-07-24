@@ -184,7 +184,7 @@ const Index = () => {
       </section>
 
       {/* Strategic Approach Section */}
-      <section className="py-16 lg:py-20 mb-16 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section className="py-16 lg:py-20 mb-24 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 lg:mb-16 fade-in-on-scroll">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -195,7 +195,7 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 pb-8">
             {strategicSteps.map((step, index) => (
               <div key={index} className="fade-in-on-scroll text-center group">
                 <div className="inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 lg:mb-6 group-hover:scale-110 transition-transform duration-300">
