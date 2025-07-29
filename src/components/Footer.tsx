@@ -16,15 +16,11 @@ const Footer = () => {
             <div className="space-y-2 text-sm text-gray-400">
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <span>hello@aideadigital.in</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Clock className="h-4 w-4" />
-                <span>Mon–Fri, 10am–6pm IST</span>
+                <span>aideadgital@gmail.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4" />
-                <span>India</span>
+                <span>Mumbai, India</span>
               </div>
             </div>
           </div>

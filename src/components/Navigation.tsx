@@ -25,7 +25,6 @@ const Navigation = () => {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Solutions', path: '/solutions' },
     { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -60,12 +59,6 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <Link
-              to="/contact"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105"
-            >
-              Start Free Call
-            </Link>
           </div>
 
           {/* Mobile menu button */}

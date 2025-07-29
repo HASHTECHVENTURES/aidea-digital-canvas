@@ -157,7 +157,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 lg:mb-16 fade-in-on-scroll">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Your AI Thinking Partner — Not Just Another Vendor
+              Your AI Thinking Partner Not Just Another Vendor
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto">
               We help you think strategically about AI before you build anything. Our consulting services focus on strategy, validation, and practical implementation.
@@ -218,7 +218,7 @@ const Index = () => {
           <div className="text-center mb-12 lg:mb-16 fade-in-on-scroll">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose AIdea Digital?</h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto">
-              We don't just implement AI—we help you think strategically about where and how AI can transform your business
+              We don't just implement AI we help you think strategically about where and how AI can transform your business
             </p>
           </div>
           
@@ -297,7 +297,7 @@ const Index = () => {
           </p>
           <div className="fade-in-on-scroll animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400">
             <Link to="/contact" className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 text-base sm:text-lg font-semibold rounded-full hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:-translate-y-1 group">
-              Start Your Free Consultation
+              Let's Connect
               <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
           </div>

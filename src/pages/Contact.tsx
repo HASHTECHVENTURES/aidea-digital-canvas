@@ -85,19 +85,13 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      detail: "hello@aideadigital.in",
+      detail: "aideadgital@gmail.com",
       description: "Send us an email anytime"
-    },
-    {
-      icon: Clock,
-      title: "Hours",
-      detail: "Mon–Fri, 10am–6pm IST",
-      description: "We're online and ready to help"
     },
     {
       icon: MapPin,
       title: "Location",
-      detail: "India",
+      detail: "Mumbai, India",
       description: "Serving clients globally"
     }
   ];

@@ -86,10 +86,70 @@ const Blog = () => {
       date: "Nov 15, 2024",
       featured: false,
       color: "from-pink-500 to-pink-600"
+    },
+    {
+      icon: BookOpen,
+      title: "Building an AI-ready data strategy",
+      excerpt: "How to prepare your data infrastructure for AI implementation and ensure quality, security, and compliance.",
+      category: "Strategy",
+      readTime: "12 min read",
+      date: "Nov 10, 2024",
+      featured: false,
+      color: "from-indigo-500 to-indigo-600"
+    },
+    {
+      icon: TrendingUp,
+      title: "AI automation for customer service",
+      excerpt: "Transform your customer support with intelligent automation while maintaining the human touch your customers love.",
+      category: "Practical",
+      readTime: "8 min read",
+      date: "Nov 5, 2024",
+      featured: false,
+      color: "from-teal-500 to-teal-600"
+    },
+    {
+      icon: Shield,
+      title: "AI security best practices for businesses",
+      excerpt: "Essential security measures every company should implement when deploying AI solutions.",
+      category: "Security",
+      readTime: "11 min read",
+      date: "Oct 30, 2024",
+      featured: false,
+      color: "from-amber-500 to-amber-600"
+    },
+    {
+      icon: Lightbulb,
+      title: "The future of AI in marketing",
+      excerpt: "Explore emerging AI trends in marketing and how to stay ahead of the competition.",
+      category: "Trends",
+      readTime: "7 min read",
+      date: "Oct 25, 2024",
+      featured: false,
+      color: "from-rose-500 to-rose-600"
+    },
+    {
+      icon: BookOpen,
+      title: "AI implementation checklist",
+      excerpt: "A comprehensive checklist to ensure successful AI deployment in your organization.",
+      category: "Practical",
+      readTime: "6 min read",
+      date: "Oct 20, 2024",
+      featured: false,
+      color: "from-cyan-500 to-cyan-600"
+    },
+    {
+      icon: TrendingUp,
+      title: "Measuring AI project success",
+      excerpt: "Key metrics and KPIs to track the success of your AI initiatives and demonstrate ROI.",
+      category: "Analytics",
+      readTime: "9 min read",
+      date: "Oct 15, 2024",
+      featured: false,
+      color: "from-emerald-500 to-emerald-600"
     }
   ];
 
-  const categories = ["All", "Strategy", "Practical", "Ethics", "Analytics", "Beginner"];
+  const categories = ["All", "Strategy", "Practical", "Ethics", "Analytics", "Beginner", "Security", "Trends"];
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const filteredPosts = selectedCategory === "All" 
@@ -214,13 +274,13 @@ const Blog = () => {
                         <Calendar className="h-4 w-4 mr-1" />
                         {post.date}
                       </div>
-                      <Link
-                        to="#"
-                        className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors"
-                      >
-                        Read More
-                        <ArrowRight className="h-4 w-4 ml-1" />
-                      </Link>
+                                          <Link
+                      to={`/blog/${post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                      className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                    >
+                      Read More
+                      <ArrowRight className="h-4 w-4 ml-1" />
+                    </Link>
                     </div>
                   </div>
                 </article>
@@ -271,7 +331,7 @@ const Blog = () => {
                       {post.date}
                     </div>
                     <Link
-                      to="#"
+                      to={`/blog/${post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
                       className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
                     >
                       Read
