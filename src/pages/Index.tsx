@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Brain, Target, Zap, TrendingUp, CheckCircle, Star, Search, ClipboardList, Wrench } from 'lucide-react';
+import { ArrowRight, Brain, Target, Zap, TrendingUp, CheckCircle, Search, ClipboardList, Wrench } from 'lucide-react';
 
 const Index = () => {
   const heroRef = useRef<HTMLDivElement>(null);
