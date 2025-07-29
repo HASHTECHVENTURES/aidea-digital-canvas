@@ -166,16 +166,16 @@ const Blog = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-20 pb-20 lg:pt-32 lg:pb-32 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <section className="pt-20 pb-12 sm:pb-16 lg:pt-32 lg:pb-32 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 animate-fade-in">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 animate-fade-in leading-tight">
               AI Insights &{' '}
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Strategic Resources
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto animate-fade-in">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-4xl mx-auto animate-fade-in leading-relaxed px-4">
               Practical insights, proven strategies, and actionable advice for business leaders navigating AI
             </p>
           </div>
@@ -183,27 +183,27 @@ const Blog = () => {
       </section>
 
       {/* Newsletter Subscription */}
-      <section className="py-16 bg-white">
+      <section className="py-12 sm:py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="fade-in-on-scroll bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          <div className="fade-in-on-scroll bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-center text-white">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">
               Subscribe for bite-sized insights. Zero spam.
             </h2>
-            <p className="text-lg text-blue-100 mb-6">
+            <p className="text-sm sm:text-base md:text-lg text-blue-100 mb-4 sm:mb-6">
               Get weekly AI strategy tips delivered straight to your inbox
             </p>
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-lg mx-auto">
               <input
                 type="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 px-4 py-3 rounded-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
+                className="flex-1 px-4 py-3 rounded-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
                 required
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-white text-blue-600 font-semibold rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105"
+                className="px-4 sm:px-6 py-3 bg-white text-blue-600 font-semibold rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm sm:text-base"
               >
                 Subscribe
               </button>
@@ -213,14 +213,14 @@ const Blog = () => {
       </section>
 
       {/* Category Filter */}
-      <section className="py-8 bg-gray-50">
+      <section className="py-6 sm:py-8 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-4 fade-in-on-scroll">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4 fade-in-on-scroll">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
+                className={`px-3 sm:px-4 md:px-6 py-2 rounded-full font-medium transition-all duration-300 text-xs sm:text-sm md:text-base ${
                   selectedCategory === category
                     ? 'bg-blue-600 text-white shadow-lg'
                     : 'bg-white text-gray-600 hover:bg-gray-100 hover:text-blue-600'

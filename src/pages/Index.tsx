@@ -117,35 +117,35 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white overflow-hidden">
       {/* Hero Section */}
-      <section ref={heroRef} className="relative pt-16 pb-16 lg:pt-24 lg:pb-24">
+      <section ref={heroRef} className="relative pt-20 pb-12 sm:pt-24 sm:pb-16 lg:pt-32 lg:pb-24">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="text-center lg:text-left space-y-4 lg:space-y-6">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
+            <div className="text-center lg:text-left space-y-4 sm:space-y-5 lg:space-y-6 order-2 lg:order-1">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-900 animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out leading-tight">
                 Make AI Work for{' '}
                 <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-pulse">
                   Your Business
                 </span>
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto lg:mx-0 animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto lg:mx-0 animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200 leading-relaxed">
                 Strategy-first AI consulting for founders who want results, not just technology
               </p>
               <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400">
-                <Link to="/contact" className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-base sm:text-lg font-semibold rounded-full hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:rotate-1 transform">
+                <Link to="/contact" className="inline-flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm sm:text-base md:text-lg font-semibold rounded-full hover:shadow-2xl transition-all duration-500 hover:scale-105 transform w-full sm:w-auto justify-center">
                   Start Your Free AI Strategy Call
                   <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
               </div>
             </div>
-            <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600">
+            <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600 order-1 lg:order-2">
               <div className="relative group">
                 <img 
                   src="/lovable-uploads/f125d18d-2d29-4803-ac30-85d405119421.png" 
                   alt="AI Human Partnership" 
-                  className="w-full h-auto rounded-2xl shadow-2xl hover:scale-105 transition-all duration-700 hover:rotate-1" 
+                  className="w-full h-auto rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl hover:scale-105 transition-all duration-700 hover:rotate-1 max-w-md mx-auto lg:max-w-none" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
             </div>
           </div>
@@ -222,19 +222,19 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {valueProps.map((prop, index) => (
-              <div key={index} className="fade-in-on-scroll text-center p-4 sm:p-6 rounded-2xl hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:-translate-y-2 bg-gradient-to-br from-white to-gray-50 border border-gray-100 group h-full flex flex-col" style={{
+              <div key={index} className="fade-in-on-scroll text-center p-4 sm:p-6 rounded-xl sm:rounded-2xl hover:shadow-xl sm:hover:shadow-2xl transition-all duration-500 hover:scale-105 sm:hover:scale-110 hover:-translate-y-1 sm:hover:-translate-y-2 bg-gradient-to-br from-white to-gray-50 border border-gray-100 group h-full flex flex-col" style={{
                 animationDelay: `${index * 150}ms`
               }}>
-                <div className="mb-4 overflow-hidden rounded-lg flex-shrink-0">
-                  <img src={prop.image} alt={prop.title} className="w-full h-32 sm:h-36 object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="mb-3 sm:mb-4 overflow-hidden rounded-lg flex-shrink-0">
+                  <img src={prop.image} alt={prop.title} className="w-full h-28 sm:h-32 md:h-36 object-cover group-hover:scale-110 transition-transform duration-700" />
                 </div>
-                <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-3 sm:mb-4 group-hover:rotate-12 transition-transform duration-500 mx-auto flex-shrink-0">
-                  <prop.icon className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-2 sm:mb-3 md:mb-4 group-hover:rotate-12 transition-transform duration-500 mx-auto flex-shrink-0">
+                  <prop.icon className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">{prop.title}</h3>
-                <p className="text-sm sm:text-base text-gray-600 group-hover:text-gray-700 transition-colors duration-300 flex-grow">{prop.description}</p>
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">{prop.title}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-600 group-hover:text-gray-700 transition-colors duration-300 flex-grow leading-relaxed">{prop.description}</p>
               </div>
             ))}
           </div>
