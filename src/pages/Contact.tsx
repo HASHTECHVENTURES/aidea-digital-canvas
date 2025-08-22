@@ -1,7 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { Mail, Clock, MapPin, Phone, Send, CheckCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -36,7 +36,7 @@ const Contact = () => {
 
   const startupStages = [
     "Idea Stage",
-    "Early Stage (MVP)",
+    "Early Stage (MVP)", 
     "Growth Stage",
     "Established Company",
     "Enterprise"
@@ -63,22 +63,50 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setFormData({
-        name: '',
-        email: '',
-        startupStage: '',
-        challenge: '',
-        message: ''
-      });
-      
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            startup_stage: formData.startupStage,
+            challenge: formData.challenge,
+            message: formData.message || null
+          }
+        ]);
+
+      if (error) {
+        console.error('Error submitting form:', error);
+        toast({
+          title: "Error submitting form",
+          description: "Please try again later or contact us directly.",
+          variant: "destructive"
+        });
+      } else {
+        setFormData({
+          name: '',
+          email: '',
+          startupStage: '',
+          challenge: '',
+          message: ''
+        });
+        
+        toast({
+          title: "Message sent successfully!",
+          description: "We'll get back to you within 24 hours to schedule your free consultation.",
+        });
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
       toast({
-        title: "Message sent successfully!",
-        description: "We'll get back to you within 24 hours to schedule your free consultation.",
+        title: "Error submitting form",
+        description: "Please try again later or contact us directly.",
+        variant: "destructive"
       });
-    }, 1000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -90,7 +118,7 @@ const Contact = () => {
     },
     {
       icon: MapPin,
-      title: "Location",
+      title: "Location", 
       detail: "Mumbai, India",
       description: "Serving clients globally"
     }
