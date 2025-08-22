@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Brain, Target, Zap, TrendingUp, CheckCircle, Search, ClipboardList, Wrench } from 'lucide-react';
+import { useIsMobile } from '../hooks/use-mobile';
 
 const Index = () => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const observerOptions = {
@@ -22,16 +24,16 @@ const Index = () => {
     const elements = document.querySelectorAll('.fade-in-on-scroll');
     elements.forEach(el => observer.observe(el));
 
-    // Enhanced text animations
+    // Enhanced text animations with mobile optimization
     const textElements = document.querySelectorAll('.animate-text');
     textElements.forEach((el, index) => {
       setTimeout(() => {
         el.classList.add('opacity-100', 'translate-y-0');
-      }, index * 150);
+      }, isMobile ? index * 100 : index * 150); // Faster animations on mobile
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [isMobile]);
 
   const valueProps = [
     {
@@ -198,13 +200,13 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 pb-8">
             {strategicSteps.map((step, index) => (
               <div key={index} className="fade-in-on-scroll text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-3 lg:mb-4 group-hover:scale-110 transition-transform duration-300">
+                <div className="inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 lg:mb-6 group-hover:scale-110 transition-transform duration-300">
                   <step.icon className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
                 </div>
-                <div className="bg-white rounded-2xl p-4 lg:p-6 shadow-lg hover:shadow-xl transition-all duration-500 h-full flex flex-col">
-                  <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-2 lg:mb-3">{step.number}</div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 lg:mb-3">{step.title}</h3>
-                  <p className="text-gray-600 leading-relaxed flex-grow text-sm lg:text-base">{step.description}</p>
+                <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-500 h-full flex flex-col">
+                  <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-3 lg:mb-4">{step.number}</div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed flex-grow">{step.description}</p>
                 </div>
               </div>
             ))}

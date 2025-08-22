@@ -268,4 +268,51 @@ All colors MUST be HSL.
       transition-duration: 0.01ms !important;
     }
   }
+
+  /* Mobile-specific optimizations */
+  @media (max-width: 768px) {
+    /* Improve touch targets */
+    button, a, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* Optimize text for mobile reading */
+    p {
+      line-height: 1.6;
+    }
+    
+    /* Reduce animation complexity on mobile for better performance */
+    .fade-in-on-scroll {
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    
+    /* Improve mobile scrolling */
+    html {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Optimize images for mobile */
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  /* Tablet optimizations */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    /* Medium touch targets for tablets */
+    button, a, [role="button"] {
+      min-height: 40px;
+      min-width: 40px;
+    }
+  }
+
+  /* High DPI display optimizations */
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    img {
+      image-rendering: -webkit-optimize-contrast;
+    }
+  }
 }
