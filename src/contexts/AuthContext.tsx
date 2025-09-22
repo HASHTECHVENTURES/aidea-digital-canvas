@@ -7,7 +7,7 @@ interface SignUpData {
   password: string;
   full_name: string;
   phone_number: string;
-  gender: string;
+  company_name?: string;
 }
 
 interface AuthContextType {
@@ -69,7 +69,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         data: {
           full_name: signUpData.full_name,
           phone_number: signUpData.phone_number,
-          gender: signUpData.gender,
+          company_name: signUpData.company_name,
         }
       }
     });
