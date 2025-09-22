@@ -36,43 +36,47 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
   const adminSignIn = async (email: string, password: string) => {
     setLoading(true);
     try {
-      // Simple hardcoded admin credentials for reliability
-      const adminCredentials = [
-        { 
-          email: 'admin@aidea.digital', 
-          password: 'admin123', 
-          name: 'Admin User',
-          id: 'admin-1'
-        },
-        { 
-          email: 'thesujalpatel09@gmail.com', 
-          password: 'Hellosujal09@', 
-          name: 'Sujal Admin',
-          id: 'admin-2'
-        },
-        { 
-          email: 'htv@hashtechventures.com', 
-          password: 'admin123', 
-          name: 'HTV Admin',
-          id: 'admin-3'
+      console.log('Attempting admin login for:', email);
+      
+      // Check if admin exists in the database
+      const { data, error } = await supabase
+        .from('admins')
+        .select('*')
+        .eq('email', email)
+        .eq('is_active', true)
+        .single();
+
+      console.log('Admin query result:', { data, error });
+
+      if (error) {
+        console.error('Database error:', error);
+        if (error.code === 'PGRST116') {
+          throw new Error('Admin not found');
         }
-      ];
-
-      const validAdmin = adminCredentials.find(
-        admin => admin.email === email && admin.password === password
-      );
-
-      if (validAdmin) {
-        setAdmin({
-          id: validAdmin.id,
-          email: validAdmin.email,
-          name: validAdmin.name,
-          is_active: true
-        });
-      } else {
-        throw new Error('Invalid admin credentials');
+        throw new Error('Database connection error: ' + error.message);
       }
+
+      if (!data) {
+        throw new Error('Admin not found or inactive');
+      }
+
+      // Check password (handle both plain text and hashed passwords)
+      const storedPassword = data.password_hash;
+      const isPasswordValid = storedPassword === password;
+
+      if (!isPasswordValid) {
+        throw new Error('Invalid password');
+      }
+
+      console.log('Admin login successful');
+      setAdmin({
+        id: data.id,
+        email: data.email,
+        name: data.name,
+        is_active: data.is_active
+      });
     } catch (error: any) {
+      console.error('Admin login error:', error);
       throw new Error(error.message || 'Login failed');
     } finally {
       setLoading(false);
