@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, User } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const Contact = () => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -11,6 +13,20 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [isAutoFilled, setIsAutoFilled] = useState(false);
+
+  // Auto-fill form when user is logged in
+  useEffect(() => {
+    if (user && !isAutoFilled) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.user_metadata?.full_name || '',
+        email: user.email || '',
+        company: user.user_metadata?.company_name || ''
+      }));
+      setIsAutoFilled(true);
+    }
+  }, [user, isAutoFilled]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -33,13 +49,24 @@ const Contact = () => {
       console.log('Form submitted:', formData);
       
       setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        company: '',
-        subject: '',
-        message: ''
-      });
+      // Reset form but keep user data if logged in
+      if (user) {
+        setFormData({
+          name: user.user_metadata?.full_name || '',
+          email: user.email || '',
+          company: user.user_metadata?.company_name || '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          subject: '',
+          message: ''
+        });
+      }
     } catch (error) {
       console.error('Form submission error:', error);
       setSubmitStatus('error');
@@ -63,7 +90,7 @@ const Contact = () => {
     },
     {
       icon: MapPin,
-      title: "Location",
+      title: "Location", 
       detail: "Mumbai, India",
       description: "Visit our office"
     }
@@ -149,6 +176,21 @@ const Contact = () => {
                 Send us a Message
               </h3>
 
+              {/* User Status Indicator */}
+              {user && (
+                <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center space-x-3">
+                  <User className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                  <div>
+                    <p className="text-blue-800 text-sm font-medium">
+                      Welcome back, {user.user_metadata?.full_name || user.email?.split('@')[0]}!
+                    </p>
+                    <p className="text-blue-600 text-xs">
+                      Your information has been pre-filled for convenience.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {submitStatus === 'success' && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
@@ -169,63 +211,63 @@ const Contact = () => {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                       Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Enter your full name"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                       Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="your@email.com"
-                    />
+                        placeholder="your@email.com"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div>
+                  <div>
                   <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
                     Company Name
-                  </label>
+                    </label>
                   <input
                     type="text"
                     id="company"
                     name="company"
                     value={formData.company}
-                    onChange={handleInputChange}
+                      onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter your company name"
                   />
-                </div>
+                  </div>
 
-                <div>
+                  <div>
                   <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
                     Subject *
-                  </label>
-                  <select
+                    </label>
+                    <select
                     id="subject"
                     name="subject"
                     value={formData.subject}
-                    onChange={handleInputChange}
-                    required
+                      onChange={handleInputChange}
+                      required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">Select a subject</option>
@@ -233,32 +275,62 @@ const Contact = () => {
                       <option key={subject} value={subject}>
                         {subject}
                       </option>
-                    ))}
-                  </select>
-                </div>
+                      ))}
+                    </select>
+                  </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
                     Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
                     required
                     rows={5}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                     placeholder="Tell us about your project or inquiry..."
-                  />
+                    />
                 </div>
+
+                {/* Quick Contact Options for Logged-in Users */}
+                {user && (
+                  <div className="mb-4">
+                    <p className="text-sm text-gray-600 mb-3">Quick Contact Options:</p>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, subject: 'AI Consulting Services', message: 'Hi! I\'m interested in learning more about your AI consulting services. Could you please provide more information?' }))}
+                        className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full hover:bg-blue-200 transition-colors"
+                      >
+                        AI Consulting
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, subject: 'Partnership Opportunities', message: 'Hi! I\'d like to explore potential partnership opportunities with AIdea Digital.' }))}
+                        className="px-3 py-1 bg-purple-100 text-purple-700 text-xs rounded-full hover:bg-purple-200 transition-colors"
+                      >
+                        Partnership
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, subject: 'General Inquiry', message: 'Hi! I have a general question about your services.' }))}
+                        className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full hover:bg-green-200 transition-colors"
+                      >
+                        General Question
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                    disabled={isSubmitting}
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
+                  >
+                    {isSubmitting ? (
                     <div className="flex items-center justify-center">
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                       Sending Message...

@@ -276,8 +276,8 @@ const Community = () => {
             </p>
             
             {user && (
-              <div className="inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-full font-medium">
-                <User className="h-5 w-5 mr-2" />
+                <div className="inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-full font-medium">
+                  <User className="h-5 w-5 mr-2" />
                 Welcome back, {user.user_metadata?.full_name || user.email?.split('@')[0]}!
               </div>
             )}
@@ -519,7 +519,7 @@ const Community = () => {
                 Access exclusive resources and join upcoming events
               </p>
             </div>
-
+            
             {/* Dashboard Cards */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
               {/* Resources Card */}
@@ -641,8 +641,8 @@ const Community = () => {
                             <MapPin className="h-4 w-4 mr-1" />
                             {event.location}
                           </div>
-                        </div>
-                      ))}
+                </div>
+              ))}
                       <button className="w-full mt-4 bg-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors">
                         View All Events
                       </button>
@@ -678,8 +678,8 @@ const Community = () => {
               >
                 <X className="h-6 w-6" />
               </button>
-            </div>
-            
+          </div>
+          
             {/* PDF Viewer */}
             <div className="flex-1 p-4">
               <iframe
@@ -687,8 +687,8 @@ const Community = () => {
                 className="w-full h-full min-h-[500px] border-0 rounded"
                 title={previewPdf.title}
               />
-            </div>
-            
+                  </div>
+                  
             {/* Modal Footer */}
             <div className="flex items-center justify-between p-4 border-t border-gray-200">
               <div className="text-sm text-gray-500">
@@ -708,13 +708,13 @@ const Community = () => {
                   }}
                   className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                 >
-                  Download
-                </button>
-              </div>
-            </div>
+                          Download
+                    </button>
+                  </div>
+                </div>
           </div>
-        </div>
-      )}
+            </div>
+          )}
     </div>
   );
 };
