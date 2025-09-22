@@ -135,8 +135,16 @@ const Community = () => {
       }
 
       console.log('Setting events and resources:', { events: eventsData, resources: resourcesData });
+      console.log('Events data length:', eventsData?.length);
+      console.log('Resources data length:', resourcesData?.length);
+      
       setEvents(eventsData || []);
       setResources(resourcesData || []);
+      
+      // Force a re-render by logging the state after setting
+      setTimeout(() => {
+        console.log('State after setting - Events:', events.length, 'Resources:', resources.length);
+      }, 100);
     } catch (error: any) {
       console.error('Error fetching community data:', error);
       setDataError(error.message || 'Failed to load community data');
@@ -152,6 +160,15 @@ const Community = () => {
       fetchCommunityData();
     }
   }, [user]);
+
+  // Debug: Log when events or resources state changes
+  useEffect(() => {
+    console.log('Events state changed:', events.length, events);
+  }, [events]);
+
+  useEffect(() => {
+    console.log('Resources state changed:', resources.length, resources);
+  }, [resources]);
 
   useEffect(() => {
     const observerOptions = {
@@ -568,11 +585,11 @@ const Community = () => {
                     Register Now
                   </button>
                 </div>
-                      </div>
+              </div>
                     </div>
                   );
                 })}
-              </div>
+          </div>
             )}
         </div>
       </section>
