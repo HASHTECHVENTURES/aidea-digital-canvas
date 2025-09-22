@@ -520,13 +520,30 @@ const Community = () => {
                             <div>
                               <h4 className="font-medium text-gray-900">{resource.title}</h4>
                               <p className="text-sm text-gray-600">{resource.resource_type}</p>
+                              {resource.description && (
+                                <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                                  {resource.description}
+                                </p>
+                              )}
                             </div>
                           </div>
-                          {resource.is_premium && (
-                            <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
-                              Premium
-                            </span>
-                          )}
+                          <div className="flex items-center space-x-2">
+                            {resource.is_premium && (
+                              <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                                Premium
+                              </span>
+                            )}
+                            {resource.file_url && (
+                              <a
+                                href={resource.file_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition-colors"
+                              >
+                                Download
+                              </a>
+                            )}
+                          </div>
                         </div>
                       ))}
                       <button className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors">

@@ -114,6 +114,10 @@ const Admin = () => {
     is_premium: false,
     tags: ''
   });
+  
+  // File upload state
+  const [uploadingFile, setUploadingFile] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   // Check if admin is already logged in
   useEffect(() => {
@@ -308,6 +312,33 @@ const Admin = () => {
     }
   };
 
+  const handleFileUpload = async (file: File) => {
+    setUploadingFile(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `resources/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('community-files')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('community-files')
+        .getPublicUrl(filePath);
+
+      setResourceForm(prev => ({ ...prev, file_url: data.publicUrl }));
+      setUploadedFile(file);
+      alert('File uploaded successfully!');
+    } catch (error: any) {
+      alert(`Upload failed: ${error.message}`);
+    } finally {
+      setUploadingFile(false);
+    }
+  };
+
   const handleAddResource = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -336,6 +367,7 @@ const Admin = () => {
         is_premium: false,
         tags: ''
       });
+      setUploadedFile(null);
       fetchAllData();
     } catch (error: any) {
       alert(error.message);
@@ -1130,14 +1162,54 @@ const Admin = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      File URL
+                      Upload PDF File
                     </label>
-                    <input
-                      type="url"
-                      value={resourceForm.file_url}
-                      onChange={(e) => setResourceForm({...resourceForm, file_url: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            handleFileUpload(file);
+                          }
+                        }}
+                        className="hidden"
+                        id="file-upload"
+                      />
+                      <label
+                        htmlFor="file-upload"
+                        className="cursor-pointer flex flex-col items-center"
+                      >
+                        {uploadingFile ? (
+                          <div className="flex items-center">
+                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mr-2"></div>
+                            <span className="text-gray-600">Uploading...</span>
+                          </div>
+                        ) : uploadedFile ? (
+                          <div className="text-green-600">
+                            <svg className="h-8 w-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p className="text-sm font-medium">{uploadedFile.name}</p>
+                            <p className="text-xs text-gray-500">Click to change file</p>
+                          </div>
+                        ) : (
+                          <div className="text-gray-400">
+                            <svg className="h-8 w-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <p className="text-sm font-medium">Click to upload PDF</p>
+                            <p className="text-xs">or drag and drop</p>
+                          </div>
+                        )}
+                      </label>
+                    </div>
+                    {resourceForm.file_url && (
+                      <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-sm text-green-700">
+                        File URL: {resourceForm.file_url}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
