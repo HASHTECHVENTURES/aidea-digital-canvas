@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Calendar, User, ArrowRight, BookOpen, TrendingUp, Shield, Lightbulb } from 'lucide-react';
 
 const Blog = () => {
-  const [email, setEmail] = useState('');
 
   useEffect(() => {
     const observerOptions = {
@@ -156,12 +155,7 @@ const Blog = () => {
     ? blogPosts 
     : blogPosts.filter(post => post.category === selectedCategory);
 
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle subscription logic here
-    console.log('Subscribing email:', email);
-    setEmail('');
-  };
+
 
   return (
     <div className="min-h-screen bg-white">
@@ -182,35 +176,7 @@ const Blog = () => {
         </div>
       </section>
 
-      {/* Newsletter Subscription */}
-      <section className="py-12 sm:py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="fade-in-on-scroll bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-center text-white">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">
-              Subscribe for bite-sized insights. Zero spam.
-            </h2>
-            <p className="text-sm sm:text-base md:text-lg text-blue-100 mb-4 sm:mb-6">
-              Get weekly AI strategy tips delivered straight to your inbox
-            </p>
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-lg mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 px-4 py-3 rounded-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
-                required
-              />
-              <button
-                type="submit"
-                className="px-4 sm:px-6 py-3 bg-white text-blue-600 font-semibold rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105 text-sm sm:text-base"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
+
 
       {/* Category Filter */}
       <section className="py-6 sm:py-8 bg-gray-50">
