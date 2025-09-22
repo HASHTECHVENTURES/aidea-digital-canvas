@@ -571,7 +571,7 @@ const Admin = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="admin@aidea.digital"
+                placeholder="Enter admin email"
               />
             </div>
 
@@ -609,15 +609,6 @@ const Admin = () => {
             </button>
           </form>
 
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-900 mb-2">Admin Access:</h3>
-            <div className="text-sm text-gray-700 space-y-1">
-              <div>Use your configured admin credentials</div>
-              <div className="text-xs text-gray-600 mt-2">
-                Contact system administrator for access
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     );
