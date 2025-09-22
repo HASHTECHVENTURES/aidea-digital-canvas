@@ -108,7 +108,7 @@ const Community = () => {
           }
         });
         if (error) throw error;
-        alert('Account created successfully! Please check your email to confirm your account.');
+        alert('Account created successfully! You are now signed in.');
       }
     } catch (error: any) {
       alert(error.message);
