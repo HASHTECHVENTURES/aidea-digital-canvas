@@ -135,6 +135,8 @@ const Admin = () => {
     setLoginLoading(true);
 
     try {
+      console.log('Admin login attempt for:', email);
+      
       // Query the admins table for authentication
       const { data, error } = await supabase
         .from('admins')
@@ -144,13 +146,36 @@ const Admin = () => {
         .single();
 
       if (error || !data) {
+        console.error('Admin not found or inactive:', error);
         throw new Error('Invalid admin credentials');
       }
 
-      // Simple password comparison (in production, use proper hashing)
-      if (data.password_hash !== password) {
+      console.log('Admin found:', data.email, data.name);
+
+      // Check if we have the secure password verification function
+      const { data: verifyResult, error: verifyError } = await supabase
+        .rpc('verify_password', { 
+          password: password, 
+          hash: data.password_hash 
+        });
+
+      let passwordValid = false;
+
+      if (verifyError) {
+        console.log('Secure verification not available, using simple comparison');
+        // Fallback to simple comparison if secure function not available
+        passwordValid = (data.password_hash === password);
+      } else {
+        console.log('Using secure password verification');
+        passwordValid = verifyResult;
+      }
+
+      if (!passwordValid) {
+        console.error('Invalid password for admin:', email);
         throw new Error('Invalid admin credentials');
       }
+
+      console.log('Admin login successful:', data.email);
 
       // Store admin data
       const adminData = {
@@ -171,8 +196,10 @@ const Admin = () => {
         .update({ last_login: new Date().toISOString() })
         .eq('id', data.id);
 
+      console.log('Admin session established, fetching data...');
       fetchAllData();
     } catch (error: any) {
+      console.error('Admin login error:', error);
       alert(error.message);
     } finally {
       setLoginLoading(false);
@@ -582,12 +609,13 @@ const Admin = () => {
             </button>
           </form>
 
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <h3 className="font-medium text-blue-900 mb-2">Test Admin Accounts:</h3>
-            <div className="text-sm text-blue-800 space-y-1">
-              <div>Email: admin@aidea.digital</div>
-              <div>Password: admin123</div>
-              <div className="text-xs text-blue-600 mt-2">Role: Super Admin</div>
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium text-gray-900 mb-2">Admin Access:</h3>
+            <div className="text-sm text-gray-700 space-y-1">
+              <div>Use your configured admin credentials</div>
+              <div className="text-xs text-gray-600 mt-2">
+                Contact system administrator for access
+              </div>
             </div>
           </div>
         </div>
