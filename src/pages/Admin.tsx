@@ -358,48 +358,68 @@ const Admin = () => {
   };
 
   const deleteEvent = async (eventId: string) => {
-    if (!confirm('Are you sure you want to delete this event?')) return;
+    console.log('Delete event clicked for ID:', eventId);
+    
+    if (!confirm('Are you sure you want to delete this event?')) {
+      console.log('Delete cancelled by user');
+      return;
+    }
     
     try {
-      console.log('Deleting event:', eventId);
-      const { error } = await supabase
+      console.log('Starting delete operation for event:', eventId);
+      
+      const { data, error } = await supabase
         .from('community_events')
         .delete()
-        .eq('id', eventId);
+        .eq('id', eventId)
+        .select();
+
+      console.log('Delete response:', { data, error });
 
       if (error) {
-        console.error('Error deleting event:', error);
+        console.error('Supabase delete error:', error);
         throw error;
       }
       
-      console.log('Event deleted successfully');
+      console.log('Event deleted successfully, refreshing data...');
+      alert('Event deleted successfully!');
       await fetchAllData();
     } catch (error: any) {
       console.error('Error in deleteEvent:', error);
-      alert(`Error deleting event: ${error.message}`);
+      alert(`Error deleting event: ${error.message || error}`);
     }
   };
 
   const deleteResource = async (resourceId: string) => {
-    if (!confirm('Are you sure you want to delete this resource?')) return;
+    console.log('Delete resource clicked for ID:', resourceId);
+    
+    if (!confirm('Are you sure you want to delete this resource?')) {
+      console.log('Delete cancelled by user');
+      return;
+    }
     
     try {
-      console.log('Deleting resource:', resourceId);
-      const { error } = await supabase
+      console.log('Starting delete operation for resource:', resourceId);
+      
+      const { data, error } = await supabase
         .from('community_resources')
         .delete()
-        .eq('id', resourceId);
+        .eq('id', resourceId)
+        .select();
+
+      console.log('Delete response:', { data, error });
 
       if (error) {
-        console.error('Error deleting resource:', error);
+        console.error('Supabase delete error:', error);
         throw error;
       }
       
-      console.log('Resource deleted successfully');
+      console.log('Resource deleted successfully, refreshing data...');
+      alert('Resource deleted successfully!');
       await fetchAllData();
     } catch (error: any) {
       console.error('Error in deleteResource:', error);
-      alert(`Error deleting resource: ${error.message}`);
+      alert(`Error deleting resource: ${error.message || error}`);
     }
   };
 
@@ -715,9 +735,11 @@ const Admin = () => {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
+                            console.log('Delete button clicked for event:', event.id, event.title);
                             deleteEvent(event.id);
                           }}
                           className="px-3 py-1 text-xs font-medium rounded bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                          title="Delete Event"
                         >
                           <Trash2 className="h-3 w-3" />
                         </button>
@@ -790,9 +812,11 @@ const Admin = () => {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
+                            console.log('Delete button clicked for resource:', resource.id, resource.title);
                             deleteResource(resource.id);
                           }}
                           className="px-3 py-1 text-xs font-medium rounded bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                          title="Delete Resource"
                         >
                           <Trash2 className="h-3 w-3" />
                         </button>
