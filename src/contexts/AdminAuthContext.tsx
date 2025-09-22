@@ -36,8 +36,6 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
   const adminSignIn = async (email: string, password: string) => {
     setLoading(true);
     try {
-      console.log('Attempting admin login for:', email);
-      
       // Check if admin exists in the database
       const { data, error } = await supabase
         .from('admins')
@@ -46,14 +44,11 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
         .eq('is_active', true)
         .single();
 
-      console.log('Admin query result:', { data, error });
-
       if (error) {
-        console.error('Database error:', error);
         if (error.code === 'PGRST116') {
-          throw new Error('Admin not found');
+          throw new Error('Invalid admin credentials');
         }
-        throw new Error('Database connection error: ' + error.message);
+        throw new Error('Database connection error');
       }
 
       if (!data) {
@@ -68,7 +63,6 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
         throw new Error('Invalid password');
       }
 
-      console.log('Admin login successful');
       setAdmin({
         id: data.id,
         email: data.email,
@@ -76,7 +70,6 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
         is_active: data.is_active
       });
     } catch (error: any) {
-      console.error('Admin login error:', error);
       throw new Error(error.message || 'Login failed');
     } finally {
       setLoading(false);

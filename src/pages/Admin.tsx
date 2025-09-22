@@ -86,13 +86,11 @@ const Admin = () => {
           .order('created_at', { ascending: false });
         
         if (usersError) {
-          console.error('Users fetch error:', usersError);
           setUsers([]);
         } else {
           setUsers(usersData || []);
         }
       } catch (error) {
-        console.error('Users fetch failed:', error);
         setUsers([]);
       }
 
@@ -104,13 +102,11 @@ const Admin = () => {
           .order('event_date', { ascending: true });
         
         if (eventsError) {
-          console.error('Events fetch error:', eventsError);
           setEvents([]);
         } else {
           setEvents(eventsData || []);
         }
       } catch (error) {
-        console.error('Events fetch failed:', error);
         setEvents([]);
       }
 
@@ -122,17 +118,15 @@ const Admin = () => {
           .order('created_at', { ascending: false });
         
         if (resourcesError) {
-          console.error('Resources fetch error:', resourcesError);
           setResources([]);
         } else {
           setResources(resourcesData || []);
         }
       } catch (error) {
-        console.error('Resources fetch failed:', error);
         setResources([]);
       }
     } catch (error) {
-      console.error('General fetch error:', error);
+      // Silent error handling
     } finally {
       setLoading(false);
     }
@@ -144,7 +138,7 @@ const Admin = () => {
         await supabase.from('community_events').delete().eq('id', id);
         fetchData();
       } catch (error) {
-        console.error('Error deleting event:', error);
+        alert('Error deleting event. Please try again.');
       }
     }
   };
@@ -155,7 +149,7 @@ const Admin = () => {
         await supabase.from('community_resources').delete().eq('id', id);
         fetchData();
       } catch (error) {
-        console.error('Error deleting resource:', error);
+        alert('Error deleting resource. Please try again.');
       }
     }
   };
@@ -168,7 +162,7 @@ const Admin = () => {
         .eq('id', id);
       fetchData();
     } catch (error) {
-      console.error('Error updating event status:', error);
+      alert('Error updating event status. Please try again.');
     }
   };
 
@@ -180,7 +174,7 @@ const Admin = () => {
         .eq('id', id);
       fetchData();
     } catch (error) {
-      console.error('Error updating resource status:', error);
+      alert('Error updating resource status. Please try again.');
     }
   };
 
@@ -283,12 +277,6 @@ const Admin = () => {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">Welcome, {admin.name}</span>
-              <button
-                onClick={fetchData}
-                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              >
-                Refresh Data
-              </button>
               {(activeTab === 'events' || activeTab === 'resources') && (
                 <button
                   onClick={() => {

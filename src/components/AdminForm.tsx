@@ -56,7 +56,6 @@ const AdminForm = ({ type, onClose, onSuccess }: AdminFormProps) => {
       onSuccess();
       onClose();
     } catch (error) {
-      console.error('Error creating event:', error);
       alert('Error creating event. Please try again.');
     } finally {
       setLoading(false);
@@ -84,7 +83,6 @@ const AdminForm = ({ type, onClose, onSuccess }: AdminFormProps) => {
       onSuccess();
       onClose();
     } catch (error) {
-      console.error('Error creating resource:', error);
       alert('Error creating resource. Please try again.');
     } finally {
       setLoading(false);
