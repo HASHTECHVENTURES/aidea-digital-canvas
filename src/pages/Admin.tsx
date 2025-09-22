@@ -191,13 +191,18 @@ const Admin = () => {
   const fetchAllData = async () => {
     setDataLoading(true);
     try {
+      console.log('Fetching all data...');
+      
       // Fetch users
       const { data: usersData, error: usersError } = await supabase
         .from('user_profiles')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (usersError) throw usersError;
+      if (usersError) {
+        console.error('Error fetching users:', usersError);
+        throw usersError;
+      }
 
       // Fetch events
       const { data: eventsData, error: eventsError } = await supabase
@@ -205,7 +210,10 @@ const Admin = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (eventsError) throw eventsError;
+      if (eventsError) {
+        console.error('Error fetching events:', eventsError);
+        throw eventsError;
+      }
 
       // Fetch resources
       const { data: resourcesData, error: resourcesError } = await supabase
@@ -213,14 +221,23 @@ const Admin = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (resourcesError) throw resourcesError;
+      if (resourcesError) {
+        console.error('Error fetching resources:', resourcesError);
+        throw resourcesError;
+      }
+
+      console.log('Data fetched successfully:', {
+        users: usersData?.length || 0,
+        events: eventsData?.length || 0,
+        resources: resourcesData?.length || 0
+      });
 
       setUsers(usersData || []);
       setEvents(eventsData || []);
       setResources(resourcesData || []);
     } catch (error) {
       console.error('Error fetching data:', error);
-      alert('Error fetching data');
+      alert(`Error fetching data: ${error}`);
     } finally {
       setDataLoading(false);
     }
@@ -300,29 +317,43 @@ const Admin = () => {
 
   const toggleEventStatus = async (eventId: string, currentStatus: boolean) => {
     try {
+      console.log('Toggling event status:', eventId, currentStatus);
       const { error } = await supabase
         .from('community_events')
         .update({ is_active: !currentStatus })
         .eq('id', eventId);
 
-      if (error) throw error;
-      fetchAllData();
+      if (error) {
+        console.error('Error updating event:', error);
+        throw error;
+      }
+      
+      console.log('Event status updated successfully');
+      await fetchAllData();
     } catch (error: any) {
-      alert(error.message);
+      console.error('Error in toggleEventStatus:', error);
+      alert(`Error updating event: ${error.message}`);
     }
   };
 
   const toggleResourceStatus = async (resourceId: string, currentStatus: boolean) => {
     try {
+      console.log('Toggling resource status:', resourceId, currentStatus);
       const { error } = await supabase
         .from('community_resources')
         .update({ is_active: !currentStatus })
         .eq('id', resourceId);
 
-      if (error) throw error;
-      fetchAllData();
+      if (error) {
+        console.error('Error updating resource:', error);
+        throw error;
+      }
+      
+      console.log('Resource status updated successfully');
+      await fetchAllData();
     } catch (error: any) {
-      alert(error.message);
+      console.error('Error in toggleResourceStatus:', error);
+      alert(`Error updating resource: ${error.message}`);
     }
   };
 
@@ -330,15 +361,22 @@ const Admin = () => {
     if (!confirm('Are you sure you want to delete this event?')) return;
     
     try {
+      console.log('Deleting event:', eventId);
       const { error } = await supabase
         .from('community_events')
         .delete()
         .eq('id', eventId);
 
-      if (error) throw error;
-      fetchAllData();
+      if (error) {
+        console.error('Error deleting event:', error);
+        throw error;
+      }
+      
+      console.log('Event deleted successfully');
+      await fetchAllData();
     } catch (error: any) {
-      alert(error.message);
+      console.error('Error in deleteEvent:', error);
+      alert(`Error deleting event: ${error.message}`);
     }
   };
 
@@ -346,15 +384,22 @@ const Admin = () => {
     if (!confirm('Are you sure you want to delete this resource?')) return;
     
     try {
+      console.log('Deleting resource:', resourceId);
       const { error } = await supabase
         .from('community_resources')
         .delete()
         .eq('id', resourceId);
 
-      if (error) throw error;
-      fetchAllData();
+      if (error) {
+        console.error('Error deleting resource:', error);
+        throw error;
+      }
+      
+      console.log('Resource deleted successfully');
+      await fetchAllData();
     } catch (error: any) {
-      alert(error.message);
+      console.error('Error in deleteResource:', error);
+      alert(`Error deleting resource: ${error.message}`);
     }
   };
 
@@ -653,8 +698,12 @@ const Admin = () => {
                       </div>
                       <div className="flex space-x-2 ml-4">
                         <button
-                          onClick={() => toggleEventStatus(event.id, event.is_active)}
-                          className={`px-3 py-1 text-xs font-medium rounded ${
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleEventStatus(event.id, event.is_active);
+                          }}
+                          className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
                             event.is_active
                               ? 'bg-red-100 text-red-700 hover:bg-red-200'
                               : 'bg-green-100 text-green-700 hover:bg-green-200'
@@ -663,8 +712,12 @@ const Admin = () => {
                           {event.is_active ? 'Deactivate' : 'Activate'}
                         </button>
                         <button
-                          onClick={() => deleteEvent(event.id)}
-                          className="px-3 py-1 text-xs font-medium rounded bg-red-100 text-red-700 hover:bg-red-200"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            deleteEvent(event.id);
+                          }}
+                          className="px-3 py-1 text-xs font-medium rounded bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
                         >
                           <Trash2 className="h-3 w-3" />
                         </button>
@@ -720,8 +773,12 @@ const Admin = () => {
                       </div>
                       <div className="flex space-x-2 ml-4">
                         <button
-                          onClick={() => toggleResourceStatus(resource.id, resource.is_active)}
-                          className={`px-3 py-1 text-xs font-medium rounded ${
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleResourceStatus(resource.id, resource.is_active);
+                          }}
+                          className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
                             resource.is_active
                               ? 'bg-red-100 text-red-700 hover:bg-red-200'
                               : 'bg-green-100 text-green-700 hover:bg-green-200'
@@ -730,8 +787,12 @@ const Admin = () => {
                           {resource.is_active ? 'Deactivate' : 'Activate'}
                         </button>
                         <button
-                          onClick={() => deleteResource(resource.id)}
-                          className="px-3 py-1 text-xs font-medium rounded bg-red-100 text-red-700 hover:bg-red-200"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            deleteResource(resource.id);
+                          }}
+                          className="px-3 py-1 text-xs font-medium rounded bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
                         >
                           <Trash2 className="h-3 w-3" />
                         </button>
