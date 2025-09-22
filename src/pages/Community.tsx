@@ -94,18 +94,25 @@ const Community = () => {
 
   // Fetch community data
   const fetchCommunityData = async () => {
-    if (!user) return; // Only fetch data for authenticated users
+    if (!user) {
+      console.log('No user, skipping data fetch');
+      return; // Only fetch data for authenticated users
+    }
     
+    console.log('Starting to fetch community data for user:', user.email);
     setDataLoading(true);
     setDataError(null);
     
     try {
       // Fetch events
+      console.log('Fetching events...');
       const { data: eventsData, error: eventsError } = await supabase
         .from('community_events')
         .select('*')
         .eq('is_active', true)
         .order('event_date', { ascending: true });
+
+      console.log('Events fetch result:', { eventsData, eventsError });
 
       if (eventsError) {
         console.error('Error fetching events:', eventsError);
@@ -113,23 +120,28 @@ const Community = () => {
       }
 
       // Fetch resources
+      console.log('Fetching resources...');
       const { data: resourcesData, error: resourcesError } = await supabase
         .from('community_resources')
         .select('*')
         .eq('is_active', true)
         .order('created_at', { ascending: false });
 
+      console.log('Resources fetch result:', { resourcesData, resourcesError });
+
       if (resourcesError) {
         console.error('Error fetching resources:', resourcesError);
         throw new Error('Failed to load resources');
       }
 
+      console.log('Setting events and resources:', { events: eventsData, resources: resourcesData });
       setEvents(eventsData || []);
       setResources(resourcesData || []);
     } catch (error: any) {
       console.error('Error fetching community data:', error);
       setDataError(error.message || 'Failed to load community data');
     } finally {
+      console.log('Data fetch complete, setting loading to false');
       setDataLoading(false);
     }
   };
@@ -438,7 +450,7 @@ const Community = () => {
                 Welcome to the Community
               </h2>
               {dataLoading ? (
-                <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
                   Loading your community content...
                 </p>
               ) : dataError ? (
@@ -450,11 +462,18 @@ const Community = () => {
                   >
                     Try Again
                   </button>
-                </div>
+            </div>
               ) : (
-                <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-                  Access exclusive resources, attend community events, and connect with AI-forward professionals.
-                </p>
+                <div className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+                  <p className="mb-4">Access exclusive resources, attend community events, and connect with AI-forward professionals.</p>
+                  <div className="text-sm text-gray-500 bg-gray-100 p-3 rounded">
+                    <strong>Debug Info:</strong><br/>
+                    Loading: {dataLoading ? 'Yes' : 'No'}<br/>
+                    Events: {events.length}<br/>
+                    Resources: {resources.length}<br/>
+                    Error: {dataError || 'None'}
+                  </div>
+                </div>
               )}
             </div>
 
@@ -472,17 +491,17 @@ const Community = () => {
 
       {/* Upcoming Events Section - Only for authenticated users */}
       {user && (
-        <section className="py-16 lg:py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 lg:mb-16 fade-in-on-scroll">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Upcoming Events
-              </h2>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+      <section className="py-16 lg:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 lg:mb-16 fade-in-on-scroll">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Upcoming Events
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
                 Join our community events and connect with AI professionals
-              </p>
-            </div>
-            
+            </p>
+          </div>
+          
             {dataLoading ? (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -495,50 +514,50 @@ const Community = () => {
                 <p className="text-gray-500">Check back soon for upcoming community events</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {events.map((event, index) => {
                   const EventIcon = getEventIcon(event.event_type);
                   return (
                     <div key={event.id} className={`fade-in-on-scroll bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-gray-100 overflow-hidden ${event.is_featured ? 'lg:col-span-2' : ''}`}>
-                      <div className="p-6">
-                        <div className="flex items-start justify-between mb-4">
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-4">
                           <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full">
                             <EventIcon className="h-6 w-6 text-white" />
-                          </div>
+                    </div>
                           {event.is_featured && (
-                            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
-                              Featured Event
-                            </span>
-                          )}
-                        </div>
-                        
-                        <div className="mb-4">
+                      <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
+                        Featured Event
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="mb-4">
                           <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium capitalize">
                             {event.event_type.replace('-', ' ')}
-                          </span>
-                        </div>
-                        
-                        <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-                          {event.title}
-                        </h3>
-                        
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center text-sm text-gray-600">
-                            <Calendar className="h-4 w-4 mr-2" />
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+                    {event.title}
+                  </h3>
+                  
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Calendar className="h-4 w-4 mr-2" />
                             {formatEventDate(event.event_date)}
-                          </div>
-                          <div className="flex items-center text-sm text-gray-600">
-                            <Clock className="h-4 w-4 mr-2" />
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Clock className="h-4 w-4 mr-2" />
                             {event.event_time}
-                          </div>
-                          <div className="flex items-center text-sm text-gray-600">
-                            <MapPin className="h-4 w-4 mr-2" />
-                            {event.location}
-                          </div>
-                        </div>
-                        
-                        <p className="text-gray-600 mb-4 line-clamp-3">{event.description}</p>
-                        
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <MapPin className="h-4 w-4 mr-2" />
+                      {event.location}
+                    </div>
+                  </div>
+                  
+                  <p className="text-gray-600 mb-4 line-clamp-3">{event.description}</p>
+                  
                         <div className="flex items-center justify-between">
                           {event.max_attendees && (
                             <div className="text-xs text-gray-500">
@@ -546,32 +565,32 @@ const Community = () => {
                             </div>
                           )}
                           <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all duration-300">
-                            Register Now
-                          </button>
-                        </div>
+                    Register Now
+                  </button>
+                </div>
                       </div>
                     </div>
                   );
                 })}
               </div>
             )}
-          </div>
-        </section>
+        </div>
+      </section>
       )}
 
       {/* Community Resources Section - Only for authenticated users */}
       {user && (
-        <section className="py-16 lg:py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 lg:mb-16 fade-in-on-scroll">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Community Resources
-              </h2>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+      <section className="py-16 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 lg:mb-16 fade-in-on-scroll">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Community Resources
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
                 Access exclusive resources and tools for AI-forward professionals
-              </p>
-            </div>
-            
+            </p>
+          </div>
+          
             {dataLoading ? (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -584,46 +603,46 @@ const Community = () => {
                 <p className="text-gray-500">Check back soon for community resources and tools</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {resources.map((resource, index) => {
                   const ResourceIcon = getResourceIcon(resource.resource_type);
                   return (
-                    <div key={resource.id} className="fade-in-on-scroll bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-gray-100 overflow-hidden">
-                      <div className="p-6">
-                        <div className="flex items-start justify-between mb-4">
+              <div key={resource.id} className="fade-in-on-scroll bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-gray-100 overflow-hidden">
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-4">
                           <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-green-600 to-blue-600 rounded-full">
                             <ResourceIcon className="h-6 w-6 text-white" />
-                          </div>
+                    </div>
                           {resource.is_premium && (
-                            <div className="flex items-center">
-                              <Lock className="h-4 w-4 text-yellow-500 mr-1" />
-                              <span className="text-xs text-yellow-600 font-medium">Premium</span>
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className="mb-3">
+                      <div className="flex items-center">
+                        <Lock className="h-4 w-4 text-yellow-500 mr-1" />
+                        <span className="text-xs text-yellow-600 font-medium">Premium</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="mb-3">
                           <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium capitalize">
                             {resource.resource_type}
-                          </span>
-                        </div>
-                        
-                        <h3 className="text-lg font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors line-clamp-2">
-                          {resource.title}
-                        </h3>
-                        
-                        <p className="text-gray-600 mb-4 text-sm line-clamp-2">{resource.description}</p>
-                        
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center text-xs text-gray-500">
-                            <Download className="h-3 w-3 mr-1" />
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-lg font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors line-clamp-2">
+                    {resource.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 mb-4 text-sm line-clamp-2">{resource.description}</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Download className="h-3 w-3 mr-1" />
                             {resource.download_count || 0} downloads
-                          </div>
+                    </div>
                           <button 
                             className={`inline-flex items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 ${
                               resource.is_premium && !user
-                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
                             }`}
                             onClick={() => {
                               if (resource.file_url) {
@@ -632,26 +651,26 @@ const Community = () => {
                             }}
                           >
                             {resource.is_premium && !user ? (
-                              <>
-                                <Lock className="h-4 w-4 mr-1" />
-                                Login Required
-                              </>
-                            ) : (
-                              <>
-                                <Download className="h-4 w-4 mr-1" />
+                        <>
+                          <Lock className="h-4 w-4 mr-1" />
+                          Login Required
+                        </>
+                      ) : (
+                        <>
+                          <Download className="h-4 w-4 mr-1" />
                                 {resource.file_url ? 'Download' : 'View'}
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
                   );
                 })}
-              </div>
-            )}
-          </div>
-        </section>
+            </div>
+          )}
+        </div>
+      </section>
       )}
 
     </div>
