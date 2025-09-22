@@ -1,0 +1,468 @@
+import { useEffect, useState } from 'react';
+import { Calendar, User, BookOpen, Download, Clock, MapPin, LogIn, UserPlus, ArrowRight } from 'lucide-react';
+import { supabase } from '../integrations/supabase/client';
+
+const Community = () => {
+  // Authentication state
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  
+  // Form state
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+  
+  // Data state
+  const [events, setEvents] = useState<any[]>([]);
+  const [resources, setResources] = useState<any[]>([]);
+  const [dataLoading, setDataLoading] = useState(false);
+
+  // Check authentication on component mount
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  // Fetch data when user is authenticated
+  useEffect(() => {
+    if (user) {
+      fetchCommunityData();
+    }
+  }, [user]);
+
+  const checkUser = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+    } catch (error) {
+      console.error('Error checking user:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCommunityData = async () => {
+    setDataLoading(true);
+    try {
+      // Fetch events
+      const { data: eventsData, error: eventsError } = await supabase
+        .from('community_events')
+        .select('*')
+        .eq('is_active', true)
+        .order('event_date', { ascending: true })
+        .limit(3);
+
+      if (eventsError) throw eventsError;
+
+      // Fetch resources
+      const { data: resourcesData, error: resourcesError } = await supabase
+        .from('community_resources')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      if (resourcesError) throw resourcesError;
+
+      setEvents(eventsData || []);
+      setResources(resourcesData || []);
+    } catch (error) {
+      console.error('Error fetching community data:', error);
+    } finally {
+      setDataLoading(false);
+    }
+  };
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+
+    try {
+      if (isLogin) {
+        // Login
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
+      } else {
+        // Register
+        if (password !== confirmPassword) {
+          alert('Passwords do not match');
+          return;
+        }
+
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              full_name: fullName,
+              phone_number: phoneNumber,
+              company_name: companyName,
+            }
+          }
+        });
+        if (error) throw error;
+        alert('Account created successfully! Please check your email to confirm your account.');
+      }
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      setEvents([]);
+      setResources([]);
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  const clearForm = () => {
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setFullName('');
+    setPhoneNumber('');
+    setCompanyName('');
+  };
+
+  const toggleAuthMode = () => {
+    setIsLogin(!isLogin);
+    clearForm();
+  };
+
+  const formatEventDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'short', 
+      month: 'short', 
+      day: 'numeric' 
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <section className="pt-20 pb-12 sm:pb-16 lg:pt-32 lg:pb-32 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+              AIdea Digital{' '}
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Community
+              </span>
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4">
+              Join our exclusive community of AI-forward business leaders. Access premium resources, attend exclusive events, and connect with like-minded professionals.
+            </p>
+            
+            {user && (
+              <div className="inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-full font-medium">
+                <User className="h-5 w-5 mr-2" />
+                Welcome back, {user.user_metadata?.full_name || user.email?.split('@')[0]}!
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Authentication Section - Only for non-logged-in users */}
+      {!user && (
+        <section className="py-16 bg-white">
+          <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  {isLogin ? 'Welcome Back' : 'Join Our Community'}
+                </h2>
+                <p className="text-gray-600">
+                  {isLogin ? 'Sign in to access your community benefits' : 'Create your account to access exclusive resources'}
+                </p>
+              </div>
+
+              <form onSubmit={handleAuth} className="space-y-6">
+                {!isLogin && (
+                  <>
+                    <div>
+                      <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                        Full Name *
+                      </label>
+                      <input
+                        id="fullName"
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        required={!isLogin}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Enter your full name"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-2">
+                        Phone Number *
+                      </label>
+                      <input
+                        id="phoneNumber"
+                        type="tel"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        required={!isLogin}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Enter your phone number"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">
+                        Company Name
+                      </label>
+                      <input
+                        id="companyName"
+                        type="text"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Enter your company name (optional)"
+                      />
+                    </div>
+                  </>
+                )}
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address *
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your email"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                    Password *
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your password"
+                  />
+                </div>
+
+                {!isLogin && (
+                  <div>
+                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                      Confirm Password *
+                    </label>
+                    <input
+                      id="confirmPassword"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required={!isLogin}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Confirm your password"
+                    />
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={authLoading}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {authLoading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      {isLogin ? 'Signing In...' : 'Creating Account...'}
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      {isLogin ? <LogIn className="h-5 w-5 mr-2" /> : <UserPlus className="h-5 w-5 mr-2" />}
+                      {isLogin ? 'Sign In' : 'Create Account'}
+                    </div>
+                  )}
+                </button>
+              </form>
+
+              <div className="mt-6 text-center">
+                <button
+                  onClick={toggleAuthMode}
+                  className="text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  {isLogin ? "Don't have an account? Create one" : "Already have an account? Sign in"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Community Dashboard - Only for logged-in users */}
+      {user && (
+        <section className="py-16 lg:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 lg:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Your Community Dashboard
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+                Access exclusive resources and join upcoming events
+              </p>
+            </div>
+
+            {/* Dashboard Cards */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              {/* Resources Card */}
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                <div className="bg-gradient-to-r from-green-500 to-blue-600 p-6">
+                  <div className="flex items-center">
+                    <BookOpen className="h-8 w-8 text-white mr-3" />
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Community Resources</h3>
+                      <p className="text-blue-100">Access exclusive tools and templates</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6">
+                  {dataLoading ? (
+                    <div className="text-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                      <p className="text-gray-600">Loading resources...</p>
+                    </div>
+                  ) : resources.length === 0 ? (
+                    <div className="text-center py-8">
+                      <BookOpen className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-600">No resources available</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {resources.map((resource) => (
+                        <div key={resource.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                          <div className="flex items-center">
+                            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                              <Download className="h-5 w-5 text-blue-600" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-gray-900">{resource.title}</h4>
+                              <p className="text-sm text-gray-600">{resource.resource_type}</p>
+                            </div>
+                          </div>
+                          {resource.is_premium && (
+                            <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                              Premium
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                      <button className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                        View All Resources
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Events Card */}
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                <div className="bg-gradient-to-r from-purple-500 to-pink-600 p-6">
+                  <div className="flex items-center">
+                    <Calendar className="h-8 w-8 text-white mr-3" />
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Upcoming Events</h3>
+                      <p className="text-pink-100">Join our community events</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6">
+                  {dataLoading ? (
+                    <div className="text-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                      <p className="text-gray-600">Loading events...</p>
+                    </div>
+                  ) : events.length === 0 ? (
+                    <div className="text-center py-8">
+                      <Calendar className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-600">No events scheduled</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {events.map((event) => (
+                        <div key={event.id} className="p-4 bg-gray-50 rounded-lg">
+                          <div className="flex items-start justify-between mb-2">
+                            <h4 className="font-medium text-gray-900">{event.title}</h4>
+                            {event.is_featured && (
+                              <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                                Featured
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center text-sm text-gray-600 mb-2">
+                            <Calendar className="h-4 w-4 mr-1" />
+                            {formatEventDate(event.event_date)}
+                          </div>
+                          <div className="flex items-center text-sm text-gray-600 mb-2">
+                            <Clock className="h-4 w-4 mr-1" />
+                            {event.event_time}
+                          </div>
+                          <div className="flex items-center text-sm text-gray-600">
+                            <MapPin className="h-4 w-4 mr-1" />
+                            {event.location}
+                          </div>
+                        </div>
+                      ))}
+                      <button className="w-full mt-4 bg-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                        View All Events
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Sign Out Button */}
+            <div className="text-center">
+              <button
+                onClick={handleSignOut}
+                className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-300"
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+};
+
+export default Community;
