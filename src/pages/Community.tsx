@@ -21,6 +21,7 @@ const Community = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
   const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
+  const [previewPdf, setPreviewPdf] = useState<{url: string, title: string} | null>(null);
   
   // Data state
   const [events, setEvents] = useState<any[]>([]);
@@ -214,6 +215,40 @@ const Community = () => {
       month: 'short', 
       day: 'numeric' 
     });
+  };
+
+  const handleDownload = async (fileUrl: string, fileName: string) => {
+    try {
+      // Fetch the file
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+      
+      // Create a download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName || 'resource.pdf';
+      
+      // Trigger download
+      document.body.appendChild(link);
+      link.click();
+      
+      // Cleanup
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed:', error);
+      // Fallback: open in new tab
+      window.open(fileUrl, '_blank');
+    }
+  };
+
+  const handlePreview = (fileUrl: string, title: string) => {
+    setPreviewPdf({ url: fileUrl, title });
+  };
+
+  const closePreview = () => {
+    setPreviewPdf(null);
   };
 
   if (loading) {
@@ -534,14 +569,20 @@ const Community = () => {
                               </span>
                             )}
                             {resource.file_url && (
-                              <a
-                                href={resource.file_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition-colors"
-                              >
-                                Download
-                              </a>
+                              <div className="flex space-x-2">
+                                <button
+                                  onClick={() => handlePreview(resource.file_url, resource.title)}
+                                  className="px-3 py-1 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 transition-colors"
+                                >
+                                  Preview
+                                </button>
+                                <button
+                                  onClick={() => handleDownload(resource.file_url, resource.title)}
+                                  className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition-colors"
+                                >
+                                  Download
+                                </button>
+                              </div>
                             )}
                           </div>
                         </div>
@@ -622,6 +663,57 @@ const Community = () => {
             </div>
           </div>
         </section>
+      )}
+
+      {/* PDF Preview Modal */}
+      {previewPdf && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">{previewPdf.title}</h3>
+              <button
+                onClick={closePreview}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            
+            {/* PDF Viewer */}
+            <div className="flex-1 p-4">
+              <iframe
+                src={previewPdf.url}
+                className="w-full h-full min-h-[500px] border-0 rounded"
+                title={previewPdf.title}
+              />
+            </div>
+            
+            {/* Modal Footer */}
+            <div className="flex items-center justify-between p-4 border-t border-gray-200">
+              <div className="text-sm text-gray-500">
+                PDF Preview - Click Download to save the file
+              </div>
+              <div className="flex space-x-3">
+                <button
+                  onClick={closePreview}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={() => {
+                    handleDownload(previewPdf.url, previewPdf.title);
+                    closePreview();
+                  }}
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

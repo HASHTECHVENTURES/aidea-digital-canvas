@@ -134,6 +134,12 @@ const Admin = () => {
     checkAdminAuth();
   }, []);
 
+  // Debug: Log when users state changes
+  useEffect(() => {
+    console.log('Users state updated:', users);
+    console.log('Users count:', users.length);
+  }, [users]);
+
   const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
@@ -262,6 +268,9 @@ const Admin = () => {
         events: eventsData?.length || 0,
         resources: resourcesData?.length || 0
       });
+
+      console.log('Raw users data:', usersData);
+      console.log('Setting users state with:', usersData || []);
 
       setUsers(usersData || []);
       setEvents(eventsData || []);
