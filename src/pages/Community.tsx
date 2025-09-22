@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, User, ArrowRight, BookOpen, TrendingUp, Shield, Lightbulb, Users, Gift, Download, Clock, MapPin, Star, CheckCircle, Lock, LogIn, UserPlus } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../integrations/supabase/client';
 
 const Community = () => {
   const { user, loading, signIn, signUp, signOut, resetPassword } = useAuth();
@@ -14,6 +15,12 @@ const Community = () => {
   const [authLoading, setAuthLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  
+  // Data state
+  const [events, setEvents] = useState<any[]>([]);
+  const [resources, setResources] = useState<any[]>([]);
+  const [dataLoading, setDataLoading] = useState(false);
+  const [dataError, setDataError] = useState<string | null>(null);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +92,55 @@ const Community = () => {
     }
   };
 
+  // Fetch community data
+  const fetchCommunityData = async () => {
+    if (!user) return; // Only fetch data for authenticated users
+    
+    setDataLoading(true);
+    setDataError(null);
+    
+    try {
+      // Fetch events
+      const { data: eventsData, error: eventsError } = await supabase
+        .from('community_events')
+        .select('*')
+        .eq('is_active', true)
+        .order('event_date', { ascending: true });
+
+      if (eventsError) {
+        console.error('Error fetching events:', eventsError);
+        throw new Error('Failed to load events');
+      }
+
+      // Fetch resources
+      const { data: resourcesData, error: resourcesError } = await supabase
+        .from('community_resources')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (resourcesError) {
+        console.error('Error fetching resources:', resourcesError);
+        throw new Error('Failed to load resources');
+      }
+
+      setEvents(eventsData || []);
+      setResources(resourcesData || []);
+    } catch (error: any) {
+      console.error('Error fetching community data:', error);
+      setDataError(error.message || 'Failed to load community data');
+    } finally {
+      setDataLoading(false);
+    }
+  };
+
+  // Fetch data when user changes
+  useEffect(() => {
+    if (user) {
+      fetchCommunityData();
+    }
+  }, [user]);
+
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
@@ -105,9 +161,41 @@ const Community = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Empty arrays for future content
-  const upcomingEvents: any[] = [];
-  const communityResources: any[] = [];
+  // Helper function to format event date
+  const formatEventDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  // Helper function to get icon for event type
+  const getEventIcon = (eventType: string) => {
+    switch (eventType) {
+      case 'showcase': return TrendingUp;
+      case 'workshop': return Users;
+      case 'q&a': return Lightbulb;
+      case 'networking': return Users;
+      case 'training': return BookOpen;
+      default: return Calendar;
+    }
+  };
+
+  // Helper function to get icon for resource type
+  const getResourceIcon = (resourceType: string) => {
+    switch (resourceType) {
+      case 'template': return Gift;
+      case 'tool': return Shield;
+      case 'guide': return BookOpen;
+      case 'library': return BookOpen;
+      case 'training': return Users;
+      case 'documentation': return BookOpen;
+      default: return BookOpen;
+    }
+  };
 
   if (loading) {
     return (
@@ -349,9 +437,25 @@ const Community = () => {
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Welcome to the Community
               </h2>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-                Your community dashboard is ready. Resources and events will appear here soon.
-              </p>
+              {dataLoading ? (
+                <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+                  Loading your community content...
+                </p>
+              ) : dataError ? (
+                <div className="max-w-md mx-auto">
+                  <p className="text-lg text-red-600 mb-4">{dataError}</p>
+                  <button
+                    onClick={fetchCommunityData}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              ) : (
+                <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+                  Access exclusive resources, attend community events, and connect with AI-forward professionals.
+                </p>
+              )}
             </div>
 
             <div className="text-center mt-12">
@@ -375,11 +479,16 @@ const Community = () => {
                 Upcoming Events
               </h2>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-                Events will be announced here soon
+                Join our community events and connect with AI professionals
               </p>
             </div>
             
-            {upcomingEvents.length === 0 ? (
+            {dataLoading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading events...</p>
+              </div>
+            ) : events.length === 0 ? (
               <div className="text-center py-12">
                 <Calendar className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No events scheduled</h3>
@@ -387,53 +496,63 @@ const Community = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {upcomingEvents.map((event, index) => (
-                  <div key={event.id} className={`fade-in-on-scroll bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-gray-100 overflow-hidden ${event.featured ? 'lg:col-span-2' : ''}`}>
-                    <div className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${event.color} rounded-full`}>
-                          <event.icon className="h-6 w-6 text-white" />
+                {events.map((event, index) => {
+                  const EventIcon = getEventIcon(event.event_type);
+                  return (
+                    <div key={event.id} className={`fade-in-on-scroll bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-gray-100 overflow-hidden ${event.is_featured ? 'lg:col-span-2' : ''}`}>
+                      <div className="p-6">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full">
+                            <EventIcon className="h-6 w-6 text-white" />
+                          </div>
+                          {event.is_featured && (
+                            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
+                              Featured Event
+                            </span>
+                          )}
                         </div>
-                        {event.featured && (
-                          <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
-                            Featured Event
+                        
+                        <div className="mb-4">
+                          <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium capitalize">
+                            {event.event_type.replace('-', ' ')}
                           </span>
-                        )}
-                      </div>
-                      
-                      <div className="mb-4">
-                        <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                          {event.type}
-                        </span>
-                      </div>
-                      
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-                        {event.title}
-                      </h3>
-                      
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Calendar className="h-4 w-4 mr-2" />
-                          {event.date}
                         </div>
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Clock className="h-4 w-4 mr-2" />
-                          {event.time}
+                        
+                        <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+                          {event.title}
+                        </h3>
+                        
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-center text-sm text-gray-600">
+                            <Calendar className="h-4 w-4 mr-2" />
+                            {formatEventDate(event.event_date)}
+                          </div>
+                          <div className="flex items-center text-sm text-gray-600">
+                            <Clock className="h-4 w-4 mr-2" />
+                            {event.event_time}
+                          </div>
+                          <div className="flex items-center text-sm text-gray-600">
+                            <MapPin className="h-4 w-4 mr-2" />
+                            {event.location}
+                          </div>
                         </div>
-                        <div className="flex items-center text-sm text-gray-600">
-                          <MapPin className="h-4 w-4 mr-2" />
-                          {event.location}
+                        
+                        <p className="text-gray-600 mb-4 line-clamp-3">{event.description}</p>
+                        
+                        <div className="flex items-center justify-between">
+                          {event.max_attendees && (
+                            <div className="text-xs text-gray-500">
+                              {event.current_attendees || 0} / {event.max_attendees} attendees
+                            </div>
+                          )}
+                          <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all duration-300">
+                            Register Now
+                          </button>
                         </div>
                       </div>
-                      
-                      <p className="text-gray-600 mb-4 line-clamp-3">{event.description}</p>
-                      
-                      <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all duration-300">
-                        Register Now
-                      </button>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -449,11 +568,16 @@ const Community = () => {
                 Community Resources
               </h2>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-                Resources will be available here soon
+                Access exclusive resources and tools for AI-forward professionals
               </p>
             </div>
             
-            {communityResources.length === 0 ? (
+            {dataLoading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading resources...</p>
+              </div>
+            ) : resources.length === 0 ? (
               <div className="text-center py-12">
                 <BookOpen className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No resources available</h3>
@@ -461,59 +585,69 @@ const Community = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {communityResources.map((resource, index) => (
-                  <div key={resource.id} className="fade-in-on-scroll bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-gray-100 overflow-hidden">
-                    <div className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${resource.color} rounded-full`}>
-                          <resource.icon className="h-6 w-6 text-white" />
-                        </div>
-                        {resource.premium && (
-                          <div className="flex items-center">
-                            <Lock className="h-4 w-4 text-yellow-500 mr-1" />
-                            <span className="text-xs text-yellow-600 font-medium">Premium</span>
+                {resources.map((resource, index) => {
+                  const ResourceIcon = getResourceIcon(resource.resource_type);
+                  return (
+                    <div key={resource.id} className="fade-in-on-scroll bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-gray-100 overflow-hidden">
+                      <div className="p-6">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-green-600 to-blue-600 rounded-full">
+                            <ResourceIcon className="h-6 w-6 text-white" />
                           </div>
-                        )}
-                      </div>
-                      
-                      <div className="mb-3">
-                        <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
-                          {resource.type}
-                        </span>
-                      </div>
-                      
-                      <h3 className="text-lg font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors line-clamp-2">
-                        {resource.title}
-                      </h3>
-                      
-                      <p className="text-gray-600 mb-4 text-sm line-clamp-2">{resource.description}</p>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center text-xs text-gray-500">
-                          <Download className="h-3 w-3 mr-1" />
-                          {resource.downloads} downloads
-                        </div>
-                        <button className={`inline-flex items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 ${
-                          resource.premium && !user
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
-                        }`}>
-                          {resource.premium && !user ? (
-                            <>
-                              <Lock className="h-4 w-4 mr-1" />
-                              Login Required
-                            </>
-                          ) : (
-                            <>
-                              <Download className="h-4 w-4 mr-1" />
-                              Download
-                            </>
+                          {resource.is_premium && (
+                            <div className="flex items-center">
+                              <Lock className="h-4 w-4 text-yellow-500 mr-1" />
+                              <span className="text-xs text-yellow-600 font-medium">Premium</span>
+                            </div>
                           )}
-                        </button>
+                        </div>
+                        
+                        <div className="mb-3">
+                          <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium capitalize">
+                            {resource.resource_type}
+                          </span>
+                        </div>
+                        
+                        <h3 className="text-lg font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors line-clamp-2">
+                          {resource.title}
+                        </h3>
+                        
+                        <p className="text-gray-600 mb-4 text-sm line-clamp-2">{resource.description}</p>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center text-xs text-gray-500">
+                            <Download className="h-3 w-3 mr-1" />
+                            {resource.download_count || 0} downloads
+                          </div>
+                          <button 
+                            className={`inline-flex items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 ${
+                              resource.is_premium && !user
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
+                            }`}
+                            onClick={() => {
+                              if (resource.file_url) {
+                                window.open(resource.file_url, '_blank');
+                              }
+                            }}
+                          >
+                            {resource.is_premium && !user ? (
+                              <>
+                                <Lock className="h-4 w-4 mr-1" />
+                                Login Required
+                              </>
+                            ) : (
+                              <>
+                                <Download className="h-4 w-4 mr-1" />
+                                {resource.file_url ? 'Download' : 'View'}
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
