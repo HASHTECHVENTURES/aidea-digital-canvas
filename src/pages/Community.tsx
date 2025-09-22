@@ -21,6 +21,7 @@ const Community = () => {
   const [resources, setResources] = useState<any[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [dataError, setDataError] = useState<string | null>(null);
+  const [dataFetched, setDataFetched] = useState(false);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -140,6 +141,7 @@ const Community = () => {
       
       setEvents(eventsData || []);
       setResources(resourcesData || []);
+      setDataFetched(true); // Mark data as fetched
       
       // Force a re-render by logging the state after setting
       setTimeout(() => {
@@ -156,10 +158,11 @@ const Community = () => {
 
   // Fetch data when user changes
   useEffect(() => {
-    if (user) {
+    if (user && !dataFetched) {
+      console.log('useEffect triggered for user:', user.email, 'dataFetched:', dataFetched);
       fetchCommunityData();
     }
-  }, [user]);
+  }, [user?.id, dataFetched]); // Only depend on user ID and dataFetched flag
 
   // Debug: Log when events or resources state changes
   useEffect(() => {
