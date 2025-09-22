@@ -1,8 +1,14 @@
 # AIdea Digital - AI-Powered Business Solutions
 
-A modern, responsive website for AIdea Digital, showcasing AI consulting services and featuring a comprehensive community platform with user authentication, admin management, and content management capabilities.
+A modern, responsive website for AIdea Digital featuring a comprehensive community platform with user authentication, admin management, and content management capabilities.
 
-## 🚀 Features
+## 🚀 Live Demo
+
+- **Website**: [https://aidea.digital](https://aidea.digital)
+- **Community**: [https://aidea.digital/community](https://aidea.digital/community)
+- **Admin**: [https://aidea.digital/admin](https://aidea.digital/admin)
+
+## ✨ Features
 
 ### 🌐 Main Website
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
@@ -14,7 +20,7 @@ A modern, responsive website for AIdea Digital, showcasing AI consulting service
 - **User Authentication**: Secure registration and login system
 - **User Profiles**: Complete user management with profile data
 - **Community Dashboard**: Access to exclusive resources and events
-- **Forgot Password**: Complete password reset functionality
+- **Forgot Password**: Complete password reset functionality with email
 
 ### 🔐 Admin System
 - **Secure Admin Login**: Database-driven authentication
@@ -56,20 +62,7 @@ src/
 └── App.tsx            # Main app component
 ```
 
-## 🗄️ Database Schema
-
-### Core Tables
-- **user_profiles**: Extended user information
-- **community_events**: Community events and workshops
-- **community_resources**: Resources and tools
-- **admins**: Admin user management
-
-### Security Features
-- **Row Level Security (RLS)**: Database-level security
-- **Authentication**: Supabase Auth integration
-- **Data Validation**: Input validation and sanitization
-
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js 18+ 
@@ -96,8 +89,8 @@ src/
    Update the environment variables with your Supabase credentials.
 
 4. **Database Setup**
-   - Run the SQL scripts in the `supabase/` directory
-   - Set up your database schema and sample data
+   - See `docs/sql/README.md` for database setup instructions
+   - Run the SQL scripts in the `docs/sql/` directory
 
 5. **Start Development Server**
    ```bash
@@ -108,7 +101,7 @@ src/
 
 ### Supabase Setup
 1. Create a new Supabase project
-2. Run the database setup scripts
+2. Run the database setup scripts from `docs/sql/`
 3. Configure authentication settings
 4. Set up email templates
 
@@ -143,32 +136,19 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 - Company information
 - Professional contact details
 
-## 🎨 Design System
+## 🗄️ Database Schema
 
-### Color Palette
-- **Primary**: Blue (#3B82F6)
-- **Secondary**: Purple (#8B5CF6)
-- **Accent**: Pink (#EC4899)
-- **Neutral**: Gray scale
+### Core Tables
+- **user_profiles**: Extended user information
+- **community_events**: Community events and workshops
+- **community_resources**: Resources and tools
+- **admins**: Admin user management
 
-### Typography
-- **Headings**: Bold, modern sans-serif
-- **Body**: Clean, readable fonts
-- **Responsive**: Scales across devices
-
-## 🔒 Security Features
-
-- **Authentication**: Secure user authentication
-- **Authorization**: Role-based access control
+### Security Features
+- **Row Level Security (RLS)**: Database-level security
+- **Authentication**: Supabase Auth integration
 - **Data Protection**: Encrypted data transmission
 - **Input Validation**: Client and server-side validation
-
-## 📈 Performance
-
-- **Code Splitting**: Optimized bundle sizes
-- **Image Optimization**: Responsive images
-- **Caching**: Efficient data caching
-- **SEO**: Search engine optimization
 
 ## 🚀 Deployment
 
@@ -182,20 +162,6 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 - Configure DNS settings
 - Set up SSL certificates
 - Update Supabase redirect URLs
-
-## 🧪 Testing
-
-### Manual Testing
-- User registration and login
-- Admin functionality
-- Email delivery
-- Responsive design
-
-### Browser Support
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
 
 ## 📝 Contributing
 
@@ -214,13 +180,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **AIdea Digital** - Strategic AI consulting for businesses
 - Website: [aidea-digital.com](https://aidea-digital.com)
 - Email: [aideadigitalagency@gmail.com](mailto:aideadigitalagency@gmail.com)
-
-## 🙏 Acknowledgments
-
-- Supabase for backend infrastructure
-- Tailwind CSS for styling framework
-- React team for the amazing framework
-- All contributors and supporters
 
 ## 📞 Support
 
