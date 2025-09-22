@@ -78,29 +78,61 @@ const Admin = () => {
     try {
       setLoading(true);
       
-      // Fetch users
-      const { data: usersData } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // Fetch users with error handling
+      try {
+        const { data: usersData, error: usersError } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (usersError) {
+          console.error('Users fetch error:', usersError);
+          setUsers([]);
+        } else {
+          setUsers(usersData || []);
+        }
+      } catch (error) {
+        console.error('Users fetch failed:', error);
+        setUsers([]);
+      }
 
-      // Fetch events
-      const { data: eventsData } = await supabase
-        .from('community_events')
-        .select('*')
-        .order('event_date', { ascending: true });
+      // Fetch events with error handling
+      try {
+        const { data: eventsData, error: eventsError } = await supabase
+          .from('community_events')
+          .select('*')
+          .order('event_date', { ascending: true });
+        
+        if (eventsError) {
+          console.error('Events fetch error:', eventsError);
+          setEvents([]);
+        } else {
+          setEvents(eventsData || []);
+        }
+      } catch (error) {
+        console.error('Events fetch failed:', error);
+        setEvents([]);
+      }
 
-      // Fetch resources
-      const { data: resourcesData } = await supabase
-        .from('community_resources')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      setUsers(usersData || []);
-      setEvents(eventsData || []);
-      setResources(resourcesData || []);
+      // Fetch resources with error handling
+      try {
+        const { data: resourcesData, error: resourcesError } = await supabase
+          .from('community_resources')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (resourcesError) {
+          console.error('Resources fetch error:', resourcesError);
+          setResources([]);
+        } else {
+          setResources(resourcesData || []);
+        }
+      } catch (error) {
+        console.error('Resources fetch failed:', error);
+        setResources([]);
+      }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('General fetch error:', error);
     } finally {
       setLoading(false);
     }
@@ -251,6 +283,12 @@ const Admin = () => {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">Welcome, {admin.name}</span>
+              <button
+                onClick={fetchData}
+                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                Refresh Data
+              </button>
               {(activeTab === 'events' || activeTab === 'resources') && (
                 <button
                   onClick={() => {

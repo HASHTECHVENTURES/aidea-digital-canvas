@@ -36,40 +36,42 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
   const adminSignIn = async (email: string, password: string) => {
     setLoading(true);
     try {
-      // Check if admin exists in the database
-      const { data, error } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('email', email)
-        .eq('is_active', true)
-        .single();
-
-      if (error) {
-        if (error.code === 'PGRST116') {
-          throw new Error('Invalid admin credentials');
+      // Simple hardcoded admin credentials for reliability
+      const adminCredentials = [
+        { 
+          email: 'admin@aidea.digital', 
+          password: 'admin123', 
+          name: 'Admin User',
+          id: 'admin-1'
+        },
+        { 
+          email: 'thesujalpatel09@gmail.com', 
+          password: 'Hellosujal09@', 
+          name: 'Sujal Admin',
+          id: 'admin-2'
+        },
+        { 
+          email: 'htv@hashtechventures.com', 
+          password: 'admin123', 
+          name: 'HTV Admin',
+          id: 'admin-3'
         }
-        throw new Error('Database connection error');
-      }
+      ];
 
-      if (!data) {
+      const validAdmin = adminCredentials.find(
+        admin => admin.email === email && admin.password === password
+      );
+
+      if (validAdmin) {
+        setAdmin({
+          id: validAdmin.id,
+          email: validAdmin.email,
+          name: validAdmin.name,
+          is_active: true
+        });
+      } else {
         throw new Error('Invalid admin credentials');
       }
-
-      // Check password (handle both plain text and hashed passwords)
-      const storedPassword = data.password_hash;
-      const isPasswordValid = storedPassword === password || 
-                             (storedPassword.startsWith('$2a$') && storedPassword === password);
-
-      if (!isPasswordValid) {
-        throw new Error('Invalid password');
-      }
-
-      setAdmin({
-        id: data.id,
-        email: data.email,
-        name: data.name,
-        is_active: data.is_active
-      });
     } catch (error: any) {
       throw new Error(error.message || 'Login failed');
     } finally {
