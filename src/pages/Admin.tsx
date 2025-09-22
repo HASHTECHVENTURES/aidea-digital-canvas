@@ -318,6 +318,16 @@ const Admin = () => {
   const toggleEventStatus = async (eventId: string, currentStatus: boolean) => {
     try {
       console.log('Toggling event status:', eventId, currentStatus);
+      
+      // Immediately update the UI
+      setEvents(prevEvents => 
+        prevEvents.map(event => 
+          event.id === eventId 
+            ? { ...event, is_active: !currentStatus }
+            : event
+        )
+      );
+      
       const { error } = await supabase
         .from('community_events')
         .update({ is_active: !currentStatus })
@@ -325,11 +335,18 @@ const Admin = () => {
 
       if (error) {
         console.error('Error updating event:', error);
+        // Revert the UI change if the update failed
+        setEvents(prevEvents => 
+          prevEvents.map(event => 
+            event.id === eventId 
+              ? { ...event, is_active: currentStatus }
+              : event
+          )
+        );
         throw error;
       }
       
       console.log('Event status updated successfully');
-      await fetchAllData();
     } catch (error: any) {
       console.error('Error in toggleEventStatus:', error);
       alert(`Error updating event: ${error.message}`);
@@ -339,6 +356,16 @@ const Admin = () => {
   const toggleResourceStatus = async (resourceId: string, currentStatus: boolean) => {
     try {
       console.log('Toggling resource status:', resourceId, currentStatus);
+      
+      // Immediately update the UI
+      setResources(prevResources => 
+        prevResources.map(resource => 
+          resource.id === resourceId 
+            ? { ...resource, is_active: !currentStatus }
+            : resource
+        )
+      );
+      
       const { error } = await supabase
         .from('community_resources')
         .update({ is_active: !currentStatus })
@@ -346,11 +373,18 @@ const Admin = () => {
 
       if (error) {
         console.error('Error updating resource:', error);
+        // Revert the UI change if the update failed
+        setResources(prevResources => 
+          prevResources.map(resource => 
+            resource.id === resourceId 
+              ? { ...resource, is_active: currentStatus }
+              : resource
+          )
+        );
         throw error;
       }
       
       console.log('Resource status updated successfully');
-      await fetchAllData();
     } catch (error: any) {
       console.error('Error in toggleResourceStatus:', error);
       alert(`Error updating resource: ${error.message}`);
@@ -360,13 +394,22 @@ const Admin = () => {
   const deleteEvent = async (eventId: string) => {
     console.log('Delete event clicked for ID:', eventId);
     
-    if (!confirm('Are you sure you want to delete this event?')) {
+    if (!confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
       console.log('Delete cancelled by user');
       return;
     }
     
     try {
       console.log('Starting delete operation for event:', eventId);
+      
+      // First, let's try to get the event details for logging
+      const { data: eventData } = await supabase
+        .from('community_events')
+        .select('title')
+        .eq('id', eventId)
+        .single();
+      
+      console.log('Deleting event:', eventData?.title || 'Unknown');
       
       const { data, error } = await supabase
         .from('community_events')
@@ -378,12 +421,29 @@ const Admin = () => {
 
       if (error) {
         console.error('Supabase delete error:', error);
+        console.error('Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
         throw error;
       }
       
-      console.log('Event deleted successfully, refreshing data...');
-      alert('Event deleted successfully!');
-      await fetchAllData();
+      if (data && data.length > 0) {
+        console.log('Event deleted successfully:', data[0]);
+        alert(`Event "${eventData?.title || 'Unknown'}" deleted successfully!`);
+        
+        // Immediately update the local state
+        setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
+        
+        // Also refresh all data to ensure consistency
+        await fetchAllData();
+      } else {
+        console.log('No data returned from delete operation');
+        alert('Event deleted, but no confirmation received. Refreshing data...');
+        await fetchAllData();
+      }
     } catch (error: any) {
       console.error('Error in deleteEvent:', error);
       alert(`Error deleting event: ${error.message || error}`);
@@ -393,13 +453,22 @@ const Admin = () => {
   const deleteResource = async (resourceId: string) => {
     console.log('Delete resource clicked for ID:', resourceId);
     
-    if (!confirm('Are you sure you want to delete this resource?')) {
+    if (!confirm('Are you sure you want to delete this resource? This action cannot be undone.')) {
       console.log('Delete cancelled by user');
       return;
     }
     
     try {
       console.log('Starting delete operation for resource:', resourceId);
+      
+      // First, let's try to get the resource details for logging
+      const { data: resourceData } = await supabase
+        .from('community_resources')
+        .select('title')
+        .eq('id', resourceId)
+        .single();
+      
+      console.log('Deleting resource:', resourceData?.title || 'Unknown');
       
       const { data, error } = await supabase
         .from('community_resources')
@@ -411,12 +480,29 @@ const Admin = () => {
 
       if (error) {
         console.error('Supabase delete error:', error);
+        console.error('Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
         throw error;
       }
       
-      console.log('Resource deleted successfully, refreshing data...');
-      alert('Resource deleted successfully!');
-      await fetchAllData();
+      if (data && data.length > 0) {
+        console.log('Resource deleted successfully:', data[0]);
+        alert(`Resource "${resourceData?.title || 'Unknown'}" deleted successfully!`);
+        
+        // Immediately update the local state
+        setResources(prevResources => prevResources.filter(resource => resource.id !== resourceId));
+        
+        // Also refresh all data to ensure consistency
+        await fetchAllData();
+      } else {
+        console.log('No data returned from delete operation');
+        alert('Resource deleted, but no confirmation received. Refreshing data...');
+        await fetchAllData();
+      }
     } catch (error: any) {
       console.error('Error in deleteResource:', error);
       alert(`Error deleting resource: ${error.message || error}`);
