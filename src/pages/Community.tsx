@@ -22,15 +22,29 @@ const Community = () => {
   const [resources, setResources] = useState<any[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
 
-  // Check authentication on component mount
+  // Check authentication on component mount and listen for changes
   useEffect(() => {
     checkUser();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('Auth state changed:', _event, session?.user?.email);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   // Fetch data when user is authenticated
   useEffect(() => {
     if (user) {
+      console.log('User authenticated, fetching data for:', user.email);
       fetchCommunityData();
+    } else {
+      console.log('No user, clearing data');
+      setEvents([]);
+      setResources([]);
     }
   }, [user]);
 
@@ -84,11 +98,19 @@ const Community = () => {
     try {
       if (isLogin) {
         // Login
-        const { error } = await supabase.auth.signInWithPassword({
+        console.log('Attempting login for:', email);
+        const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
-        if (error) throw error;
+        
+        if (error) {
+          console.error('Login error:', error);
+          throw error;
+        }
+        
+        console.log('Login successful:', data.user?.email);
+        // The auth state change listener will handle setting the user
       } else {
         // Register
         if (password !== confirmPassword) {
@@ -96,7 +118,8 @@ const Community = () => {
           return;
         }
 
-        const { error } = await supabase.auth.signUp({
+        console.log('Attempting registration for:', email);
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -107,10 +130,18 @@ const Community = () => {
             }
           }
         });
-        if (error) throw error;
+        
+        if (error) {
+          console.error('Registration error:', error);
+          throw error;
+        }
+        
+        console.log('Registration successful:', data.user?.email);
         alert('Account created successfully! You are now signed in.');
+        // The auth state change listener will handle setting the user
       }
     } catch (error: any) {
+      console.error('Auth error:', error);
       alert(error.message);
     } finally {
       setAuthLoading(false);
@@ -119,11 +150,12 @@ const Community = () => {
 
   const handleSignOut = async () => {
     try {
+      console.log('Signing out user...');
       await supabase.auth.signOut();
-      setUser(null);
-      setEvents([]);
-      setResources([]);
+      // The auth state change listener will handle clearing the user state
+      console.log('Sign out successful');
     } catch (error: any) {
+      console.error('Sign out error:', error);
       alert(error.message);
     }
   };
