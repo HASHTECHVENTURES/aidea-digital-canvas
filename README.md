@@ -1,38 +1,83 @@
-# AIdea Digital Canvas
+# AIdea Digital - AI-Powered Business Solutions
 
-A modern, responsive website for AIdea Digital - a strategic AI consulting company that helps businesses implement AI solutions with a focus on strategy and measurable results.
+A modern, responsive website for AIdea Digital, showcasing AI consulting services and featuring a comprehensive community platform with user authentication, admin management, and content management capabilities.
 
 ## 🚀 Features
 
-### Core Features
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Modern UI/UX**: Built with React, TypeScript, and Tailwind CSS
-- **Interactive Components**: Smooth animations and hover effects
-- **Blog System**: Complete blog with individual post pages and category filtering
-- **Contact Forms**: Integrated contact page for client inquiries
-- **SEO Optimized**: Clean URLs and meta tags for better search visibility
+### 🌐 Main Website
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Modern UI/UX**: Clean, professional design with gradient accents
+- **Performance Optimized**: Fast loading times and smooth animations
+- **SEO Ready**: Optimized for search engines
 
-### Pages & Sections
-- **Homepage**: Hero section, value propositions, strategic approach, and CTA
-- **Blog**: Featured articles, category filtering, newsletter subscription
-- **Contact**: Contact form and company information
-- **Navigation**: Clean, minimal navigation with smooth transitions
+### 👥 Community Platform
+- **User Authentication**: Secure registration and login system
+- **User Profiles**: Complete user management with profile data
+- **Community Dashboard**: Access to exclusive resources and events
+- **Forgot Password**: Complete password reset functionality
 
-### Technical Stack
-- **Frontend**: React 18 with TypeScript
-- **Styling**: Tailwind CSS with custom animations
-- **UI Components**: Shadcn/ui component library
-- **Routing**: React Router DOM
-- **Build Tool**: Vite for fast development and building
-- **Icons**: Lucide React icons
+### 🔐 Admin System
+- **Secure Admin Login**: Database-driven authentication
+- **Content Management**: CRUD operations for events and resources
+- **User Management**: View and manage community members
+- **Real-time Updates**: Immediate UI updates for all operations
 
-## 🛠️ Installation & Setup
+### 📧 Email System
+- **Password Reset**: Professional email templates
+- **Custom Branding**: Branded email design
+- **SMTP Integration**: Configurable email delivery
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18, TypeScript, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Authentication, Real-time)
+- **Routing**: React Router v6
+- **Icons**: Lucide React
+- **Deployment**: Netlify
+- **Version Control**: Git & GitHub
+
+## 📁 Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Navigation.tsx   # Main navigation
+│   └── Footer.tsx       # Site footer
+├── pages/              # Page components
+│   ├── Index.tsx       # Homepage
+│   ├── Community.tsx   # Community platform
+│   ├── Admin.tsx       # Admin dashboard
+│   ├── ResetPassword.tsx # Password reset page
+│   └── Contact.tsx     # Contact page
+├── contexts/           # React contexts
+│   └── AuthContext.tsx # Authentication context
+├── integrations/       # External integrations
+│   └── supabase/       # Supabase configuration
+└── App.tsx            # Main app component
+```
+
+## 🗄️ Database Schema
+
+### Core Tables
+- **user_profiles**: Extended user information
+- **community_events**: Community events and workshops
+- **community_resources**: Resources and tools
+- **admins**: Admin user management
+
+### Security Features
+- **Row Level Security (RLS)**: Database-level security
+- **Authentication**: Supabase Auth integration
+- **Data Validation**: Input validation and sanitization
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn package manager
+- Node.js 18+ 
+- npm or yarn
+- Supabase account
 
-### Quick Start
+### Installation
+
 1. **Clone the repository**
    ```bash
    git clone https://github.com/HASHTECHVENTURES/aidea-digital-canvas.git
@@ -44,111 +89,121 @@ A modern, responsive website for AIdea Digital - a strategic AI consulting compa
    npm install
    ```
 
-3. **Start development server**
+3. **Environment Setup**
+   ```bash
+   cp .env.example .env.local
+   ```
+   Update the environment variables with your Supabase credentials.
+
+4. **Database Setup**
+   - Run the SQL scripts in the `supabase/` directory
+   - Set up your database schema and sample data
+
+5. **Start Development Server**
    ```bash
    npm run dev
    ```
 
-4. **Open your browser**
-   Navigate to `http://localhost:8080`
+## 🔧 Configuration
 
-### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run build:dev` - Build for development
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+### Supabase Setup
+1. Create a new Supabase project
+2. Run the database setup scripts
+3. Configure authentication settings
+4. Set up email templates
 
-## 📁 Project Structure
-
+### Environment Variables
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
-aidea-digital-canvas/
-├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── ui/             # Shadcn/ui components
-│   │   ├── Navigation.tsx  # Main navigation
-│   │   └── Footer.tsx      # Footer component
-│   ├── pages/              # Page components
-│   │   ├── Index.tsx       # Homepage
-│   │   ├── Blog.tsx        # Blog listing
-│   │   ├── BlogPost.tsx    # Individual blog posts
-│   │   ├── Contact.tsx     # Contact page
-│   │   └── ...             # Other pages
-│   ├── hooks/              # Custom React hooks
-│   ├── lib/                # Utility functions
-│   └── main.tsx           # App entry point
-├── public/                 # Static assets
-├── tailwind.config.ts     # Tailwind configuration
-└── package.json           # Dependencies and scripts
-```
+
+## 📱 Pages & Features
+
+### Homepage (`/`)
+- Hero section with company introduction
+- Services overview
+- Call-to-action sections
+- Responsive design
+
+### Community (`/community`)
+- User registration and login
+- Community dashboard
+- Events and resources display
+- Forgot password functionality
+
+### Admin (`/admin`)
+- Secure admin authentication
+- User management
+- Content management (events/resources)
+- Real-time data updates
+
+### Contact (`/contact`)
+- Contact form
+- Company information
+- Professional contact details
 
 ## 🎨 Design System
 
 ### Color Palette
-- **Primary**: Blue (#2563eb) to Purple (#7c3aed) gradient
-- **Secondary**: Pink (#ec4899) accents
-- **Neutral**: Gray scale for text and backgrounds
-- **Success**: Green (#10b981) for positive actions
-- **Warning**: Amber (#f59e0b) for alerts
+- **Primary**: Blue (#3B82F6)
+- **Secondary**: Purple (#8B5CF6)
+- **Accent**: Pink (#EC4899)
+- **Neutral**: Gray scale
 
 ### Typography
-- **Headings**: Bold, large text with gradient effects
-- **Body**: Clean, readable font with proper line spacing
-- **Links**: Blue with hover effects
+- **Headings**: Bold, modern sans-serif
+- **Body**: Clean, readable fonts
+- **Responsive**: Scales across devices
 
-### Components
-- **Cards**: Rounded corners with subtle shadows and hover effects
-- **Buttons**: Gradient backgrounds with scale animations
-- **Forms**: Clean inputs with focus states
-- **Navigation**: Fixed header with backdrop blur
+## 🔒 Security Features
 
-## 📝 Content Management
+- **Authentication**: Secure user authentication
+- **Authorization**: Role-based access control
+- **Data Protection**: Encrypted data transmission
+- **Input Validation**: Client and server-side validation
 
-### Blog Posts
-Blog posts are managed in the `src/pages/Blog.tsx` file. Each post includes:
-- Title and excerpt
-- Category and read time
-- Publication date
-- Featured status
-- Icon and color scheme
+## 📈 Performance
 
-### Adding New Blog Posts
-1. Add a new post object to the `blogPosts` array
-2. Include all required fields (title, excerpt, category, etc.)
-3. Add any new categories to the `categories` array
-4. Create detailed content in `BlogPost.tsx` if needed
+- **Code Splitting**: Optimized bundle sizes
+- **Image Optimization**: Responsive images
+- **Caching**: Efficient data caching
+- **SEO**: Search engine optimization
 
 ## 🚀 Deployment
 
-### Build for Production
-```bash
-npm run build
-```
+### Netlify Deployment
+1. Connect your GitHub repository
+2. Configure build settings
+3. Set environment variables
+4. Deploy automatically
 
-### Deploy Options
-- **Vercel**: Connect your GitHub repository for automatic deployments
-- **Netlify**: Drag and drop the `dist` folder
-- **GitHub Pages**: Use GitHub Actions for automatic deployment
-- **Custom Server**: Upload the `dist` folder to your web server
+### Custom Domain
+- Configure DNS settings
+- Set up SSL certificates
+- Update Supabase redirect URLs
 
-## 🔧 Configuration
+## 🧪 Testing
 
-### Environment Variables
-Create a `.env` file in the root directory for any environment-specific configurations.
+### Manual Testing
+- User registration and login
+- Admin functionality
+- Email delivery
+- Responsive design
 
-### Tailwind Configuration
-Customize colors, fonts, and other design tokens in `tailwind.config.ts`.
+### Browser Support
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
 
-### Vite Configuration
-Modify build settings and plugins in `vite.config.ts`.
-
-## 🤝 Contributing
+## 📝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
 ## 📄 License
 
@@ -158,15 +213,21 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **AIdea Digital** - Strategic AI consulting for businesses
 - Website: [aidea-digital.com](https://aidea-digital.com)
-- Email: [contact@aidea-digital.com](mailto:contact@aidea-digital.com)
+- Email: [aideadigitalagency@gmail.com](mailto:aideadigitalagency@gmail.com)
 
 ## 🙏 Acknowledgments
 
-- [Shadcn/ui](https://ui.shadcn.com/) for beautiful UI components
-- [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
-- [Lucide](https://lucide.dev/) for beautiful icons
-- [Vite](https://vitejs.dev/) for fast build tooling
+- Supabase for backend infrastructure
+- Tailwind CSS for styling framework
+- React team for the amazing framework
+- All contributors and supporters
+
+## 📞 Support
+
+For support and inquiries:
+- Email: aideadigitalagency@gmail.com
+- Website: https://aidea-digital.com
 
 ---
 
-Built with ❤️ by AIdea Digital Team
+**Built with ❤️ by AIdea Digital Team**
