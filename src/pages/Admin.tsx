@@ -108,13 +108,116 @@ const Admin = () => {
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Filtered data based on search
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(20);
+  const [totalItems, setTotalItems] = useState(0);
+  
+  // Bulk operations state
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [bulkAction, setBulkAction] = useState<string>('');
+  
+  // Pagination logic
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  
+  // Filtered data based on search (client-side for now, will optimize later)
   const filteredUsers = users.filter(user => 
     user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (user.company_name && user.company_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
     user.phone_number.includes(searchQuery)
   );
+  
+  // Paginated users
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+  
+  // Reset pagination when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+  
+  // Bulk operations functions
+  const handleSelectUser = (userId: string) => {
+    setSelectedUsers(prev => 
+      prev.includes(userId) 
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId]
+    );
+  };
+  
+  const handleSelectAll = () => {
+    if (selectedUsers.length === paginatedUsers.length) {
+      setSelectedUsers([]);
+    } else {
+      setSelectedUsers(paginatedUsers.map(user => user.id));
+    }
+  };
+  
+  const handleBulkAction = async () => {
+    if (!bulkAction || selectedUsers.length === 0) return;
+    
+    try {
+      if (bulkAction === 'activate') {
+        const { error } = await supabase
+          .from('user_profiles')
+          .update({ is_active: true })
+          .in('id', selectedUsers);
+        if (error) throw error;
+        alert(`${selectedUsers.length} users activated successfully!`);
+      } else if (bulkAction === 'deactivate') {
+        const { error } = await supabase
+          .from('user_profiles')
+          .update({ is_active: false })
+          .in('id', selectedUsers);
+        if (error) throw error;
+        alert(`${selectedUsers.length} users deactivated successfully!`);
+      } else if (bulkAction === 'delete') {
+        if (!confirm(`Are you sure you want to delete ${selectedUsers.length} users? This action cannot be undone.`)) {
+          return;
+        }
+        const { error } = await supabase
+          .from('user_profiles')
+          .delete()
+          .in('id', selectedUsers);
+        if (error) throw error;
+        alert(`${selectedUsers.length} users deleted successfully!`);
+      }
+      
+      setSelectedUsers([]);
+      setBulkAction('');
+      await fetchAllData();
+    } catch (error: any) {
+      console.error('Bulk action error:', error);
+      alert(`Error performing bulk action: ${error.message}`);
+    }
+  };
+  
+  // Export users to CSV
+  const exportUsersToCSV = () => {
+    const csvContent = [
+      ['Name', 'Email', 'Phone', 'Company', 'Status', 'Joined Date'],
+      ...users.map(user => [
+        user.full_name,
+        user.email,
+        user.phone_number,
+        user.company_name || '',
+        user.is_active ? 'Active' : 'Inactive',
+        new Date(user.created_at).toLocaleDateString()
+      ])
+    ].map(row => row.map(field => `"${field}"`).join(',')).join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `aidea-users-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   
   const filteredEvents = events.filter(event =>
     event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -268,11 +371,12 @@ const Admin = () => {
     try {
       console.log('Fetching all data...');
       
-      // Fetch users
+      // Fetch users with optimized query
       const { data: usersData, error: usersError } = await supabase
         .from('user_profiles')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(1000); // Limit to prevent memory issues
 
       if (usersError) {
         console.error('Error fetching users:', usersError);
@@ -307,12 +411,10 @@ const Admin = () => {
         resources: resourcesData?.length || 0
       });
 
-      console.log('Raw users data:', usersData);
-      console.log('Setting users state with:', usersData || []);
-
       setUsers(usersData || []);
       setEvents(eventsData || []);
       setResources(resourcesData || []);
+      setTotalItems(usersData?.length || 0);
     } catch (error) {
       console.error('Error fetching data:', error);
       alert(`Error fetching data: ${error}`);
@@ -947,16 +1049,27 @@ const Admin = () => {
             {activeTab === 'users' ? 'Community Members' : activeTab === 'events' ? 'Community Events' : 'Community Resources'}
           </h2>
           <div className="flex items-center space-x-4">
-            {/* Search Bar */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder={`Search ${activeTab}...`}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
-              />
+            {/* Search Bar and Export */}
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder={`Search ${activeTab}...`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
+                />
+              </div>
+              {activeTab === 'users' && (
+                <button
+                  onClick={() => exportUsersToCSV()}
+                  className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Export Users
+                </button>
+              )}
             </div>
             {activeTab !== 'users' && (
               <button
@@ -996,10 +1109,55 @@ const Admin = () => {
                     </button>
                   </div>
                 ) : (
-                <div className="overflow-x-auto">
+                <div>
+                  {/* Bulk Operations */}
+                  {selectedUsers.length > 0 && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <span className="text-sm font-medium text-blue-900">
+                            {selectedUsers.length} user{selectedUsers.length > 1 ? 's' : ''} selected
+                          </span>
+                          <select
+                            value={bulkAction}
+                            onChange={(e) => setBulkAction(e.target.value)}
+                            className="text-sm border border-blue-300 rounded px-3 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          >
+                            <option value="">Choose action...</option>
+                            <option value="activate">Activate Users</option>
+                            <option value="deactivate">Deactivate Users</option>
+                            <option value="delete">Delete Users</option>
+                          </select>
+                          <button
+                            onClick={handleBulkAction}
+                            disabled={!bulkAction}
+                            className="px-4 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Apply
+                          </button>
+                        </div>
+                        <button
+                          onClick={() => setSelectedUsers([])}
+                          className="text-sm text-blue-600 hover:text-blue-700"
+                        >
+                          Clear Selection
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <input
+                            type="checkbox"
+                            checked={selectedUsers.length === paginatedUsers.length && paginatedUsers.length > 0}
+                            onChange={handleSelectAll}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          />
+                        </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           User
                         </th>
@@ -1021,8 +1179,16 @@ const Admin = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {filteredUsers.map((user) => (
+                      {paginatedUsers.map((user) => (
                         <tr key={user.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <input
+                              type="checkbox"
+                              checked={selectedUsers.includes(user.id)}
+                              onChange={() => handleSelectUser(user.id)}
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            />
+                          </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
                               <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
@@ -1084,7 +1250,73 @@ const Admin = () => {
                       ))}
                     </tbody>
                   </table>
+                  </div>
                 </div>
+                )}
+                
+                {/* Pagination Controls for Users */}
+                {activeTab === 'users' && totalPages > 1 && (
+                  <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                    <div className="flex-1 flex justify-between sm:hidden">
+                      <button
+                        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                        disabled={currentPage === 1}
+                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Previous
+                      </button>
+                      <button
+                        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                        disabled={currentPage === totalPages}
+                        className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Next
+                      </button>
+                    </div>
+                    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                      <div>
+                        <p className="text-sm text-gray-700">
+                          Showing <span className="font-medium">{startIndex + 1}</span> to{' '}
+                          <span className="font-medium">{Math.min(endIndex, totalItems)}</span> of{' '}
+                          <span className="font-medium">{totalItems}</span> results
+                        </p>
+                      </div>
+                      <div>
+                        <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                          <button
+                            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                            disabled={currentPage === 1}
+                            className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Previous
+                          </button>
+                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                            const pageNum = Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i;
+                            return (
+                              <button
+                                key={pageNum}
+                                onClick={() => setCurrentPage(pageNum)}
+                                className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                                  currentPage === pageNum
+                                    ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                                    : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                                }`}
+                              >
+                                {pageNum}
+                              </button>
+                            );
+                          })}
+                          <button
+                            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                            disabled={currentPage === totalPages}
+                            className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Next
+                          </button>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             )}
