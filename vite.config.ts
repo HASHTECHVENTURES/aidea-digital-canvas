@@ -19,4 +19,24 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Optimize bundle size
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Separate vendor chunks
+          vendor: ['react', 'react-dom'],
+          supabase: ['@supabase/supabase-js'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs'],
+          icons: ['lucide-react'],
+        },
+      },
+    },
+    // Use default minifier (esbuild)
+    minify: 'esbuild',
+    // Optimize chunk size
+    chunkSizeWarningLimit: 1000,
+  },
+  // Enable caching
+  cacheDir: 'node_modules/.vite',
 }));
