@@ -92,6 +92,9 @@ const Admin = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [formType, setFormType] = useState<'event' | 'resource'>('event');
   
+  // Edit state
+  const [editingItem, setEditingItem] = useState<{type: 'event' | 'resource', id: string} | null>(null);
+  
   // Event form fields
   const [eventForm, setEventForm] = useState({
     title: '',
@@ -368,6 +371,119 @@ const Admin = () => {
 
       alert('Resource added successfully!');
       setShowAddForm(false);
+      setResourceForm({
+        title: '',
+        description: '',
+        resource_type: 'template',
+        file_url: '',
+        is_premium: false,
+        tags: ''
+      });
+      setUploadedFile(null);
+      fetchAllData();
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  // Edit functions
+  const handleEditEvent = (event: Event) => {
+    setEditingItem({ type: 'event', id: event.id });
+    setEventForm({
+      title: event.title,
+      description: event.description || '',
+      event_type: event.event_type,
+      event_date: event.event_date,
+      event_time: event.event_time,
+      location: event.location || '',
+      max_attendees: event.max_attendees?.toString() || '',
+      is_featured: event.is_featured,
+      registration_url: event.registration_url || ''
+    });
+    setShowAddForm(true);
+    setFormType('event');
+  };
+
+  const handleEditResource = (resource: Resource) => {
+    setEditingItem({ type: 'resource', id: resource.id });
+    setResourceForm({
+      title: resource.title,
+      description: resource.description || '',
+      resource_type: resource.resource_type,
+      file_url: resource.file_url || '',
+      is_premium: resource.is_premium,
+      tags: resource.tags ? resource.tags.join(', ') : ''
+    });
+    setShowAddForm(true);
+    setFormType('resource');
+  };
+
+  const handleUpdateEvent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingItem) return;
+    
+    try {
+      const { error } = await supabase
+        .from('community_events')
+        .update({
+          title: eventForm.title,
+          description: eventForm.description,
+          event_type: eventForm.event_type,
+          event_date: eventForm.event_date,
+          event_time: eventForm.event_time,
+          location: eventForm.location,
+          max_attendees: eventForm.max_attendees ? parseInt(eventForm.max_attendees) : null,
+          is_featured: eventForm.is_featured,
+          registration_url: eventForm.registration_url || null
+        })
+        .eq('id', editingItem.id);
+
+      if (error) throw error;
+
+      alert('Event updated successfully!');
+      setShowAddForm(false);
+      setEditingItem(null);
+      setEventForm({
+        title: '',
+        description: '',
+        event_type: 'workshop',
+        event_date: '',
+        event_time: '',
+        location: '',
+        max_attendees: '',
+        is_featured: false,
+        registration_url: ''
+      });
+      fetchAllData();
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  const handleUpdateResource = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingItem) return;
+    
+    try {
+      const tagsArray = resourceForm.tags ? resourceForm.tags.split(',').map(tag => tag.trim()) : [];
+      
+      const { error } = await supabase
+        .from('community_resources')
+        .update({
+          title: resourceForm.title,
+          description: resourceForm.description,
+          resource_type: resourceForm.resource_type,
+          file_url: resourceForm.file_url || null,
+          is_premium: resourceForm.is_premium,
+          tags: tagsArray
+        })
+        .eq('id', editingItem.id);
+
+      if (error) throw error;
+
+      alert('Resource updated successfully!');
+      setShowAddForm(false);
+      setEditingItem(null);
       setResourceForm({
         title: '',
         description: '',
@@ -867,6 +983,17 @@ const Admin = () => {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
+                            handleEditEvent(event);
+                          }}
+                          className="px-3 py-1 text-xs font-medium rounded bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+                          title="Edit Event"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
                             toggleEventStatus(event.id, event.is_active);
                           }}
                           className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
@@ -944,6 +1071,17 @@ const Admin = () => {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
+                            handleEditResource(resource);
+                          }}
+                          className="px-3 py-1 text-xs font-medium rounded bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+                          title="Edit Resource"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
                             toggleResourceStatus(resource.id, resource.is_active);
                           }}
                           className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
@@ -983,10 +1121,13 @@ const Admin = () => {
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Add New {formType === 'event' ? 'Event' : 'Resource'}
+                  {editingItem ? 'Edit' : 'Add New'} {formType === 'event' ? 'Event' : 'Resource'}
                 </h3>
                 <button
-                  onClick={() => setShowAddForm(false)}
+                  onClick={() => {
+                    setShowAddForm(false);
+                    setEditingItem(null);
+                  }}
                   className="text-gray-400 hover:text-gray-600"
                 >
                   ×
@@ -994,7 +1135,7 @@ const Admin = () => {
               </div>
 
               {formType === 'event' ? (
-                <form onSubmit={handleAddEvent} className="space-y-4">
+                <form onSubmit={editingItem?.type === 'event' ? handleUpdateEvent : handleAddEvent} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Event Title *
@@ -1112,11 +1253,14 @@ const Admin = () => {
                       type="submit"
                       className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
                     >
-                      Add Event
+                      {editingItem?.type === 'event' ? 'Update Event' : 'Add Event'}
                     </button>
                     <button
                       type="button"
-                      onClick={() => setShowAddForm(false)}
+                      onClick={() => {
+                        setShowAddForm(false);
+                        setEditingItem(null);
+                      }}
                       className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
                     >
                       Cancel
@@ -1124,7 +1268,7 @@ const Admin = () => {
                   </div>
                 </form>
               ) : (
-                <form onSubmit={handleAddResource} className="space-y-4">
+                <form onSubmit={editingItem?.type === 'resource' ? handleUpdateResource : handleAddResource} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Resource Title *
@@ -1247,11 +1391,14 @@ const Admin = () => {
                       type="submit"
                       className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
                     >
-                      Add Resource
+                      {editingItem?.type === 'resource' ? 'Update Resource' : 'Add Resource'}
                     </button>
                     <button
                       type="button"
-                      onClick={() => setShowAddForm(false)}
+                      onClick={() => {
+                        setShowAddForm(false);
+                        setEditingItem(null);
+                      }}
                       className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
                     >
                       Cancel
