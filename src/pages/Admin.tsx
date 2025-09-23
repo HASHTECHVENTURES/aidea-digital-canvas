@@ -127,8 +127,8 @@ const Admin = () => {
   const filteredUsers = users.filter(user => 
     user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (user.company_name && user.company_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    user.phone_number.includes(searchQuery)
+    user.phone_number.includes(searchQuery) ||
+    (user.company_name && user.company_name.toLowerCase().includes(searchQuery.toLowerCase()))
   );
   
   // Paginated users
@@ -685,10 +685,10 @@ const Admin = () => {
       setShowAddForm(false);
       setEditingItem(null);
       setUserForm({
-        full_name: '',
-        email: '',
-        phone_number: '',
-        company_name: '',
+      full_name: '',
+      email: '',
+      phone_number: '',
+      company_name: '',
         is_active: true
       });
       fetchAllData();
@@ -1015,21 +1015,21 @@ const Admin = () => {
     <div className="min-h-screen bg-gray-50 pt-16">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex justify-between items-center py-3 sm:py-4">
             <div className="flex items-center">
-              <Shield className="h-8 w-8 text-blue-600 mr-3" />
+              <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 mr-2 sm:mr-3" />
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Aidea Digital Admin</h1>
-                <p className="text-sm text-gray-600">Welcome, {admin?.name}</p>
+                <h1 className="text-lg sm:text-xl font-bold text-gray-900">Aidea Digital Admin</h1>
+                <p className="text-xs sm:text-sm text-gray-600">Welcome, {admin?.name}</p>
               </div>
             </div>
             <button
               onClick={handleAdminLogout}
-              className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="flex items-center px-3 sm:px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm sm:text-base touch-manipulation"
             >
-              <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
+              <LogOut className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Sign Out</span>
             </button>
           </div>
         </div>
@@ -1037,66 +1037,74 @@ const Admin = () => {
 
       {/* Navigation Tabs */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+          <nav className="flex space-x-2 sm:space-x-4 lg:space-x-8 overflow-x-auto">
             <button
               onClick={() => setActiveTab('users')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
                 activeTab === 'users'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              <Users className="h-4 w-4 inline mr-2" />
-              Users ({users.length})
+              <Users className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Users</span>
+              <span className="sm:hidden">({users.length})</span>
+              <span className="hidden sm:inline">({users.length})</span>
             </button>
             <button
               onClick={() => setActiveTab('events')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
                 activeTab === 'events'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              <Calendar className="h-4 w-4 inline mr-2" />
-              Events ({events.length})
+              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Events</span>
+              <span className="sm:hidden">({events.length})</span>
+              <span className="hidden sm:inline">({events.length})</span>
             </button>
             <button
               onClick={() => setActiveTab('resources')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
                 activeTab === 'resources'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              <BookOpen className="h-4 w-4 inline mr-2" />
-              Resources ({resources.length})
+              <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Resources</span>
+              <span className="sm:hidden">({resources.length})</span>
+              <span className="hidden sm:inline">({resources.length})</span>
             </button>
             <button
               onClick={() => setActiveTab('messages')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
                 activeTab === 'messages'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              <Mail className="h-4 w-4 inline mr-2" />
-              Messages ({contactMessages.length})
+              <Mail className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Messages</span>
+              <span className="sm:hidden">({contactMessages.length})</span>
+              <span className="hidden sm:inline">({contactMessages.length})</span>
             </button>
           </nav>
         </div>
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Add New Button */}
-        <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-900 capitalize">
-            {activeTab === 'users' ? 'Community Members' : activeTab === 'events' ? 'Community Events' : 'Community Resources'}
+        <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 capitalize">
+            {activeTab === 'users' ? 'Community Members' : activeTab === 'events' ? 'Community Events' : activeTab === 'resources' ? 'Community Resources' : 'Contact Messages'}
           </h2>
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
             {/* Search Bar and Export */}
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <input
@@ -1104,16 +1112,17 @@ const Admin = () => {
                   placeholder={`Search ${activeTab}...`}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-64 text-sm sm:text-base"
                 />
               </div>
               {activeTab === 'users' && (
                 <button
                   onClick={() => exportUsersToCSV()}
-                  className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  className="flex items-center justify-center px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base touch-manipulation"
                 >
-                  <Download className="h-4 w-4 mr-2" />
-                  Export Users
+                  <Download className="h-4 w-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Export Users</span>
+                  <span className="sm:hidden">Export</span>
                 </button>
               )}
             </div>
@@ -1123,10 +1132,11 @@ const Admin = () => {
                   setFormType(activeTab === 'events' ? 'event' : 'resource');
                   setShowAddForm(true);
                 }}
-                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex items-center justify-center px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base touch-manipulation"
               >
-                <Plus className="h-4 w-4 mr-2" />
-                Add New {activeTab === 'events' ? 'Event' : 'Resource'}
+                <Plus className="h-4 w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Add New {activeTab === 'events' ? 'Event' : 'Resource'}</span>
+                <span className="sm:hidden">Add {activeTab === 'events' ? 'Event' : 'Resource'}</span>
               </button>
             )}
           </div>
