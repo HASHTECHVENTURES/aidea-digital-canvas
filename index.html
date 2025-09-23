@@ -44,8 +44,10 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Service Worker Registration -->
+    <!-- Service Worker Registration - Temporarily Disabled -->
     <script>
+      // Temporarily disabled to fix website loading issues
+      /*
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
@@ -57,6 +59,7 @@
             });
         });
       }
+      */
     </script>
   </body>
 </html>

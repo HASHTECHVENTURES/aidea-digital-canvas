@@ -74,6 +74,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Skip chrome extension and other non-http schemes
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    return;
+  }
+
   event.respondWith(
     caches.match(request)
       .then((cachedResponse) => {
@@ -93,11 +98,16 @@ self.addEventListener('fetch', (event) => {
             // Clone the response
             const responseToCache = response.clone();
 
-            // Cache dynamic content
-            caches.open(DYNAMIC_CACHE)
-              .then((cache) => {
-                cache.put(request, responseToCache);
-              });
+            // Cache dynamic content (only for same-origin requests)
+            if (url.origin === location.origin) {
+              caches.open(DYNAMIC_CACHE)
+                .then((cache) => {
+                  cache.put(request, responseToCache);
+                })
+                .catch((error) => {
+                  console.log('Cache put failed:', error);
+                });
+            }
 
             return response;
           })
