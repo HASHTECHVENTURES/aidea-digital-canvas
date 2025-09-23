@@ -81,12 +81,13 @@ const Admin = () => {
   const [password, setPassword] = useState('');
   
   // Active tab
-  const [activeTab, setActiveTab] = useState<'users' | 'events' | 'resources'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'events' | 'resources' | 'messages'>('users');
   
   // Data state
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [resources, setResources] = useState<Resource[]>([]);
+  const [contactMessages, setContactMessages] = useState<any[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
   
   // Form state for adding new items
@@ -405,15 +406,28 @@ const Admin = () => {
         throw resourcesError;
       }
 
+      // Fetch contact messages
+      const { data: messagesData, error: messagesError } = await supabase
+        .from('contact_messages')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (messagesError) {
+        console.error('Error fetching contact messages:', messagesError);
+        // Don't throw error for messages, just log it
+      }
+
       console.log('Data fetched successfully:', {
         users: usersData?.length || 0,
         events: eventsData?.length || 0,
-        resources: resourcesData?.length || 0
+        resources: resourcesData?.length || 0,
+        messages: messagesData?.length || 0
       });
 
       setUsers(usersData || []);
       setEvents(eventsData || []);
       setResources(resourcesData || []);
+      setContactMessages(messagesData || []);
       setTotalItems(usersData?.length || 0);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -700,6 +714,27 @@ const Admin = () => {
       fetchAllData();
     } catch (error: any) {
       alert(`Error deleting user: ${error.message}`);
+    }
+  };
+
+  const updateMessageStatus = async (messageId: string, status: string) => {
+    try {
+      const { error } = await supabase
+        .from('contact_messages')
+        .update({ status })
+        .eq('id', messageId);
+      
+      if (error) throw error;
+      
+      // Update local state
+      setContactMessages(prev => 
+        prev.map(msg => 
+          msg.id === messageId ? { ...msg, status } : msg
+        )
+      );
+    } catch (error: any) {
+      console.error('Error updating message status:', error);
+      alert(`Error updating message status: ${error.message}`);
     }
   };
 
@@ -1036,6 +1071,17 @@ const Admin = () => {
             >
               <BookOpen className="h-4 w-4 inline mr-2" />
               Resources ({resources.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('messages')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'messages'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <Mail className="h-4 w-4 inline mr-2" />
+              Messages ({contactMessages.length})
             </button>
           </nav>
         </div>
@@ -1518,6 +1564,86 @@ const Admin = () => {
                   </div>
                 ))}
                       </>
+                )}
+              </div>
+            )}
+
+            {/* Messages Tab */}
+            {activeTab === 'messages' && (
+              <div className="grid gap-6">
+                {contactMessages.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Mail className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">No contact messages yet</p>
+                    <p className="text-sm text-gray-400 mt-2">Messages from your contact form will appear here</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {contactMessages.map((message) => (
+                      <div key={message.id} className="bg-white rounded-lg shadow p-6">
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="flex-1">
+                            <div className="flex items-center mb-2">
+                              <h3 className="text-lg font-semibold text-gray-900 mr-3">
+                                {message.subject}
+                              </h3>
+                              <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                                message.status === 'new' 
+                                  ? 'bg-blue-100 text-blue-800' 
+                                  : message.status === 'read'
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : message.status === 'replied'
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-gray-100 text-gray-800'
+                              }`}>
+                                {message.status}
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                              <div>
+                                <p className="text-sm text-gray-600">
+                                  <strong>From:</strong> {message.name} ({message.email})
+                                </p>
+                                {message.company && (
+                                  <p className="text-sm text-gray-600">
+                                    <strong>Company:</strong> {message.company}
+                                  </p>
+                                )}
+                              </div>
+                              <div>
+                                <p className="text-sm text-gray-600">
+                                  <strong>Date:</strong> {new Date(message.created_at).toLocaleDateString()}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-4">
+                              <p className="text-gray-800 whitespace-pre-wrap">{message.message}</p>
+                            </div>
+                          </div>
+                          <div className="flex space-x-2 ml-4">
+                            <button
+                              onClick={() => {
+                                // Mark as read
+                                updateMessageStatus(message.id, 'read');
+                              }}
+                              className="px-3 py-1 text-xs font-medium rounded bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+                            >
+                              Mark Read
+                            </button>
+                            <button
+                              onClick={() => {
+                                // Mark as replied
+                                updateMessageStatus(message.id, 'replied');
+                              }}
+                              className="px-3 py-1 text-xs font-medium rounded bg-green-100 text-green-700 hover:bg-green-200 transition-colors"
+                            >
+                              Mark Replied
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
             )}

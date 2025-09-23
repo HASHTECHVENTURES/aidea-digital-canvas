@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../integrations/supabase/client';
 
 const Contact = () => {
   const { user } = useAuth();
@@ -42,13 +43,28 @@ const Contact = () => {
     setSubmitStatus('idle');
 
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Here you would typically send the data to your backend
-      console.log('Form submitted:', formData);
-      
+      // Save contact message to Supabase
+      const { data, error } = await supabase
+        .from('contact_messages')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            company: formData.company || null,
+            subject: formData.subject,
+            message: formData.message
+          }
+        ])
+        .select();
+
+      if (error) {
+        console.error('Database error:', error);
+        throw error;
+      }
+
+      console.log('Contact message saved:', data);
       setSubmitStatus('success');
+      
       // Reset form but keep user data if logged in
       if (user) {
         setFormData({
