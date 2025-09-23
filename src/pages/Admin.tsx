@@ -1104,6 +1104,7 @@ const Admin = () => {
                     </button>
                   </div>
                 ) : (
+                      <>
                       {filteredEvents.map((event) => (
                   <div key={event.id} className="bg-white rounded-lg shadow p-6">
                     <div className="flex justify-between items-start mb-4">
@@ -1181,6 +1182,7 @@ const Admin = () => {
                     </div>
                   </div>
                 ))}
+                      </>
                 )}
               </div>
             )}
@@ -1200,6 +1202,7 @@ const Admin = () => {
                     </button>
                   </div>
                 ) : (
+                      <>
                       {filteredResources.map((resource) => (
                   <div key={resource.id} className="bg-white rounded-lg shadow p-6">
                     <div className="flex justify-between items-start mb-4">
@@ -1282,6 +1285,7 @@ const Admin = () => {
                     </div>
                   </div>
                 ))}
+                      </>
                 )}
               </div>
             )}
