@@ -186,7 +186,7 @@ const Index = () => {
       </section>
 
       {/* Strategic Approach Section */}
-      <section className="py-16 lg:py-20 mb-24 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section className="py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 lg:mb-16 fade-in-on-scroll">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -197,15 +197,15 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 items-stretch">
             {strategicSteps.map((step, index) => (
-              <div key={index} className="fade-in-on-scroll text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 lg:mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div key={index} className="fade-in-on-scroll text-center group flex flex-col">
+                <div className="inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-6 group-hover:scale-110 transition-transform duration-300 mx-auto">
                   <step.icon className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
                 </div>
-                <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-500 h-full flex flex-col">
-                  <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-3 lg:mb-4">{step.number}</div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">{step.title}</h3>
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 flex flex-col flex-grow">
+                  <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-4">{step.number}</div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">{step.title}</h3>
                   <p className="text-gray-600 leading-relaxed flex-grow">{step.description}</p>
                 </div>
               </div>

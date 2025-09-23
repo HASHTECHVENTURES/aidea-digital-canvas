@@ -325,8 +325,8 @@ const Contact = () => {
                   </div>
                 )}
 
-                <button
-                  type="submit"
+                  <button
+                    type="submit"
                     disabled={isSubmitting}
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
