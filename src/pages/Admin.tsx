@@ -93,7 +93,16 @@ const Admin = () => {
   const [formType, setFormType] = useState<'event' | 'resource'>('event');
   
   // Edit state
-  const [editingItem, setEditingItem] = useState<{type: 'event' | 'resource', id: string} | null>(null);
+  const [editingItem, setEditingItem] = useState<{type: 'event' | 'resource' | 'user', id: string} | null>(null);
+  
+  // User form fields
+  const [userForm, setUserForm] = useState({
+    full_name: '',
+    email: '',
+    phone_number: '',
+    company_name: '',
+    is_active: true
+  });
   
   // Event form fields
   const [eventForm, setEventForm] = useState({
@@ -499,6 +508,73 @@ const Admin = () => {
     }
   };
 
+  // User management functions
+  const handleEditUser = (user: UserProfile) => {
+    setEditingItem({ type: 'user', id: user.id });
+    setUserForm({
+      full_name: user.full_name,
+      email: user.email,
+      phone_number: user.phone_number,
+      company_name: user.company_name || '',
+      is_active: user.is_active
+    });
+    setShowAddForm(true);
+    setFormType('event'); // We'll handle this differently
+  };
+
+  const handleUpdateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingItem || editingItem.type !== 'user') return;
+    
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({
+          full_name: userForm.full_name,
+          phone_number: userForm.phone_number,
+          company_name: userForm.company_name,
+          is_active: userForm.is_active
+        })
+        .eq('id', editingItem.id);
+
+      if (error) throw error;
+
+      alert('User updated successfully!');
+      setShowAddForm(false);
+      setEditingItem(null);
+      setUserForm({
+        full_name: '',
+        email: '',
+        phone_number: '',
+        company_name: '',
+        is_active: true
+      });
+      fetchAllData();
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  const handleDeleteUser = async (userId: string, userName: string) => {
+    if (!confirm(`Are you sure you want to delete user "${userName}"? This action cannot be undone.`)) {
+      return;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .delete()
+        .eq('id', userId);
+
+      if (error) throw error;
+
+      alert(`User "${userName}" deleted successfully!`);
+      fetchAllData();
+    } catch (error: any) {
+      alert(`Error deleting user: ${error.message}`);
+    }
+  };
+
   const toggleEventStatus = async (eventId: string, currentStatus: boolean) => {
     try {
       console.log('Toggling event status:', eventId, currentStatus);
@@ -888,6 +964,9 @@ const Admin = () => {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Status
                         </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -931,6 +1010,24 @@ const Admin = () => {
                             }`}>
                               {user.is_active ? 'Active' : 'Inactive'}
                             </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <div className="flex space-x-2">
+                              <button
+                                onClick={() => handleEditUser(user)}
+                                className="px-3 py-1 text-xs font-medium rounded bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+                                title="Edit User"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => handleDeleteUser(user.id, user.full_name)}
+                                className="px-3 py-1 text-xs font-medium rounded bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                                title="Delete User"
+                              >
+                                Delete
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -1121,7 +1218,7 @@ const Admin = () => {
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  {editingItem ? 'Edit' : 'Add New'} {formType === 'event' ? 'Event' : 'Resource'}
+                  {editingItem ? 'Edit' : 'Add New'} {editingItem?.type === 'user' ? 'User' : formType === 'event' ? 'Event' : 'Resource'}
                 </h3>
                 <button
                   onClick={() => {
@@ -1134,7 +1231,86 @@ const Admin = () => {
                 </button>
               </div>
 
-              {formType === 'event' ? (
+              {editingItem?.type === 'user' ? (
+                <form onSubmit={handleUpdateUser} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={userForm.full_name}
+                      onChange={(e) => setUserForm({...userForm, full_name: e.target.value})}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      value={userForm.email}
+                      disabled
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-500"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      value={userForm.phone_number}
+                      onChange={(e) => setUserForm({...userForm, phone_number: e.target.value})}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Company Name
+                    </label>
+                    <input
+                      type="text"
+                      value={userForm.company_name}
+                      onChange={(e) => setUserForm({...userForm, company_name: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={userForm.is_active}
+                        onChange={(e) => setUserForm({...userForm, is_active: e.target.checked})}
+                        className="mr-2"
+                      />
+                      <span className="text-sm font-medium text-gray-700">Active User</span>
+                    </label>
+                  </div>
+                  <div className="flex space-x-3 pt-4">
+                    <button
+                      type="submit"
+                      className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                      Update User
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowAddForm(false);
+                        setEditingItem(null);
+                      }}
+                      className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              ) : formType === 'event' ? (
                 <form onSubmit={editingItem?.type === 'event' ? handleUpdateEvent : handleAddEvent} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
