@@ -17,7 +17,8 @@ import {
   MapPin,
   Download,
   Star,
-  Shield
+  Shield,
+  Search
 } from 'lucide-react';
 import { supabase } from '../integrations/supabase/client';
 
@@ -103,6 +104,31 @@ const Admin = () => {
     company_name: '',
     is_active: true
   });
+  
+  // Search state
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Filtered data based on search
+  const filteredUsers = users.filter(user => 
+    user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (user.company_name && user.company_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    user.phone_number.includes(searchQuery)
+  );
+  
+  const filteredEvents = events.filter(event =>
+    event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (event.description && event.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    event.event_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (event.location && event.location.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+  
+  const filteredResources = resources.filter(resource =>
+    resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (resource.description && resource.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    resource.resource_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (resource.tags && resource.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())))
+  );
   
   // Event form fields
   const [eventForm, setEventForm] = useState({
@@ -920,18 +946,31 @@ const Admin = () => {
           <h2 className="text-2xl font-bold text-gray-900 capitalize">
             {activeTab === 'users' ? 'Community Members' : activeTab === 'events' ? 'Community Events' : 'Community Resources'}
           </h2>
-          {activeTab !== 'users' && (
-            <button
-              onClick={() => {
-                setFormType(activeTab === 'events' ? 'event' : 'resource');
-                setShowAddForm(true);
-              }}
-              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add New {activeTab === 'events' ? 'Event' : 'Resource'}
-            </button>
-          )}
+          <div className="flex items-center space-x-4">
+            {/* Search Bar */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder={`Search ${activeTab}...`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
+              />
+            </div>
+            {activeTab !== 'users' && (
+              <button
+                onClick={() => {
+                  setFormType(activeTab === 'events' ? 'event' : 'resource');
+                  setShowAddForm(true);
+                }}
+                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add New {activeTab === 'events' ? 'Event' : 'Resource'}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Data Loading */}
@@ -945,6 +984,18 @@ const Admin = () => {
             {/* Users Tab */}
             {activeTab === 'users' && (
               <div className="bg-white rounded-lg shadow overflow-hidden">
+                {filteredUsers.length === 0 && searchQuery ? (
+                  <div className="text-center py-12">
+                    <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">No users found matching "{searchQuery}"</p>
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="mt-2 text-blue-600 hover:text-blue-700 text-sm"
+                    >
+                      Clear search
+                    </button>
+                  </div>
+                ) : (
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
@@ -970,7 +1021,7 @@ const Admin = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {users.map((user) => (
+                      {filteredUsers.map((user) => (
                         <tr key={user.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
@@ -1034,13 +1085,26 @@ const Admin = () => {
                     </tbody>
                   </table>
                 </div>
+                )}
               </div>
             )}
 
             {/* Events Tab */}
             {activeTab === 'events' && (
               <div className="grid gap-6">
-                {events.map((event) => (
+                {filteredEvents.length === 0 && searchQuery ? (
+                  <div className="text-center py-12">
+                    <Calendar className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">No events found matching "{searchQuery}"</p>
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="mt-2 text-blue-600 hover:text-blue-700 text-sm"
+                    >
+                      Clear search
+                    </button>
+                  </div>
+                ) : (
+                      {filteredEvents.map((event) => (
                   <div key={event.id} className="bg-white rounded-lg shadow p-6">
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex-1">
@@ -1117,13 +1181,26 @@ const Admin = () => {
                     </div>
                   </div>
                 ))}
+                )}
               </div>
             )}
 
             {/* Resources Tab */}
             {activeTab === 'resources' && (
               <div className="grid gap-6">
-                {resources.map((resource) => (
+                {filteredResources.length === 0 && searchQuery ? (
+                  <div className="text-center py-12">
+                    <BookOpen className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">No resources found matching "{searchQuery}"</p>
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="mt-2 text-blue-600 hover:text-blue-700 text-sm"
+                    >
+                      Clear search
+                    </button>
+                  </div>
+                ) : (
+                      {filteredResources.map((resource) => (
                   <div key={resource.id} className="bg-white rounded-lg shadow p-6">
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex-1">
@@ -1205,6 +1282,7 @@ const Admin = () => {
                     </div>
                   </div>
                 ))}
+                )}
               </div>
             )}
           </>
