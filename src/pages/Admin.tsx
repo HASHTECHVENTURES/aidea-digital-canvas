@@ -1009,12 +1009,11 @@ const Admin = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Description *
+                      Description
                     </label>
                     <textarea
                       value={eventForm.description}
                       onChange={(e) => setEventForm({...eventForm, description: e.target.value})}
-                      required
                       rows={3}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
@@ -1140,12 +1139,11 @@ const Admin = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Description *
+                      Description
                     </label>
                     <textarea
                       value={resourceForm.description}
                       onChange={(e) => setResourceForm({...resourceForm, description: e.target.value})}
-                      required
                       rows={3}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
