@@ -73,8 +73,7 @@ const Community = () => {
         .from('community_events')
         .select('*')
         .eq('is_active', true)
-        .order('event_date', { ascending: true })
-        .limit(3);
+        .order('event_date', { ascending: true });
 
       if (eventsError) throw eventsError;
 
@@ -83,8 +82,7 @@ const Community = () => {
         .from('community_resources')
         .select('*')
         .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(3);
+        .order('created_at', { ascending: false });
 
       if (resourcesError) throw resourcesError;
 
@@ -522,7 +520,7 @@ const Community = () => {
             
             {/* Dashboard Cards */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              {/* Resources Card */}
+              {/* Resources Card - Made larger and scrollable */}
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                 <div className="bg-gradient-to-r from-green-500 to-blue-600 p-6">
                   <div className="flex items-center">
@@ -533,7 +531,7 @@ const Community = () => {
                     </div>
                   </div>
                 </div>
-                <div className="p-6">
+                <div className="p-6 max-h-96 overflow-y-auto">
                   {dataLoading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -547,13 +545,13 @@ const Community = () => {
                   ) : (
                     <div className="space-y-4">
                       {resources.map((resource) => (
-                        <div key={resource.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                          <div className="flex items-center">
-                            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                        <div key={resource.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center flex-1 min-w-0">
+                            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
                               <Download className="h-5 w-5 text-blue-600" />
                             </div>
-                            <div>
-                              <h4 className="font-medium text-gray-900">{resource.title}</h4>
+                            <div className="min-w-0 flex-1">
+                              <h4 className="font-medium text-gray-900 truncate">{resource.title}</h4>
                               <p className="text-sm text-gray-600">{resource.resource_type}</p>
                               {resource.description && (
                                 <p className="text-xs text-gray-500 mt-1 line-clamp-2">
@@ -562,7 +560,7 @@ const Community = () => {
                               )}
                             </div>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2 flex-shrink-0 ml-3">
                             {resource.is_premium && (
                               <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
                                 Premium
@@ -592,7 +590,7 @@ const Community = () => {
                 </div>
               </div>
 
-              {/* Events Card */}
+              {/* Events Card - Made scrollable for consistency */}
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                 <div className="bg-gradient-to-r from-purple-500 to-pink-600 p-6">
                   <div className="flex items-center">
@@ -603,7 +601,7 @@ const Community = () => {
                     </div>
                   </div>
                 </div>
-                <div className="p-6">
+                <div className="p-6 max-h-96 overflow-y-auto">
                   {dataLoading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
@@ -617,7 +615,7 @@ const Community = () => {
                   ) : (
                     <div className="space-y-4">
                       {events.map((event) => (
-                        <div key={event.id} className="p-4 bg-gray-50 rounded-lg">
+                        <div key={event.id} className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                           <div className="flex items-start justify-between mb-2">
                             <h4 className="font-medium text-gray-900">{event.title}</h4>
                             {event.is_featured && (
@@ -638,8 +636,8 @@ const Community = () => {
                             <MapPin className="h-4 w-4 mr-1" />
                             {event.location}
                           </div>
-                </div>
-              ))}
+                        </div>
+                      ))}
                       <button className="w-full mt-4 bg-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors">
                         View All Events
                       </button>
