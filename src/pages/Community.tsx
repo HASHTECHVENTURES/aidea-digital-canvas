@@ -519,19 +519,19 @@ const Community = () => {
             </div>
             
             {/* Dashboard Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-12">
               {/* Resources Card - Made larger and scrollable */}
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-green-500 to-blue-600 p-6">
+                <div className="bg-gradient-to-r from-green-500 to-blue-600 p-4 sm:p-6">
                   <div className="flex items-center">
-                    <BookOpen className="h-8 w-8 text-white mr-3" />
+                    <BookOpen className="h-6 w-6 sm:h-8 sm:w-8 text-white mr-3" />
                     <div>
-                      <h3 className="text-xl font-bold text-white">Community Resources</h3>
-                      <p className="text-blue-100">Access exclusive tools and templates</p>
+                      <h3 className="text-lg sm:text-xl font-bold text-white">Community Resources</h3>
+                      <p className="text-blue-100 text-sm sm:text-base">Access exclusive tools and templates</p>
                     </div>
                   </div>
                 </div>
-                <div className="p-6 max-h-96 overflow-y-auto">
+                <div className="p-4 sm:p-6 max-h-96 overflow-y-auto">
                   {dataLoading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -545,38 +545,48 @@ const Community = () => {
                   ) : (
                     <div className="space-y-4">
                       {resources.map((resource) => (
-                        <div key={resource.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                          <div className="flex items-center flex-1 min-w-0">
-                            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                              <Download className="h-5 w-5 text-blue-600" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <h4 className="font-medium text-gray-900 truncate">{resource.title}</h4>
-                              <p className="text-sm text-gray-600">{resource.resource_type}</p>
-                              {resource.description && (
-                                <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                                  {resource.description}
-                                </p>
+                        <div key={resource.id} className="bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                          {/* Mobile-first responsive layout */}
+                          <div className="p-4">
+                            {/* Top row: Icon, title, and premium badge */}
+                            <div className="flex items-start justify-between mb-3">
+                              <div className="flex items-center flex-1 min-w-0">
+                                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                                  <Download className="h-5 w-5 text-blue-600" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="font-medium text-gray-900 text-sm sm:text-base truncate">{resource.title}</h4>
+                                  <p className="text-xs sm:text-sm text-gray-600">{resource.resource_type}</p>
+                                </div>
+                              </div>
+                              {resource.is_premium && (
+                                <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium flex-shrink-0 ml-2">
+                                  Premium
+                                </span>
                               )}
                             </div>
-                          </div>
-                          <div className="flex items-center space-x-2 flex-shrink-0 ml-3">
-                            {resource.is_premium && (
-                              <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
-                                Premium
-                              </span>
+                            
+                            {/* Description row */}
+                            {resource.description && (
+                              <div className="mb-3">
+                                <p className="text-xs text-gray-500 line-clamp-2">
+                                  {resource.description}
+                                </p>
+                              </div>
                             )}
+                            
+                            {/* Action buttons row - responsive layout */}
                             {resource.file_url && (
-                              <div className="flex space-x-2">
+                              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                                 <button
                                   onClick={() => handlePreview(resource.file_url, resource.title)}
-                                  className="px-3 py-1 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 transition-colors"
+                                  className="flex-1 sm:flex-none px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors touch-manipulation min-h-[44px] flex items-center justify-center"
                                 >
                                   Preview
                                 </button>
                                 <button
                                   onClick={() => handleDownload(resource.file_url, resource.title)}
-                                  className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition-colors"
+                                  className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors touch-manipulation min-h-[44px] flex items-center justify-center"
                                 >
                                   Download
                                 </button>
@@ -592,16 +602,16 @@ const Community = () => {
 
               {/* Events Card - Made scrollable for consistency */}
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-600 p-6">
+                <div className="bg-gradient-to-r from-purple-500 to-pink-600 p-4 sm:p-6">
                   <div className="flex items-center">
-                    <Calendar className="h-8 w-8 text-white mr-3" />
+                    <Calendar className="h-6 w-6 sm:h-8 sm:w-8 text-white mr-3" />
                     <div>
-                      <h3 className="text-xl font-bold text-white">Upcoming Events</h3>
-                      <p className="text-pink-100">Join our community events</p>
+                      <h3 className="text-lg sm:text-xl font-bold text-white">Upcoming Events</h3>
+                      <p className="text-pink-100 text-sm sm:text-base">Join our community events</p>
                     </div>
                   </div>
                 </div>
-                <div className="p-6 max-h-96 overflow-y-auto">
+                <div className="p-4 sm:p-6 max-h-96 overflow-y-auto">
                   {dataLoading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
@@ -616,29 +626,31 @@ const Community = () => {
                     <div className="space-y-4">
                       {events.map((event) => (
                         <div key={event.id} className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                          <div className="flex items-start justify-between mb-2">
-                            <h4 className="font-medium text-gray-900">{event.title}</h4>
+                          <div className="flex items-start justify-between mb-3">
+                            <h4 className="font-medium text-gray-900 text-sm sm:text-base flex-1 pr-2">{event.title}</h4>
                             {event.is_featured && (
-                              <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                              <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium flex-shrink-0">
                                 Featured
                               </span>
                             )}
                           </div>
-                          <div className="flex items-center text-sm text-gray-600 mb-2">
-                            <Calendar className="h-4 w-4 mr-1" />
-                            {formatEventDate(event.event_date)}
-                          </div>
-                          <div className="flex items-center text-sm text-gray-600 mb-2">
-                            <Clock className="h-4 w-4 mr-1" />
-                            {event.event_time}
-                          </div>
-                          <div className="flex items-center text-sm text-gray-600">
-                            <MapPin className="h-4 w-4 mr-1" />
-                            {event.location}
+                          <div className="space-y-2">
+                            <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                              <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
+                              <span>{formatEventDate(event.event_date)}</span>
+                            </div>
+                            <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                              <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
+                              <span>{event.event_time}</span>
+                            </div>
+                            <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                              <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+                              <span className="truncate">{event.location}</span>
+                            </div>
                           </div>
                         </div>
                       ))}
-                      <button className="w-full mt-4 bg-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                      <button className="w-full mt-4 bg-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors touch-manipulation min-h-[44px]">
                         View All Events
                       </button>
                     </div>
