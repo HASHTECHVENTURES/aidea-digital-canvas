@@ -226,22 +226,16 @@ const Index = () => {
 
   const testimonials: Testimonial[] = [
     {
-      quote: "AIdea Digital helped us move from idea to implementation faster than we imagined. Their understanding of both AI and business is rare.",
-      author: "Sarah Chen",
-      role: "Startup Founder",
-      company: "TechVenture Inc."
+      quote: "AIdea Digital transformed our concept into a fully functional MVP that exceeded our expectations. From initial design to AI integration and deployment, their team guided us through every step. They didn't just build an app—they set up intelligent AI systems that have become core to our operations. The speed of delivery and quality of work is remarkable. Karma Terra wouldn't be where it is today without their expertise.",
+      author: "Manisha Shekhar Asthana",
+      role: "Founder",
+      company: "Karma Terra"
     },
     {
-      quote: "What stood out was not the technology, but the clarity of execution. They simplified AI adoption for our teams without disruption.",
-      author: "Michael Rodriguez",
-      role: "SME CEO",
-      company: "Global Solutions Ltd."
-    },
-    {
-      quote: "They simplified AI adoption for our teams without disruption. The measurable results we saw in the first quarter exceeded our expectations.",
-      author: "Jennifer Park",
-      role: "Corporate Leader",
-      company: "Enterprise Corp"
+      quote: "Choosing AIdea Digital to build our website was one of the best decisions we made. They delivered a stunning, responsive website that not only looks professional but performs flawlessly. Their team understood our vision from day one and brought it to life with exceptional attention to detail. The website has significantly improved our online presence and user engagement. Highly recommend their services!",
+      author: "Amit Shah",
+      role: "Founder",
+      company: "Offee"
     }
   ];
 
