@@ -10,41 +10,50 @@ import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AuthProvider } from "./contexts/AuthContext";
 import { performanceMonitor } from "./utils/performance";
+import { SkeletonCard, SkeletonText } from "./components/ui/Skeleton";
 
 // Lazy load heavy components for better performance
 const Community = lazy(() => import("./pages/Community"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Admin = lazy(() => import("./pages/Admin"));
 const Contact = lazy(() => import("./pages/Contact"));
+const CaseStudies = lazy(() => import("./pages/CaseStudies"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
 // Loading component for Suspense
 const LoadingSpinner = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+  <div className="min-h-screen flex items-center justify-center bg-gray-950">
+    <div className="w-full max-w-md space-y-4">
+      <SkeletonCard />
+      <SkeletonText lines={3} />
+    </div>
   </div>
 );
 
 const App = () => {
   useEffect(() => {
-    // Initialize performance monitoring
-    console.log('🚀 AIdea Digital Website - Performance monitoring enabled');
-    
-    // Log performance score after page load
-    setTimeout(() => {
-      const score = performanceMonitor.getPerformanceScore();
-      console.log(`📊 Performance Score: ${score}/100`);
+    // Initialize performance monitoring (only in development)
+    if (import.meta.env.DEV) {
+      console.log('🚀 AIdea Digital Website - Performance monitoring enabled');
       
-      if (score < 70) {
-        console.warn('⚠️ Performance score is below 70. Consider optimization.');
-      }
-    }, 3000);
+      // Log performance score after page load
+      setTimeout(() => {
+        const score = performanceMonitor.getPerformanceScore();
+        console.log(`📊 Performance Score: ${score}/100`);
+        
+        if (score < 70) {
+          console.warn('⚠️ Performance score is below 70. Consider optimization.');
+        }
+      }, 3000);
+    }
 
     // Cleanup on unmount
     return () => {
-      performanceMonitor.cleanup();
+      if (import.meta.env.DEV) {
+        performanceMonitor.cleanup();
+      }
     };
   }, []);
 
@@ -56,11 +65,12 @@ const App = () => {
           <Sonner />
           <AuthProvider>
             <BrowserRouter>
-              <div className="min-h-screen bg-white">
+              <div className="min-h-screen bg-gray-950">
                 <Navigation />
                 <Suspense fallback={<LoadingSpinner />}>
                   <Routes>
                     <Route path="/" element={<Index />} />
+                    <Route path="/case-studies" element={<CaseStudies />} />
                     <Route path="/community" element={<Community />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/admin" element={<Admin />} />

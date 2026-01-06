@@ -251,31 +251,30 @@ const Community = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-950">
       {/* Hero Section */}
-      <section className="pt-20 pb-12 sm:pb-16 lg:pt-32 lg:pb-32 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-20 pb-8 sm:pt-24 sm:pb-12 md:pt-32 md:pb-16 lg:pt-40 lg:pb-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-blue-950/30 to-purple-950/20"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.15),transparent_70%)]"></div>
+        <div className="relative modern-container px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-              AIdea Digital{' '}
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Community
-              </span>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-tight px-2 sm:px-0">
+              AIdea Digital Community
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4">
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-400 mb-4 sm:mb-6 md:mb-8 max-w-3xl mx-auto leading-relaxed px-2 sm:px-0">
               Join our exclusive community of AI-forward business leaders. Access premium resources, attend exclusive events, and connect with like-minded professionals.
             </p>
             
             {user && (
-                <div className="inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-full font-medium">
-                  <User className="h-5 w-5 mr-2" />
+                <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-green-600/20 border border-green-500/30 text-green-300 rounded-full font-medium text-xs sm:text-sm">
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 mr-2 flex-shrink-0" />
                 Welcome back, {user.user_metadata?.full_name || user.email?.split('@')[0]}!
               </div>
             )}
@@ -285,23 +284,23 @@ const Community = () => {
 
       {/* Authentication Section - Only for non-logged-in users */}
       {!user && (
-        <section className="py-16 bg-white">
-          <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gray-950 px-4 sm:px-6 lg:px-8">
+          <div className="modern-container max-w-md mx-auto">
+            <div className="modern-card p-4 sm:p-6 md:p-8">
+              <div className="text-center mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">
                   {isLogin ? 'Welcome Back' : 'Join Our Community'}
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-xs sm:text-sm md:text-base text-gray-400">
                   {isLogin ? 'Sign in to access your community benefits' : 'Create your account to access exclusive resources'}
                 </p>
               </div>
 
-              <form onSubmit={handleAuth} className="space-y-6">
+              <form onSubmit={handleAuth} className="space-y-4 sm:space-y-6">
                 {!isLogin && (
                   <>
                     <div>
-                      <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="fullName" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                         Full Name *
                       </label>
                       <input
@@ -310,13 +309,13 @@ const Community = () => {
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         required={!isLogin}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-900/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base text-white placeholder-gray-500 min-h-[44px]"
                         placeholder="Enter your full name"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="phoneNumber" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                         Phone Number *
                       </label>
                       <input
@@ -325,13 +324,13 @@ const Community = () => {
                         value={phoneNumber}
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         required={!isLogin}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-900/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base text-white placeholder-gray-500 min-h-[44px]"
                         placeholder="Enter your phone number"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="companyName" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                         Company Name
                       </label>
                       <input
@@ -339,7 +338,7 @@ const Community = () => {
                         type="text"
                         value={companyName}
                         onChange={(e) => setCompanyName(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-900/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base text-white placeholder-gray-500 min-h-[44px]"
                         placeholder="Enter your company name (optional)"
                       />
                     </div>
@@ -347,7 +346,7 @@ const Community = () => {
                 )}
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                     Email Address *
                   </label>
                   <input
@@ -356,13 +355,13 @@ const Community = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-900/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base text-white placeholder-gray-500 min-h-[44px]"
                     placeholder="Enter your email"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="password" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                     Password *
                   </label>
                   <input
@@ -371,14 +370,14 @@ const Community = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-900/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base text-white placeholder-gray-500 min-h-[44px]"
                     placeholder="Enter your password"
                   />
                 </div>
 
                 {!isLogin && (
                   <div>
-                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="confirmPassword" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                       Confirm Password *
                     </label>
                     <input
@@ -387,7 +386,7 @@ const Community = () => {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required={!isLogin}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-900/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base text-white placeholder-gray-500 min-h-[44px]"
                       placeholder="Confirm your password"
                     />
                   </div>
@@ -396,7 +395,7 @@ const Community = () => {
                 <button
                   type="submit"
                   disabled={authLoading}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 sm:py-3.5 px-4 sm:px-5 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-h-[44px] flex items-center justify-center"
                 >
                   {authLoading ? (
                     <div className="flex items-center justify-center">
@@ -412,10 +411,10 @@ const Community = () => {
                 </button>
               </form>
 
-              <div className="mt-6 text-center space-y-3">
+              <div className="mt-4 sm:mt-6 text-center space-y-2 sm:space-y-3">
                 <button
                   onClick={toggleAuthMode}
-                  className="text-blue-600 hover:text-blue-800 font-medium block w-full"
+                  className="text-blue-600 hover:text-blue-800 font-medium block w-full text-xs sm:text-sm min-h-[32px] flex items-center justify-center"
                 >
                   {isLogin ? "Don't have an account? Create one" : "Already have an account? Sign in"}
                 </button>
@@ -423,7 +422,7 @@ const Community = () => {
                 {isLogin && (
                   <button
                     onClick={() => setShowForgotPassword(true)}
-                    className="text-gray-500 hover:text-gray-700 text-sm block w-full"
+                    className="text-gray-400 hover:text-white text-xs sm:text-sm block w-full min-h-[32px] flex items-center justify-center"
                   >
                     Forgot your password?
                   </button>
@@ -437,27 +436,27 @@ const Community = () => {
       {/* Forgot Password Modal */}
       {showForgotPassword && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+          <div className="modern-card p-6 sm:p-8 w-full max-w-md">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold text-gray-900">Reset Password</h3>
+              <h3 className="text-xl font-bold text-white">Reset Password</h3>
               <button
                 onClick={() => {
                   setShowForgotPassword(false);
                   setForgotPasswordEmail('');
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-white"
               >
                 <X className="h-6 w-6" />
               </button>
             </div>
 
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-400 mb-6">
               Enter your email address and we'll send you a link to reset your password.
             </p>
 
             <form onSubmit={handleForgotPassword} className="space-y-4">
               <div>
-                <label htmlFor="forgotEmail" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="forgotEmail" className="block text-sm font-medium text-gray-300 mb-2">
                   Email Address
                 </label>
                 <input
@@ -466,7 +465,7 @@ const Community = () => {
                   value={forgotPasswordEmail}
                   onChange={(e) => setForgotPasswordEmail(e.target.value)}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-gray-900/50 border border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-500"
                   placeholder="Enter your email address"
                 />
               </div>
@@ -496,7 +495,7 @@ const Community = () => {
                   setShowForgotPassword(false);
                   setForgotPasswordEmail('');
                 }}
-                className="text-gray-500 hover:text-gray-700 text-sm"
+                className="text-gray-400 hover:text-white text-sm"
               >
                 Back to Sign In
               </button>
@@ -507,21 +506,21 @@ const Community = () => {
 
       {/* Community Dashboard - Only for logged-in users */}
       {user && (
-        <section className="py-16 lg:py-20 bg-white">
+        <section className="py-12 sm:py-16 lg:py-20 bg-gray-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
                 Your Community Dashboard
               </h2>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+              <p className="text-base sm:text-lg text-gray-400 max-w-3xl mx-auto">
                 Access exclusive resources and join upcoming events
               </p>
             </div>
             
             {/* Dashboard Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12 px-4 sm:px-6 lg:px-8">
               {/* Resources Card - Made larger and scrollable */}
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+              <div className="modern-card overflow-hidden">
                 <div className="bg-gradient-to-r from-green-500 to-blue-600 p-4 sm:p-6">
                   <div className="flex items-center">
                     <BookOpen className="h-6 w-6 sm:h-8 sm:w-8 text-white mr-3" />
@@ -535,17 +534,17 @@ const Community = () => {
                   {dataLoading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                      <p className="text-gray-600">Loading resources...</p>
+                      <p className="text-gray-400">Loading resources...</p>
                     </div>
                   ) : resources.length === 0 ? (
                     <div className="text-center py-8">
                       <BookOpen className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                      <p className="text-gray-600">No resources available</p>
+                      <p className="text-gray-400">No resources available</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
                       {resources.map((resource) => (
-                        <div key={resource.id} className="bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <div key={resource.id} className="bg-gray-900/50 rounded-lg hover:bg-gray-900 transition-colors">
                           {/* Mobile-first responsive layout */}
                           <div className="p-4">
                             {/* Top row: Icon, title, and premium badge */}
@@ -555,8 +554,8 @@ const Community = () => {
                                   <Download className="h-5 w-5 text-blue-600" />
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                  <h4 className="font-medium text-gray-900 text-sm sm:text-base truncate">{resource.title}</h4>
-                                  <p className="text-xs sm:text-sm text-gray-600">{resource.resource_type}</p>
+                                  <h4 className="font-medium text-white text-sm sm:text-base truncate">{resource.title}</h4>
+                                  <p className="text-xs sm:text-sm text-gray-400">{resource.resource_type}</p>
                                 </div>
                               </div>
                               {resource.is_premium && (
@@ -601,7 +600,7 @@ const Community = () => {
               </div>
 
               {/* Events Card - Made scrollable for consistency */}
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+              <div className="modern-card overflow-hidden">
                 <div className="bg-gradient-to-r from-purple-500 to-pink-600 p-4 sm:p-6">
                   <div className="flex items-center">
                     <Calendar className="h-6 w-6 sm:h-8 sm:w-8 text-white mr-3" />
@@ -615,19 +614,19 @@ const Community = () => {
                   {dataLoading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
-                      <p className="text-gray-600">Loading events...</p>
+                      <p className="text-gray-400">Loading events...</p>
                     </div>
                   ) : events.length === 0 ? (
                     <div className="text-center py-8">
                       <Calendar className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                      <p className="text-gray-600">No events scheduled</p>
+                      <p className="text-gray-400">No events scheduled</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
                       {events.map((event) => (
-                        <div key={event.id} className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <div key={event.id} className="p-4 bg-gray-900/50 rounded-lg hover:bg-gray-900 transition-colors">
                           <div className="flex items-start justify-between mb-3">
-                            <h4 className="font-medium text-gray-900 text-sm sm:text-base flex-1 pr-2">{event.title}</h4>
+                            <h4 className="font-medium text-white text-sm sm:text-base flex-1 pr-2">{event.title}</h4>
                             {event.is_featured && (
                               <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium flex-shrink-0">
                                 Featured
@@ -635,15 +634,15 @@ const Community = () => {
                             )}
                           </div>
                           <div className="space-y-2">
-                            <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                            <div className="flex items-center text-xs sm:text-sm text-gray-400">
                               <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
                               <span>{formatEventDate(event.event_date)}</span>
                             </div>
-                            <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                            <div className="flex items-center text-xs sm:text-sm text-gray-400">
                               <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
                               <span>{event.event_time}</span>
                             </div>
-                            <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                            <div className="flex items-center text-xs sm:text-sm text-gray-400">
                               <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
                               <span className="truncate">{event.location}</span>
                             </div>
@@ -663,7 +662,7 @@ const Community = () => {
             <div className="text-center">
               <button
                 onClick={handleSignOut}
-                className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-300"
+                className="inline-flex items-center px-6 py-3 bg-gray-800 text-gray-300 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-300"
               >
                 Sign Out
               </button>
@@ -675,10 +674,10 @@ const Community = () => {
       {/* PDF Preview Modal */}
       {previewPdf && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] flex flex-col">
+          <div className="modern-card max-w-4xl w-full max-h-[90vh] flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">{previewPdf.title}</h3>
+            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+              <h3 className="text-lg font-semibold text-white">{previewPdf.title}</h3>
               <button
                 onClick={closePreview}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -704,7 +703,7 @@ const Community = () => {
               <div className="flex space-x-3">
                 <button
                   onClick={closePreview}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
                 >
                   Close
                 </button>

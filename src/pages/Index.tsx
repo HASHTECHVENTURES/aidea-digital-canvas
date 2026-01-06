@@ -1,20 +1,40 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Brain, Target, Zap, TrendingUp, CheckCircle, Search, ClipboardList, Wrench } from 'lucide-react';
+import { 
+  ArrowRight, 
+  Target, 
+  Zap, 
+  TrendingUp, 
+  CheckCircle, 
+  Search, 
+  ClipboardList, 
+  Wrench, 
+  Rocket, 
+  Users, 
+  Briefcase, 
+  Building2, 
+  Quote, 
+  Star 
+} from 'lucide-react';
 import { useIsMobile } from '../hooks/use-mobile';
+import Section from '../components/ui/Section';
+import Card from '../components/ui/Card';
+import Heading from '../components/ui/Heading';
+import OptimizedImage from '../components/ui/OptimizedImage';
+import { ICON_SIZES } from '../constants/design-system';
 
 const Index = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    const observerOptions = {
+    const observerOptions: IntersectionObserverInit = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
     };
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate-fade-in');
         }
@@ -22,132 +42,270 @@ const Index = () => {
     }, observerOptions);
 
     const elements = document.querySelectorAll('.fade-in-on-scroll');
-    elements.forEach(el => observer.observe(el));
+    elements.forEach((el) => observer.observe(el));
 
     // Enhanced text animations with mobile optimization
     const textElements = document.querySelectorAll('.animate-text');
     textElements.forEach((el, index) => {
       setTimeout(() => {
         el.classList.add('opacity-100', 'translate-y-0');
-      }, isMobile ? index * 100 : index * 150); // Faster animations on mobile
+      }, isMobile ? index * 100 : index * 150);
     });
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, [isMobile]);
 
-  const valueProps = [
+  interface ValueProp {
+    icon: React.ComponentType<{ className?: string }>;
+    title: string;
+    description: string;
+    image: string;
+  }
+
+  interface Service {
+    title: string;
+    description: string;
+    features: string[];
+  }
+
+  interface StrategicStep {
+    number: string;
+    title: string;
+    description: string;
+    icon: React.ComponentType<{ className?: string }>;
+  }
+
+  interface Testimonial {
+    quote: string;
+    author: string;
+    role: string;
+    company: string;
+  }
+
+  const valueProps: ValueProp[] = [
     {
-      icon: Brain,
-      title: "AI MVP Validation",
-      description: "Validate your AI ideas before you build them",
+      icon: Zap,
+      title: "Execution-First Mindset",
+      description: "Strategy without execution is noise",
       image: "/lovable-uploads/79db6077-e04d-4bfe-b860-906ba8087f23.png"
     },
     {
       icon: Target,
-      title: "Generative AI Strategy", 
-      description: "Custom GPT solutions that actually work",
+      title: "Business-Aligned AI", 
+      description: "No generic or experimental solutions",
       image: "/lovable-uploads/e6b63f3a-cd03-4dbd-aad1-c822afc4c206.png"
     },
     {
-      icon: Zap,
-      title: "Rapid Implementation",
-      description: "Go from concept to market in weeks, not months",
+      icon: Rocket,
+      title: "Speed and Agility",
+      description: "Rapid builds without technical debt",
       image: "/lovable-uploads/9e2baf8b-772e-4b51-b2e3-b4c41b31efa0.png"
     },
     {
-      icon: TrendingUp,
-      title: "Measurable Results",
-      description: "Track ROI and business impact from day one",
+      icon: Users,
+      title: "Founder-Friendly",
+      description: "We speak business, not just tech",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80"
     }
   ];
 
-  const services = [
+  const services: Service[] = [
     {
-      title: "AI Strategy & MVP Consulting",
-      description: "Validate your AI ideas and create actionable roadmaps",
+      title: "AI Strategy & Implementation",
+      description: "We help you identify where AI creates real value, define use cases, and implement them across your organization.",
       features: [
-        "AI opportunity mapping",
-        "MVP validation and scoping",
-        "Technology stack recommendations",
-        "ROI projections and business case development"
+        "AI readiness assessment",
+        "Use-case prioritization",
+        "Tool and model selection",
+        "Deployment roadmap"
       ]
     },
     {
-      title: "Generative AI & Automation",
-      description: "Custom GPT solutions and intelligent automation",
+      title: "Mock Development",
+      description: "Before investing heavily, we build functional mock solutions to validate feasibility and experience.",
       features: [
-        "Custom prompt engineering",
-        "Workflow automation design",
-        "AI-powered content generation",
-        "Chatbot and assistant development"
+        "Proof of concept (PoC)",
+        "AI demos for internal buy-in",
+        "Investor and stakeholder showcases"
       ]
     },
     {
-      title: "Training & Support",
-      description: "Empower your team with AI knowledge and ongoing guidance",
+      title: "MVP Development",
+      description: "We build lean, scalable MVPs with AI at the core.",
       features: [
-        "Executive AI workshops",
-        "Team training programs",
-        "Best practices documentation",
-        "Ongoing support and mentoring"
+        "Fast build cycles",
+        "User feedback loops",
+        "Ready for pilots, demos, and early customers"
+      ]
+    },
+    {
+      title: "App Development",
+      description: "AI-enabled mobile and web applications designed for real users.",
+      features: [
+        "Android, iOS, and web apps",
+        "AI-powered features embedded from day one",
+        "Performance and scalability focused"
+      ]
+    },
+    {
+      title: "Software Development",
+      description: "Custom software solutions aligned to your business workflows.",
+      features: [
+        "AI-augmented platforms",
+        "Backend, frontend, and API development",
+        "Secure, scalable architectures"
+      ]
+    },
+    {
+      title: "Content & Video Development",
+      description: "AI-assisted content and high-impact videos that convert, educate, and scale.",
+      features: [
+        "Blogs, articles, reports",
+        "Sales and marketing content",
+        "Explainer videos and product demos",
+        "Founder and brand storytelling"
+      ]
+    },
+    {
+      title: "Workflow Automation",
+      description: "We automate repetitive tasks across departments using AI and automation tools.",
+      features: [
+        "CRM, HR, finance, and operations",
+        "No-code and low-code automation",
+        "Productivity and cost optimization"
+      ]
+    },
+    {
+      title: "Presentation Development",
+      description: "Business-ready presentations powered by clarity and AI-assisted storytelling.",
+      features: [
+        "Investor pitch decks",
+        "Sales decks",
+        "Strategy and board presentations"
+      ]
+    },
+    {
+      title: "Voice Automation",
+      description: "Voice-based AI solutions that improve customer engagement.",
+      features: [
+        "AI voice bots",
+        "Call automation",
+        "Multilingual support"
       ]
     }
   ];
 
-  const strategicSteps = [
+  const strategicSteps: StrategicStep[] = [
     {
       number: "01",
-      title: "Discover & Assess",
-      description: "We analyze your business, identify AI opportunities, and assess your readiness for AI implementation.",
+      title: "Discovery Call",
+      description: "Understand your business problem",
       icon: Search
     },
     {
       number: "02",
-      title: "Strategy & Planning",
-      description: "We create a detailed AI roadmap with clear priorities, timelines, and success metrics.",
+      title: "Solution Design",
+      description: "AI use cases mapped to outcomes",
       icon: ClipboardList
     },
     {
       number: "03",
-      title: "Implementation Support",
-      description: "We guide you through implementation, providing ongoing support and optimization recommendations.",
+      title: "Build & Deploy",
+      description: "Fast, secure implementation",
       icon: Wrench
+    },
+    {
+      number: "04",
+      title: "Scale & Optimize",
+      description: "Continuous improvement",
+      icon: TrendingUp
+    }
+  ];
+
+  const testimonials: Testimonial[] = [
+    {
+      quote: "AIdea Digital helped us move from idea to implementation faster than we imagined. Their understanding of both AI and business is rare.",
+      author: "Sarah Chen",
+      role: "Startup Founder",
+      company: "TechVenture Inc."
+    },
+    {
+      quote: "What stood out was not the technology, but the clarity of execution. They simplified AI adoption for our teams without disruption.",
+      author: "Michael Rodriguez",
+      role: "SME CEO",
+      company: "Global Solutions Ltd."
+    },
+    {
+      quote: "They simplified AI adoption for our teams without disruption. The measurable results we saw in the first quarter exceeded our expectations.",
+      author: "Jennifer Park",
+      role: "Corporate Leader",
+      company: "Enterprise Corp"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
+    <div className="min-h-screen bg-gray-950 overflow-hidden">
       {/* Hero Section */}
-      <section ref={heroRef} className="relative pt-16 pb-8 sm:pt-20 sm:pb-12 lg:pt-24 lg:pb-16">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"></div>
-        <div className="relative max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-12 items-center">
-            <div className="text-center lg:text-left space-y-3 sm:space-y-4 lg:space-y-6 order-2 lg:order-1">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out leading-tight">
-                Make AI Work for{' '}
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-pulse">
-                  Your Business
-                </span>
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto lg:mx-0 animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200 leading-relaxed">
-                Strategy-first AI consulting for founders who want results, not just technology
+      <section ref={heroRef} className="relative pt-16 pb-8 sm:pt-20 sm:pb-12 md:pt-24 md:pb-16 lg:pt-28 lg:pb-20 overflow-hidden">
+        {/* Video Background */}
+        <div className="absolute inset-0 z-0 w-full h-full overflow-hidden">
+          <iframe 
+            allow="fullscreen;autoplay" 
+            allowFullScreen 
+            src="https://streamable.com/e/1y76q6?autoplay=1&muted=1&loop=1" 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] h-[100vh] min-w-[100vw] min-h-[56.25vw] border-none"
+            style={{
+              pointerEvents: 'none'
+            }}
+            title="Hero background video"
+          />
+          {/* Overlay to hide Streamable watermark (bottom-right corner) */}
+          <div className="absolute bottom-0 right-0 w-24 h-12 sm:w-32 sm:h-16 md:w-40 md:h-20 bg-gray-950/95 z-[2] pointer-events-none blur-sm"></div>
+          <div className="absolute bottom-0 right-0 w-20 h-10 sm:w-28 sm:h-14 md:w-36 md:h-18 bg-gray-950 z-[2] pointer-events-none"></div>
+          {/* Overlay to hide Streamable watermark (bottom-left corner) */}
+          <div className="absolute bottom-0 left-0 w-24 h-12 sm:w-32 sm:h-16 md:w-40 md:h-20 bg-gray-950/95 z-[2] pointer-events-none blur-sm"></div>
+          <div className="absolute bottom-0 left-0 w-20 h-10 sm:w-28 sm:h-14 md:w-36 md:h-18 bg-gray-950 z-[2] pointer-events-none"></div>
+        </div>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gray-950/70 z-[1]"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-950/50 via-blue-950/20 to-purple-950/10 z-[1]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)] z-[1]"></div>
+        <div className="relative modern-container z-10 px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
+            <div className="text-center lg:text-left space-y-4 sm:space-y-5 order-2 lg:order-1 relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-full mb-3 sm:mb-4 w-full sm:w-auto justify-center lg:justify-start" role="banner">
+                <span className="text-gray-300 text-xs sm:text-sm md:text-base whitespace-normal sm:whitespace-nowrap text-center sm:text-left">We design AI solutions that matter, businesses can't resist</span>
+                <ArrowRight className={`${ICON_SIZES.sm} text-blue-400 flex-shrink-0 hidden sm:block`} aria-hidden="true" />
+              </div>
+              <Heading level={1} className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out mb-3 sm:mb-4">
+                AI That Works. Not Just AI That Impresses.
+              </Heading>
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-2xl mx-auto lg:mx-0 animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200 leading-relaxed mb-4 sm:mb-6 px-2 sm:px-0">
+                AIdea Digital helps startups, SMEs, and enterprises design, build, and deploy practical AI solutions that improve speed, efficiency, and decision-making. We go beyond experimentation—our focus is implementation, adoption, and measurable business impact.
               </p>
               <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400">
-                <Link to="/contact" className="inline-flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm sm:text-base md:text-lg font-semibold rounded-full hover:shadow-2xl transition-all duration-500 hover:scale-105 transform w-full sm:w-auto justify-center touch-manipulation">
-                  Start Your Free AI Strategy Call
-                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                <Link 
+                  to="/contact" 
+                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm md:text-base font-semibold rounded-lg glow-blue transition-all duration-300 hover:scale-105 transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 w-full sm:w-auto min-h-[44px]"
+                  aria-label="Book a consultation with AIdea Digital"
+                >
+                  Book a consultation
+                  <ArrowRight className={`ml-2 ${ICON_SIZES.sm} group-hover:translate-x-1 transition-transform duration-300`} aria-hidden="true" />
                 </Link>
               </div>
             </div>
-            <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600 order-1 lg:order-2">
-              <div className="relative group">
-                <img 
-                  src="/lovable-uploads/f125d18d-2d29-4803-ac30-85d405119421.png" 
-                  alt="AI Human Partnership" 
-                  className="w-full h-auto rounded-lg sm:rounded-xl lg:rounded-2xl shadow-lg sm:shadow-xl lg:shadow-2xl hover:scale-105 transition-all duration-700 hover:rotate-1 max-w-sm sm:max-w-md mx-auto lg:max-w-none" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-lg sm:rounded-xl lg:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600 order-1 lg:order-2 relative z-10">
+              <div className="relative group w-full">
+                <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl sm:rounded-3xl blur-xl sm:blur-2xl group-hover:blur-3xl transition-all duration-700 z-0" aria-hidden="true"></div>
+                <div className="relative z-10">
+                  <OptimizedImage
+                    src="/lovable-uploads/f125d18d-2d29-4803-ac30-85d405119421.png"
+                    alt="AI Human Partnership - Visual representation of AI collaboration"
+                    className="w-full h-auto rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl group-hover:scale-[1.02] transition-all duration-700 max-w-full sm:max-w-md mx-auto lg:max-w-full border border-gray-800"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -155,156 +313,231 @@ const Index = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16 fade-in-on-scroll">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-              Your AI Thinking Partner Not Just Another Vendor
-            </h2>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto">
-              We help you think strategically about AI before you build anything. Our consulting services focus on strategy, validation, and practical implementation.
+      <Section background="primary">
+        <div className="modern-container px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12 fade-in-on-scroll">
+            <Heading level={2} align="center" className="mb-3 sm:mb-4">
+              Our Services
+            </Heading>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
+              Comprehensive AI solutions tailored to your business needs
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             {services.map((service, index) => (
-              <div key={index} className="fade-in-on-scroll bg-gradient-to-br from-white to-gray-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-100 hover:shadow-xl transition-all duration-500 hover:scale-105 h-full flex flex-col">
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 lg:mb-4">{service.title}</h3>
-                <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 lg:mb-6 flex-grow">{service.description}</p>
-                <ul className="space-y-1 sm:space-y-2 lg:space-y-3">
+              <Card key={index} className="fade-in-on-scroll h-full flex flex-col" padding="md">
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3">{service.title}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-400 mb-3 sm:mb-4 flex-grow leading-relaxed">{service.description}</p>
+                <ul className="space-y-1.5 sm:space-y-2" role="list">
                   {service.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
-                      <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 text-green-500 mr-2 lg:mr-3 mt-0.5 flex-shrink-0" />
-                      <span className="text-xs sm:text-sm lg:text-base text-gray-700">{feature}</span>
+                      <CheckCircle className={`${ICON_SIZES.sm} text-blue-400 mr-2 mt-0.5 flex-shrink-0`} aria-hidden="true" />
+                      <span className="text-xs sm:text-sm text-gray-300 leading-relaxed">{feature}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* Strategic Approach Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16 fade-in-on-scroll">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-              Our Strategic Approach
-            </h2>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
-              We follow a proven methodology to ensure your AI initiatives deliver real business value
+      <Section background="secondary">
+        <div className="modern-container px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12 fade-in-on-scroll">
+            <Heading level={2} align="center" className="mb-3 sm:mb-4">
+              How We Engage
+            </Heading>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
+              A proven process to turn AI into a business advantage
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 items-stretch">
             {strategicSteps.map((step, index) => (
               <div key={index} className="fade-in-on-scroll text-center group flex flex-col">
-                <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 mx-auto">
-                  <step.icon className="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 text-white" />
+                <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl sm:rounded-2xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto glow-blue" aria-hidden="true">
+                  <step.icon className="h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9 lg:h-10 lg:w-10 text-white" />
                 </div>
-                <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-500 flex flex-col flex-grow">
-                  <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-600 mb-2 sm:mb-4">{step.number}</div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 sm:mb-4">{step.title}</h3>
-                  <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed flex-grow">{step.description}</p>
-                </div>
+                <Card className="flex flex-col flex-grow" padding="md">
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2 sm:mb-3">{step.number}</div>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2">{step.title}</h3>
+                  <p className="text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed flex-grow">{step.description}</p>
+                </Card>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* Why Choose Aidea Digital Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16 fade-in-on-scroll">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">Why Choose AIdea Digital?</h2>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto">
-              We don't just implement AI we help you think strategically about where and how AI can transform your business
+      {/* Who We Work With Section */}
+      <Section background="primary">
+        <div className="modern-container px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12 fade-in-on-scroll">
+            <Heading level={2} align="center" className="mb-3 sm:mb-4">Who We Work With</Heading>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0 whitespace-nowrap">
+              If you are clear about the problem but unsure how to apply AI at scale, we are your execution partner.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+            <Card className="fade-in-on-scroll text-center group flex flex-col items-center" padding="md">
+              <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 glow-blue" aria-hidden="true">
+                <Rocket className={ICON_SIZES.lg + " text-white"} />
+              </div>
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2">Startups</h3>
+              <p className="text-xs sm:text-sm md:text-base text-gray-400">Building AI-first products or MVPs</p>
+            </Card>
+            <Card className="fade-in-on-scroll text-center group flex flex-col items-center" padding="md">
+              <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 glow-blue" aria-hidden="true">
+                <Building2 className={ICON_SIZES.lg + " text-white"} />
+              </div>
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2">SMEs</h3>
+              <p className="text-xs sm:text-sm md:text-base text-gray-400">Looking to automate workflows and reduce costs</p>
+            </Card>
+            <Card className="fade-in-on-scroll text-center group flex flex-col items-center sm:col-span-2 md:col-span-1" padding="md">
+              <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 glow-blue" aria-hidden="true">
+                <Briefcase className={ICON_SIZES.lg + " text-white"} />
+              </div>
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2">Enterprises</h3>
+              <p className="text-xs sm:text-sm md:text-base text-gray-400">Adopting AI across functions and teams</p>
+            </Card>
+          </div>
+        </div>
+      </Section>
+
+      {/* Why Choose Aidea Digital Section */}
+      <Section background="secondary">
+        <div className="modern-container px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12 fade-in-on-scroll">
+            <Heading level={2} align="center" className="mb-3 sm:mb-4">Why AIdea Digital</Heading>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
+              What sets us apart in delivering practical AI solutions
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
             {valueProps.map((prop, index) => (
-              <div key={index} className="fade-in-on-scroll text-center p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl lg:rounded-2xl hover:shadow-xl sm:hover:shadow-2xl transition-all duration-500 hover:scale-105 sm:hover:scale-110 hover:-translate-y-1 sm:hover:-translate-y-2 bg-gradient-to-br from-white to-gray-50 border border-gray-100 group h-full flex flex-col" style={{
+              <Card key={index} className="fade-in-on-scroll text-center group h-full flex flex-col" padding="md" style={{
                 animationDelay: `${index * 150}ms`
               }}>
-                <div className="mb-2 sm:mb-3 lg:mb-4 overflow-hidden rounded-lg flex-shrink-0">
-                  <img src={prop.image} alt={prop.title} className="w-full h-24 sm:h-28 md:h-32 lg:h-36 object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="mb-3 sm:mb-4 overflow-hidden rounded-xl flex-shrink-0">
+                  <OptimizedImage 
+                    src={prop.image} 
+                    alt={`${prop.title} - Visual representation`}
+                    className="w-full h-24 sm:h-28 md:h-32 lg:h-36 object-cover group-hover:scale-110 transition-transform duration-700 rounded-lg" 
+                  />
                 </div>
-                <div className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-2 sm:mb-3 lg:mb-4 group-hover:rotate-12 transition-transform duration-500 mx-auto flex-shrink-0">
-                  <prop.icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8 text-white" />
+                <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl sm:rounded-2xl mb-3 group-hover:rotate-6 transition-transform duration-500 mx-auto flex-shrink-0 glow-blue" aria-hidden="true">
+                  <prop.icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
                 </div>
-                <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-gray-900 mb-1 sm:mb-2 group-hover:text-blue-600 transition-colors duration-300">{prop.title}</h3>
-                <p className="text-xs sm:text-sm md:text-base text-gray-600 group-hover:text-gray-700 transition-colors duration-300 flex-grow leading-relaxed">{prop.description}</p>
-              </div>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">{prop.title}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-400 flex-grow leading-relaxed">{prop.description}</p>
+              </Card>
             ))}
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* AI Innovation Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 w-20 h-20 bg-blue-600 rounded-full animate-bounce"></div>
-          <div className="absolute bottom-10 right-10 w-16 h-16 bg-purple-600 rounded-full animate-bounce delay-300"></div>
-        </div>
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative">
+      <Section background="primary" className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(59,130,246,0.1),transparent_50%)]" aria-hidden="true"></div>
+        <div className="modern-container relative px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
             <div className="fade-in-on-scroll order-2 lg:order-1">
               <div className="relative group">
-                <img 
+                <OptimizedImage 
                   src="/lovable-uploads/dad9c074-a979-47b0-a68e-d58dc5734461.png" 
-                  alt="Strategic AI Implementation" 
-                  className="w-full h-auto rounded-lg sm:rounded-xl lg:rounded-2xl shadow-lg sm:shadow-xl hover:scale-105 transition-all duration-700 hover:-rotate-1" 
+                  alt="Strategic AI Implementation - Visual representation of AI transformation"
+                  className="w-full h-auto rounded-xl sm:rounded-2xl shadow-2xl hover:scale-105 transition-all duration-700 border border-gray-800" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/10 to-purple-600/10 rounded-lg sm:rounded-xl lg:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true"></div>
               </div>
             </div>
-            <div className="fade-in-on-scroll order-1 lg:order-2">
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 lg:mb-6 animate-text opacity-0 translate-x-8 transition-all duration-1000 ease-out">
-                Strategic AI Implementation
-              </h2>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-3 sm:mb-4 lg:mb-6 animate-text opacity-0 translate-x-8 transition-all duration-1000 ease-out delay-200">
-                We help you identify the right AI opportunities and implement them with precision. No wasted resources, no trial and error.
+            <div className="fade-in-on-scroll order-1 lg:order-2 space-y-3 sm:space-y-4">
+              <Heading level={2} className="mb-3 sm:mb-4">
+                Beyond Experimentation
+              </Heading>
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 mb-4 sm:mb-6 leading-relaxed">
+                We go beyond experimentation—our focus is implementation, adoption, and measurable business impact. We help you identify the right AI opportunities and implement them with precision.
               </p>
-              <ul className="space-y-2 sm:space-y-3 lg:space-y-4">
-                {["Business-first approach to AI strategy", "Proven frameworks for AI implementation", "Measurable ROI from day one"].map((item, index) => (
-                  <li key={index} className="flex items-center animate-text opacity-0 translate-x-8 transition-all duration-1000 ease-out" style={{
-                    transitionDelay: `${300 + index * 150}ms`
-                  }}>
-                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-green-500 mr-2 lg:mr-3 hover:scale-110 transition-transform duration-300 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm md:text-base text-gray-700">{item}</span>
+              <ul className="space-y-2 sm:space-y-3" role="list">
+                {["Execution-first mindset", "Business-aligned AI solutions", "Measurable ROI from day one"].map((item, index) => (
+                  <li key={index} className="flex items-start">
+                    <CheckCircle className={`${ICON_SIZES.md} text-blue-400 mr-2 sm:mr-3 mt-0.5 flex-shrink-0`} aria-hidden="true" />
+                    <span className="text-xs sm:text-sm md:text-base text-gray-300">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
         </div>
-      </section>
+      </Section>
+
+      {/* Testimonials Section */}
+      <Section background="secondary">
+        <div className="modern-container px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12 fade-in-on-scroll">
+            <Heading level={2} align="center" className="mb-3 sm:mb-4">
+              Testimonials
+            </Heading>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
+              What our clients say about working with us
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="fade-in-on-scroll flex flex-col" padding="md">
+                <div className="mb-3 sm:mb-4 flex items-center space-x-1" role="img" aria-label="5 star rating">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className={`${ICON_SIZES.sm} sm:${ICON_SIZES.md} fill-yellow-400 text-yellow-400`} aria-hidden="true" />
+                  ))}
+                </div>
+                <Quote className={`${ICON_SIZES.md} sm:${ICON_SIZES.lg} text-blue-400 mb-3 sm:mb-4 opacity-50`} aria-hidden="true" />
+                <blockquote className="text-xs sm:text-sm md:text-base text-gray-300 mb-3 sm:mb-4 flex-grow leading-relaxed italic">
+                  "{testimonial.quote}"
+                </blockquote>
+                <div className="border-t border-gray-800 pt-3 sm:pt-4">
+                  <p className="text-sm sm:text-base font-bold text-white mb-1">
+                    {testimonial.author}
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-400 mb-1">
+                    {testimonial.role}
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-500">
+                    {testimonial.company}
+                  </p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </Section>
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-24 h-24 bg-white/5 rounded-full animate-pulse delay-700"></div>
-          <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-white/10 rounded-full animate-bounce"></div>
-        </div>
-        <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 text-center relative">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4 fade-in-on-scroll animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-            Ready to Make AI Work for Your Business?
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-blue-100 mb-4 sm:mb-6 lg:mb-8 fade-in-on-scroll animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200">
-            Book a free strategy call and discover your AI opportunities in just 30 minutes
+      <Section background="gradient">
+        <div className="modern-container text-center relative px-4 sm:px-6 lg:px-8">
+          <Heading level={2} align="center" className="mb-3 sm:mb-4 fade-in-on-scroll text-white">
+            Ready to Turn AI into a Business Advantage?
+          </Heading>
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg text-blue-100 mb-6 sm:mb-8 fade-in-on-scroll max-w-3xl mx-auto px-2 sm:px-0">
+            Let's discuss how AI can work practically for your business
           </p>
-          <div className="fade-in-on-scroll animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400">
-            <Link to="/contact" className="inline-flex items-center px-4 sm:px-6 lg:px-8 py-3 sm:py-4 bg-white text-blue-600 text-sm sm:text-base lg:text-lg font-semibold rounded-full hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:-translate-y-1 group touch-manipulation">
-              Let's Connect
-              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform duration-300" />
+          <div className="fade-in-on-scroll">
+            <Link 
+              to="/contact" 
+              className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-white text-blue-600 text-xs sm:text-sm md:text-base font-bold rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600 w-full sm:w-auto min-h-[44px]"
+              aria-label="Book a consultation with AIdea Digital"
+            >
+              Book a consultation
+              <ArrowRight className={`ml-2 ${ICON_SIZES.sm} group-hover:translate-x-1 transition-transform duration-300`} aria-hidden="true" />
             </Link>
           </div>
         </div>
-      </section>
+      </Section>
     </div>
   );
 };
