@@ -71,7 +71,7 @@ const Navigation = () => {
                   <Link
                     key={item.name}
                     to={item.path}
-                    className={`relative px-6 py-3 text-sm sm:text-base font-medium transition-colors duration-200 rounded-xl min-h-[48px] flex items-center ${
+                    className={`relative px-6 py-3 text-base sm:text-lg font-medium transition-colors duration-200 rounded-xl min-h-[48px] flex items-center ${
                       location.pathname === item.path
                         ? 'text-white'
                         : 'text-gray-300 hover:text-white'
@@ -97,7 +97,7 @@ const Navigation = () => {
           >
             <Link
               to="/contact"
-              className="px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-200 via-purple-200 to-blue-200 text-blue-800 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-blue-200/50 hover:scale-110 hover:from-blue-300 hover:via-purple-300 hover:to-blue-300 transform relative overflow-hidden group min-h-[48px] flex items-center"
+              className="px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-200 via-purple-200 to-blue-200 text-blue-800 text-base sm:text-lg font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-blue-200/50 hover:scale-110 hover:from-blue-300 hover:via-purple-300 hover:to-blue-300 transform relative overflow-hidden group min-h-[48px] flex items-center"
               aria-label="Contact Us"
             >
               <span className="relative z-10">Contact Us</span>
@@ -132,7 +132,7 @@ const Navigation = () => {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`block px-5 py-3 text-sm sm:text-base font-semibold transition-all duration-300 touch-manipulation rounded-xl transform min-h-[44px] flex items-center ${
+                className={`block px-5 py-3 text-base sm:text-lg font-semibold transition-all duration-300 touch-manipulation rounded-xl transform min-h-[44px] flex items-center ${
                   location.pathname === item.path
                     ? 'text-blue-800 bg-blue-200 scale-105'
                     : 'text-gray-300 hover:text-white hover:bg-gray-800 hover:scale-105 active:scale-95'
@@ -148,7 +148,7 @@ const Navigation = () => {
             ))}
             <Link
               to="/contact"
-              className="block px-5 py-3 bg-gradient-to-r from-blue-200 via-purple-200 to-blue-200 text-blue-800 text-sm sm:text-base font-semibold rounded-xl text-center transition-all duration-300 hover:scale-105 active:scale-95 transform min-h-[44px] flex items-center justify-center hover:from-blue-300 hover:via-purple-300 hover:to-blue-300"
+              className="block px-5 py-3 bg-gradient-to-r from-blue-200 via-purple-200 to-blue-200 text-blue-800 text-base sm:text-lg font-semibold rounded-xl text-center transition-all duration-300 hover:scale-105 active:scale-95 transform min-h-[44px] flex items-center justify-center hover:from-blue-300 hover:via-purple-300 hover:to-blue-300"
               onClick={() => setIsOpen(false)}
               style={{
                 animation: isOpen ? `slideInLeft 0.4s ease-out ${navItems.length * 0.1}s both` : 'none'

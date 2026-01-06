@@ -137,7 +137,7 @@ const Contact = () => {
             <Heading level={1} align="center" className="mb-3 sm:mb-4">
               Get in Touch
             </Heading>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed px-2 sm:px-0">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed px-2 sm:px-0">
               Ready to transform your business with AI? Let's discuss how we can help you achieve your goals.
             </p>
           </div>
@@ -153,7 +153,7 @@ const Contact = () => {
               <Heading level={2} className="mb-6">
                 Let's Start a Conversation
               </Heading>
-              <p className="text-sm sm:text-base md:text-lg text-gray-400 mb-6 sm:mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-6 sm:mb-8 leading-relaxed">
                 Whether you're looking to implement AI solutions, need strategic guidance, or want to explore partnership opportunities, we're here to help. Reach out to us and let's discuss how we can drive your business forward.
               </p>
 
@@ -164,13 +164,13 @@ const Contact = () => {
                       <item.icon className={ICON_SIZES.lg + " sm:" + ICON_SIZES.xl + " text-white"} />
                     </div>
                     <div>
-                      <h3 className="text-base sm:text-lg font-bold text-white mb-2">
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
                         {item.title}
                       </h3>
-                      <p className="text-sm sm:text-base text-gray-300 font-medium mb-1">
+                      <p className="text-base sm:text-lg text-gray-300 font-medium mb-1">
                         {item.detail}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-sm text-gray-500">
                         {item.description}
                       </p>
                     </div>
@@ -179,10 +179,10 @@ const Contact = () => {
               </div>
 
               <div className="mt-8 p-6 sm:p-8 bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-800">
-                <h3 className="text-base sm:text-lg font-bold text-white mb-2">
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
                   Response Time
                 </h3>
-                <p className="text-sm sm:text-base text-gray-400">
+                <p className="text-base sm:text-lg text-gray-400">
                   We typically respond to all inquiries within 24 hours during business days. 
                   For urgent matters, please call us directly.
                 </p>
@@ -200,10 +200,10 @@ const Contact = () => {
                 <div className="mb-6 p-4 bg-blue-600/20 border border-blue-500/30 rounded-xl flex items-center space-x-3" role="status" aria-live="polite">
                   <User className={`${ICON_SIZES.md} text-blue-400 flex-shrink-0`} aria-hidden="true" />
                   <div>
-                    <p className="text-blue-300 text-sm font-medium">
+                    <p className="text-blue-300 text-base font-medium">
                       Welcome back, {user.user_metadata?.full_name || user.email?.split('@')[0]}!
                     </p>
-                    <p className="text-blue-400/80 text-xs">
+                    <p className="text-blue-400/80 text-sm">
                       Your information has been pre-filled for convenience.
                     </p>
                   </div>
@@ -213,7 +213,7 @@ const Contact = () => {
               {submitStatus === 'success' && (
                 <div className="mb-6 p-4 bg-green-600/20 border border-green-500/30 rounded-xl flex items-center space-x-3" role="alert" aria-live="polite">
                   <CheckCircle className={`${ICON_SIZES.md} text-green-400 flex-shrink-0`} aria-hidden="true" />
-                  <p className="text-green-300 text-sm">
+                  <p className="text-green-300 text-base">
                     Thank you! Your message has been sent successfully. We'll get back to you soon.
                   </p>
                 </div>
@@ -222,7 +222,7 @@ const Contact = () => {
               {submitStatus === 'error' && (
                 <div className="mb-6 p-4 bg-red-600/20 border border-red-500/30 rounded-xl flex items-center space-x-3" role="alert" aria-live="assertive">
                   <AlertCircle className={`${ICON_SIZES.md} text-red-400 flex-shrink-0`} aria-hidden="true" />
-                  <p className="text-red-300 text-sm">
+                  <p className="text-red-300 text-base">
                     Sorry, there was an error sending your message. Please try again or contact us directly.
                   </p>
                 </div>
@@ -231,7 +231,7 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                      <label htmlFor="name" className="block text-base font-medium text-gray-300 mb-2">
                       Full Name *
                       </label>
                       <input
@@ -246,7 +246,7 @@ const Contact = () => {
                       />
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
+                      <label htmlFor="email" className="block text-sm sm:text-base font-medium text-gray-300 mb-2">
                       Email Address *
                       </label>
                       <input
@@ -263,7 +263,7 @@ const Contact = () => {
                   </div>
 
                   <div>
-                  <label htmlFor="company" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
+                  <label htmlFor="company" className="block text-sm sm:text-base font-medium text-gray-300 mb-2">
                     Company Name
                     </label>
                   <input
@@ -278,7 +278,7 @@ const Contact = () => {
                   </div>
 
                   <div>
-                  <label htmlFor="subject" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
+                  <label htmlFor="subject" className="block text-sm sm:text-base font-medium text-gray-300 mb-2">
                     Subject *
                     </label>
                     <select
@@ -299,7 +299,7 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
+                    <label htmlFor="message" className="block text-sm sm:text-base font-medium text-gray-300 mb-2">
                     Message *
                     </label>
                     <textarea
@@ -317,26 +317,26 @@ const Contact = () => {
                 {/* Quick Contact Options for Logged-in Users */}
                 {user && (
                   <div className="mb-4">
-                    <p className="text-sm text-gray-400 mb-3">Quick Contact Options:</p>
+                    <p className="text-base text-gray-400 mb-3">Quick Contact Options:</p>
                     <div className="flex flex-wrap gap-1 sm:gap-2">
                       <button
                         type="button"
                         onClick={() => setFormData(prev => ({ ...prev, subject: 'AI Consulting Services', message: 'Hi! I\'m interested in learning more about your AI consulting services. Could you please provide more information?' }))}
-                        className="px-3 py-2 bg-blue-600/20 text-blue-400 text-xs rounded-lg hover:bg-blue-600/30 border border-blue-500/30 transition-colors touch-manipulation"
+                        className="px-3 py-2 bg-blue-600/20 text-blue-400 text-sm rounded-lg hover:bg-blue-600/30 border border-blue-500/30 transition-colors touch-manipulation"
                       >
                         AI Consulting
                       </button>
                       <button
                         type="button"
                         onClick={() => setFormData(prev => ({ ...prev, subject: 'Partnership Opportunities', message: 'Hi! I\'d like to explore potential partnership opportunities with AIdea Digital.' }))}
-                        className="px-3 py-2 bg-purple-600/20 text-purple-400 text-xs rounded-lg hover:bg-purple-600/30 border border-purple-500/30 transition-colors touch-manipulation"
+                        className="px-3 py-2 bg-purple-600/20 text-purple-400 text-sm rounded-lg hover:bg-purple-600/30 border border-purple-500/30 transition-colors touch-manipulation"
                       >
                         Partnership
                       </button>
                       <button
                         type="button"
                         onClick={() => setFormData(prev => ({ ...prev, subject: 'General Inquiry', message: 'Hi! I have a general question about your services.' }))}
-                        className="px-3 py-2 bg-green-600/20 text-green-400 text-xs rounded-lg hover:bg-green-600/30 border border-green-500/30 transition-colors touch-manipulation"
+                        className="px-3 py-2 bg-green-600/20 text-green-400 text-sm rounded-lg hover:bg-green-600/30 border border-green-500/30 transition-colors touch-manipulation"
                       >
                         General Question
                       </button>

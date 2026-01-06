@@ -25,37 +25,37 @@ export const SECTION_PADDING = {
 // Typography Scale
 export const TYPOGRAPHY = {
   h1: {
+    mobile: 'text-4xl',      // 36px
+    tablet: 'sm:text-5xl',   // 48px
+    desktop: 'lg:text-6xl',  // 60px
+    weight: 'font-bold',
+    lineHeight: 'leading-tight',
+  },
+  h2: {
     mobile: 'text-3xl',      // 30px
     tablet: 'sm:text-4xl',   // 36px
     desktop: 'lg:text-5xl',  // 48px
     weight: 'font-bold',
     lineHeight: 'leading-tight',
   },
-  h2: {
-    mobile: 'text-2xl',      // 24px
+  h3: {
+    mobile: 'text-2xl',       // 24px
     tablet: 'sm:text-3xl',   // 30px
     desktop: 'lg:text-4xl',  // 36px
     weight: 'font-bold',
     lineHeight: 'leading-tight',
   },
-  h3: {
-    mobile: 'text-xl',       // 20px
-    tablet: 'sm:text-2xl',   // 24px
-    desktop: 'lg:text-3xl',  // 30px
-    weight: 'font-bold',
-    lineHeight: 'leading-tight',
-  },
   body: {
-    mobile: 'text-sm',       // 14px
-    tablet: 'sm:text-base',  // 16px
-    desktop: 'lg:text-lg',   // 18px
+    mobile: 'text-base',       // 16px
+    tablet: 'sm:text-lg',  // 18px
+    desktop: 'lg:text-xl',   // 20px
     weight: 'font-normal',
     lineHeight: 'leading-relaxed',
   },
   small: {
-    mobile: 'text-xs',       // 12px
-    tablet: 'sm:text-sm',    // 14px
-    desktop: 'lg:text-base', // 16px
+    mobile: 'text-sm',       // 14px
+    tablet: 'sm:text-base',    // 16px
+    desktop: 'lg:text-lg', // 18px
     weight: 'font-normal',
     lineHeight: 'leading-relaxed',
   },

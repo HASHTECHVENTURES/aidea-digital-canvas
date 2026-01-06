@@ -12,11 +12,11 @@ const Footer = () => {
             <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               AIdea Digital
             </h3>
-            <p className="text-gray-400 text-xs sm:text-sm md:text-base mb-4 sm:mb-6 leading-relaxed">
+            <p className="text-gray-400 text-sm sm:text-base md:text-lg mb-4 sm:mb-6 leading-relaxed">
               AI That Works. Not Just AI That Impresses. We help startups, SMEs, and enterprises 
               design, build, and deploy practical AI solutions that improve speed, efficiency, and decision-making.
             </p>
-            <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm md:text-base text-gray-400">
+            <div className="space-y-2 sm:space-y-3 text-sm sm:text-base md:text-lg text-gray-400">
               <div className="flex items-center space-x-2 sm:space-x-3">
                 <div className="p-1.5 sm:p-2 bg-gray-900/50 rounded-lg flex-shrink-0" aria-hidden="true">
                   <Mail className={ICON_SIZES.sm + " sm:" + ICON_SIZES.md + " text-blue-400"} />
@@ -71,10 +71,10 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm sm:text-base font-bold mb-3 sm:mb-4 uppercase tracking-wider text-gray-200">
+            <h4 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 uppercase tracking-wider text-gray-200">
               Quick Links
             </h4>
-            <ul className="space-y-2 text-xs sm:text-sm">
+            <ul className="space-y-2 text-sm sm:text-base">
               <li>
                 <Link 
                   to="/" 
@@ -116,7 +116,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800/50 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center">
-          <p className="text-gray-400 text-xs sm:text-sm md:text-base">
+          <p className="text-gray-400 text-sm sm:text-base md:text-lg">
             © 2026 AIdea Digital. All rights reserved.
           </p>
         </div>

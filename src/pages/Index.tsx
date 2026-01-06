@@ -275,19 +275,19 @@ const Index = () => {
           <div className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
             <div className="text-center space-y-4 sm:space-y-5 relative z-10 max-w-4xl">
               <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-full mb-3 sm:mb-4 w-full sm:w-auto justify-center" role="banner">
-                <span className="text-gray-300 text-xs sm:text-sm md:text-base whitespace-normal sm:whitespace-nowrap text-center">We design AI solutions that matter, businesses can't resist</span>
+                <span className="text-gray-300 text-sm sm:text-sm md:text-base whitespace-normal sm:whitespace-nowrap text-center">We design AI solutions that matter, businesses can't resist</span>
                 <ArrowRight className={`${ICON_SIZES.sm} text-blue-400 flex-shrink-0 hidden sm:block`} aria-hidden="true" />
               </div>
-              <Heading level={1} className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out mb-3 sm:mb-4 whitespace-nowrap overflow-x-auto" align="center" style={{ whiteSpace: 'nowrap' }}>
+              <Heading level={1} className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out mb-3 sm:mb-4 whitespace-normal sm:whitespace-nowrap px-2 sm:px-0" align="center">
                 AI That Works. Not Just AI That Impresses.
               </Heading>
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-2xl mx-auto animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200 leading-relaxed mb-4 sm:mb-6 px-2 sm:px-0">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 max-w-2xl mx-auto animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200 leading-relaxed mb-4 sm:mb-6 px-2 sm:px-0">
                 AIdea Digital helps startups, SMEs, and enterprises design, build, and deploy practical AI solutions that improve speed, efficiency, and decision-making. We go beyond experimentation—our focus is implementation, adoption, and measurable business impact.
               </p>
               <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400">
                 <Link 
                   to="/contact" 
-                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-200 hover:bg-blue-300 text-blue-800 text-xs sm:text-sm md:text-base font-semibold rounded-lg transition-all duration-300 hover:scale-105 transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 w-full sm:w-auto min-h-[44px]"
+                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-200 hover:bg-blue-300 text-blue-800 text-sm sm:text-base md:text-lg font-semibold rounded-lg transition-all duration-300 hover:scale-105 transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 w-full sm:w-auto min-h-[44px]"
                   aria-label="Book a consultation with AIdea Digital"
                 >
                   Book a consultation
@@ -306,7 +306,7 @@ const Index = () => {
             <Heading level={2} align="center" className="mb-3 sm:mb-4">
               Our Services
             </Heading>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
               Comprehensive AI solutions tailored to your business needs
             </p>
           </div>
@@ -314,13 +314,13 @@ const Index = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             {services.map((service, index) => (
               <Card key={index} className="fade-in-on-scroll h-full flex flex-col" padding="md">
-                <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3">{service.title}</h3>
-                <p className="text-xs sm:text-sm md:text-base text-gray-400 mb-3 sm:mb-4 flex-grow leading-relaxed">{service.description}</p>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-3">{service.title}</h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-400 mb-3 sm:mb-4 flex-grow leading-relaxed">{service.description}</p>
                 <ul className="space-y-1.5 sm:space-y-2" role="list">
                   {service.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
                       <CheckCircle className={`${ICON_SIZES.sm} text-blue-400 mr-2 mt-0.5 flex-shrink-0`} aria-hidden="true" />
-                      <span className="text-xs sm:text-sm text-gray-300 leading-relaxed">{feature}</span>
+                      <span className="text-sm sm:text-base text-gray-300 leading-relaxed">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -337,7 +337,7 @@ const Index = () => {
             <Heading level={2} align="center" className="mb-3 sm:mb-4">
               How We Engage
             </Heading>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
               A proven process to turn AI into a business advantage
             </p>
           </div>
@@ -350,8 +350,8 @@ const Index = () => {
                 </div>
                 <Card className="flex flex-col flex-grow" padding="md">
                   <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2 sm:mb-3">{step.number}</div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2">{step.title}</h3>
-                  <p className="text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed flex-grow">{step.description}</p>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">{step.title}</h3>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-400 leading-relaxed flex-grow">{step.description}</p>
                 </Card>
               </div>
             ))}
@@ -364,7 +364,7 @@ const Index = () => {
         <div className="modern-container px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6 sm:mb-8 md:mb-12 fade-in-on-scroll">
             <Heading level={2} align="center" className="mb-3 sm:mb-4">Who We Work With</Heading>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0 whitespace-nowrap">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto px-2 sm:px-0 whitespace-normal sm:whitespace-nowrap">
               If you are clear about the problem but unsure how to apply AI at scale, we are your execution partner.
             </p>
           </div>
@@ -374,22 +374,22 @@ const Index = () => {
               <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 glow-blue" aria-hidden="true">
                 <Rocket className={ICON_SIZES.lg + " text-white"} />
               </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2">Startups</h3>
-              <p className="text-xs sm:text-sm md:text-base text-gray-400">Building AI-first products or MVPs</p>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">Startups</h3>
+              <p className="text-sm sm:text-base md:text-lg text-gray-400">Building AI-first products or MVPs</p>
             </Card>
             <Card className="fade-in-on-scroll text-center group flex flex-col items-center" padding="md">
               <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 glow-blue" aria-hidden="true">
                 <Building2 className={ICON_SIZES.lg + " text-white"} />
               </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2">SMEs</h3>
-              <p className="text-xs sm:text-sm md:text-base text-gray-400">Looking to automate workflows and reduce costs</p>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">SMEs</h3>
+              <p className="text-sm sm:text-base md:text-lg text-gray-400">Looking to automate workflows and reduce costs</p>
             </Card>
             <Card className="fade-in-on-scroll text-center group flex flex-col items-center sm:col-span-2 md:col-span-1" padding="md">
               <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 glow-blue" aria-hidden="true">
                 <Briefcase className={ICON_SIZES.lg + " text-white"} />
               </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2">Enterprises</h3>
-              <p className="text-xs sm:text-sm md:text-base text-gray-400">Adopting AI across functions and teams</p>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">Enterprises</h3>
+              <p className="text-sm sm:text-base md:text-lg text-gray-400">Adopting AI across functions and teams</p>
             </Card>
           </div>
         </div>
@@ -400,7 +400,7 @@ const Index = () => {
         <div className="modern-container px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6 sm:mb-8 md:mb-12 fade-in-on-scroll">
             <Heading level={2} align="center" className="mb-3 sm:mb-4">Why AIdea Digital</Heading>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
               What sets us apart in delivering practical AI solutions
             </p>
           </div>
@@ -420,8 +420,8 @@ const Index = () => {
                 <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl sm:rounded-2xl mb-3 group-hover:rotate-6 transition-transform duration-500 mx-auto flex-shrink-0 glow-blue" aria-hidden="true">
                   <prop.icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
                 </div>
-                <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">{prop.title}</h3>
-                <p className="text-xs sm:text-sm md:text-base text-gray-400 flex-grow leading-relaxed">{prop.description}</p>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">{prop.title}</h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-400 flex-grow leading-relaxed">{prop.description}</p>
               </Card>
             ))}
           </div>
@@ -447,14 +447,14 @@ const Index = () => {
               <Heading level={2} className="mb-3 sm:mb-4">
                 Beyond Experimentation
               </Heading>
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 mb-4 sm:mb-6 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 mb-4 sm:mb-6 leading-relaxed">
                 We go beyond experimentation—our focus is implementation, adoption, and measurable business impact. We help you identify the right AI opportunities and implement them with precision.
               </p>
               <ul className="space-y-2 sm:space-y-3" role="list">
                 {["Execution-first mindset", "Business-aligned AI solutions", "Measurable ROI from day one"].map((item, index) => (
                   <li key={index} className="flex items-start">
                     <CheckCircle className={`${ICON_SIZES.md} text-blue-400 mr-2 sm:mr-3 mt-0.5 flex-shrink-0`} aria-hidden="true" />
-                    <span className="text-xs sm:text-sm md:text-base text-gray-300">{item}</span>
+                    <span className="text-sm sm:text-base md:text-lg text-gray-300">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -470,7 +470,7 @@ const Index = () => {
             <Heading level={2} align="center" className="mb-3 sm:mb-4">
               Testimonials
             </Heading>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto px-2 sm:px-0">
               What our clients say about working with us
             </p>
           </div>
@@ -484,17 +484,17 @@ const Index = () => {
                   ))}
                 </div>
                 <Quote className={`${ICON_SIZES.md} sm:${ICON_SIZES.lg} text-blue-400 mb-3 sm:mb-4 opacity-50`} aria-hidden="true" />
-                <blockquote className="text-xs sm:text-sm md:text-base text-gray-300 mb-3 sm:mb-4 flex-grow leading-relaxed italic">
+                <blockquote className="text-sm sm:text-base md:text-lg text-gray-300 mb-3 sm:mb-4 flex-grow leading-relaxed italic">
                   "{testimonial.quote}"
                 </blockquote>
                 <div className="border-t border-gray-800 pt-3 sm:pt-4">
-                  <p className="text-sm sm:text-base font-bold text-white mb-1">
+                  <p className="text-base sm:text-lg font-bold text-white mb-1">
                     {testimonial.author}
                   </p>
-                  <p className="text-xs sm:text-sm text-gray-400 mb-1">
+                  <p className="text-sm sm:text-base text-gray-400 mb-1">
                     {testimonial.role}
                   </p>
-                  <p className="text-xs sm:text-sm text-gray-500">
+                  <p className="text-sm sm:text-base text-gray-500">
                     {testimonial.company}
                   </p>
                 </div>
@@ -510,13 +510,13 @@ const Index = () => {
           <Heading level={2} align="center" className="mb-3 sm:mb-4 fade-in-on-scroll text-white">
             Ready to Turn AI into a Business Advantage?
           </Heading>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg text-blue-100 mb-6 sm:mb-8 fade-in-on-scroll max-w-3xl mx-auto px-2 sm:px-0">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-blue-100 mb-6 sm:mb-8 fade-in-on-scroll max-w-3xl mx-auto px-2 sm:px-0">
             Let's discuss how AI can work practically for your business
           </p>
           <div className="fade-in-on-scroll">
             <Link 
               to="/contact" 
-              className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-200 hover:bg-blue-300 text-blue-800 text-xs sm:text-sm md:text-base font-bold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-200/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 w-full sm:w-auto min-h-[44px]"
+              className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-200 hover:bg-blue-300 text-blue-800 text-sm sm:text-base md:text-lg font-bold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-200/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 w-full sm:w-auto min-h-[44px]"
               aria-label="Book a consultation with AIdea Digital"
             >
               Book a consultation
