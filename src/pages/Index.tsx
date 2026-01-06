@@ -278,8 +278,8 @@ const Index = () => {
                 <span className="text-gray-300 text-xs sm:text-sm md:text-base whitespace-normal sm:whitespace-nowrap text-center">We design AI solutions that matter, businesses can't resist</span>
                 <ArrowRight className={`${ICON_SIZES.sm} text-blue-400 flex-shrink-0 hidden sm:block`} aria-hidden="true" />
               </div>
-              <Heading level={1} className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out mb-3 sm:mb-4" align="center">
-                AI That Works. Not Just AI That&nbsp;Impresses.
+              <Heading level={1} className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out mb-3 sm:mb-4 whitespace-nowrap overflow-x-auto" align="center" style={{ whiteSpace: 'nowrap' }}>
+                AI That Works. Not Just AI That Impresses.
               </Heading>
               <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-2xl mx-auto animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200 leading-relaxed mb-4 sm:mb-6 px-2 sm:px-0">
                 AIdea Digital helps startups, SMEs, and enterprises design, build, and deploy practical AI solutions that improve speed, efficiency, and decision-making. We go beyond experimentation—our focus is implementation, adoption, and measurable business impact.
