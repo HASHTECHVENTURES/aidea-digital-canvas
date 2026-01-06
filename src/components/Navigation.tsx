@@ -97,11 +97,11 @@ const Navigation = () => {
           >
             <Link
               to="/contact"
-              className="px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 text-white text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/50 hover:scale-110 hover:from-blue-500 hover:via-purple-500 hover:to-blue-500 transform relative overflow-hidden group min-h-[48px] flex items-center"
+              className="px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-200 via-purple-200 to-blue-200 text-blue-800 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-blue-200/50 hover:scale-110 hover:from-blue-300 hover:via-purple-300 hover:to-blue-300 transform relative overflow-hidden group min-h-[48px] flex items-center"
               aria-label="Contact Us"
             >
               <span className="relative z-10">Contact Us</span>
-              <span className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="absolute inset-0 bg-gradient-to-r from-blue-300 via-purple-300 to-blue-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </Link>
           </div>
 
@@ -134,7 +134,7 @@ const Navigation = () => {
                 to={item.path}
                 className={`block px-5 py-3 text-sm sm:text-base font-semibold transition-all duration-300 touch-manipulation rounded-xl transform min-h-[44px] flex items-center ${
                   location.pathname === item.path
-                    ? 'text-white bg-blue-600/80 scale-105'
+                    ? 'text-blue-800 bg-blue-200 scale-105'
                     : 'text-gray-300 hover:text-white hover:bg-gray-800 hover:scale-105 active:scale-95'
                 }`}
                 onClick={() => setIsOpen(false)}
@@ -148,7 +148,7 @@ const Navigation = () => {
             ))}
             <Link
               to="/contact"
-              className="block px-5 py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 text-white text-sm sm:text-base font-semibold rounded-xl text-center transition-all duration-300 hover:scale-105 active:scale-95 transform min-h-[44px] flex items-center justify-center"
+              className="block px-5 py-3 bg-gradient-to-r from-blue-200 via-purple-200 to-blue-200 text-blue-800 text-sm sm:text-base font-semibold rounded-xl text-center transition-all duration-300 hover:scale-105 active:scale-95 transform min-h-[44px] flex items-center justify-center hover:from-blue-300 hover:via-purple-300 hover:to-blue-300"
               onClick={() => setIsOpen(false)}
               style={{
                 animation: isOpen ? `slideInLeft 0.4s ease-out ${navItems.length * 0.1}s both` : 'none'

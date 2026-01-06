@@ -117,7 +117,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800/50 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center">
           <p className="text-gray-400 text-xs sm:text-sm md:text-base">
-            © 2025 AIdea Digital. All rights reserved.
+            © 2026 AIdea Digital. All rights reserved.
           </p>
         </div>
       </div>

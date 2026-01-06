@@ -236,6 +236,12 @@ const Index = () => {
       author: "Amit Shah",
       role: "Founder",
       company: "Offee"
+    },
+    {
+      quote: "AIdea Digital revolutionized our HR operations by implementing intelligent automation solutions that streamlined our entire workflow. Their automation systems have significantly reduced manual work, eliminated errors, and freed up our team to focus on strategic initiatives. The efficiency gains we've experienced are remarkable, and the ROI was evident within the first quarter. Their expertise in automation and AI integration is truly exceptional.",
+      author: "Dhwani Mehta",
+      role: "Co-Founder",
+      company: "Opportune HR"
     }
   ];
 
@@ -245,61 +251,48 @@ const Index = () => {
       <section ref={heroRef} className="relative pt-16 pb-8 sm:pt-20 sm:pb-12 md:pt-24 md:pb-16 lg:pt-28 lg:pb-20 overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 z-0 w-full h-full overflow-hidden">
-          <iframe 
-            allow="fullscreen;autoplay" 
-            allowFullScreen 
-            src="https://streamable.com/e/1y76q6?autoplay=1&muted=1&loop=1" 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] h-[100vh] min-w-[100vw] min-h-[56.25vw] border-none"
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] h-[100vh] min-w-[100vw] min-h-[56.25vw] object-cover"
             style={{
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              transform: 'translate(-50%, -50%) scale(1.15)'
             }}
-            title="Hero background video"
-          />
-          {/* Overlay to hide Streamable watermark (bottom-right corner) */}
-          <div className="absolute bottom-0 right-0 w-24 h-12 sm:w-32 sm:h-16 md:w-40 md:h-20 bg-gray-950/95 z-[2] pointer-events-none blur-sm"></div>
-          <div className="absolute bottom-0 right-0 w-20 h-10 sm:w-28 sm:h-14 md:w-36 md:h-18 bg-gray-950 z-[2] pointer-events-none"></div>
-          {/* Overlay to hide Streamable watermark (bottom-left corner) */}
-          <div className="absolute bottom-0 left-0 w-24 h-12 sm:w-32 sm:h-16 md:w-40 md:h-20 bg-gray-950/95 z-[2] pointer-events-none blur-sm"></div>
-          <div className="absolute bottom-0 left-0 w-20 h-10 sm:w-28 sm:h-14 md:w-36 md:h-18 bg-gray-950 z-[2] pointer-events-none"></div>
+            aria-label="Hero background video"
+          >
+            <source src="/hero-video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-gray-950/70 z-[1]"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-gray-950/50 via-blue-950/20 to-purple-950/10 z-[1]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)] z-[1]"></div>
         <div className="relative modern-container z-10 px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
-            <div className="text-center lg:text-left space-y-4 sm:space-y-5 order-2 lg:order-1 relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-full mb-3 sm:mb-4 w-full sm:w-auto justify-center lg:justify-start" role="banner">
-                <span className="text-gray-300 text-xs sm:text-sm md:text-base whitespace-normal sm:whitespace-nowrap text-center sm:text-left">We design AI solutions that matter, businesses can't resist</span>
+          <div className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
+            <div className="text-center space-y-4 sm:space-y-5 relative z-10 max-w-4xl">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-full mb-3 sm:mb-4 w-full sm:w-auto justify-center" role="banner">
+                <span className="text-gray-300 text-xs sm:text-sm md:text-base whitespace-normal sm:whitespace-nowrap text-center">We design AI solutions that matter, businesses can't resist</span>
                 <ArrowRight className={`${ICON_SIZES.sm} text-blue-400 flex-shrink-0 hidden sm:block`} aria-hidden="true" />
               </div>
-              <Heading level={1} className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out mb-3 sm:mb-4">
-                AI That Works. Not Just AI That Impresses.
+              <Heading level={1} className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out mb-3 sm:mb-4" align="center">
+                AI That Works. Not Just AI That&nbsp;Impresses.
               </Heading>
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-2xl mx-auto lg:mx-0 animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200 leading-relaxed mb-4 sm:mb-6 px-2 sm:px-0">
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-2xl mx-auto animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200 leading-relaxed mb-4 sm:mb-6 px-2 sm:px-0">
                 AIdea Digital helps startups, SMEs, and enterprises design, build, and deploy practical AI solutions that improve speed, efficiency, and decision-making. We go beyond experimentation—our focus is implementation, adoption, and measurable business impact.
               </p>
               <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400">
                 <Link 
                   to="/contact" 
-                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm md:text-base font-semibold rounded-lg glow-blue transition-all duration-300 hover:scale-105 transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 w-full sm:w-auto min-h-[44px]"
+                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-200 hover:bg-blue-300 text-blue-800 text-xs sm:text-sm md:text-base font-semibold rounded-lg transition-all duration-300 hover:scale-105 transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 w-full sm:w-auto min-h-[44px]"
                   aria-label="Book a consultation with AIdea Digital"
                 >
                   Book a consultation
                   <ArrowRight className={`ml-2 ${ICON_SIZES.sm} group-hover:translate-x-1 transition-transform duration-300`} aria-hidden="true" />
                 </Link>
-              </div>
-            </div>
-            <div className="animate-text opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600 order-1 lg:order-2 relative z-10">
-              <div className="relative group w-full">
-                <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl sm:rounded-3xl blur-xl sm:blur-2xl group-hover:blur-3xl transition-all duration-700 z-0" aria-hidden="true"></div>
-                <div className="relative z-10">
-                  <OptimizedImage
-                    src="/lovable-uploads/f125d18d-2d29-4803-ac30-85d405119421.png"
-                    alt="AI Human Partnership - Visual representation of AI collaboration"
-                    className="w-full h-auto rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-2xl group-hover:scale-[1.02] transition-all duration-700 max-w-full sm:max-w-md mx-auto lg:max-w-full border border-gray-800"
-                  />
-                </div>
               </div>
             </div>
           </div>
@@ -523,7 +516,7 @@ const Index = () => {
           <div className="fade-in-on-scroll">
             <Link 
               to="/contact" 
-              className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-white text-blue-600 text-xs sm:text-sm md:text-base font-bold rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600 w-full sm:w-auto min-h-[44px]"
+              className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-200 hover:bg-blue-300 text-blue-800 text-xs sm:text-sm md:text-base font-bold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-200/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 w-full sm:w-auto min-h-[44px]"
               aria-label="Book a consultation with AIdea Digital"
             >
               Book a consultation
